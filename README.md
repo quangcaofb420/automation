@@ -26,3 +26,9 @@
 ## Read JSON file
  - Follow the link https://github.com/VBA-tools/VBA-JSON
  - https://github.com/VBA-tools/VBA-Dictionary
+
+# Run Automation
+## Run macro outside Excel file without opening file
+ - Open Excel file, Menu Files >> Options >> Trust Center >> Trust Center Settings ... 
+    - Trusted Locations : Add Automation folder
+    - Macro Settings : Enable all macros ... AND check Trust access the VBA project object model
