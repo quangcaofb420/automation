@@ -32,3 +32,40 @@
  - Open Excel file, Menu Files >> Options >> Trust Center >> Trust Center Settings ... 
     - Trusted Locations : Add Automation folder
     - Macro Settings : Enable all macros ... AND check Trust access the VBA project object model
+
+# Git SourceTree and Excel VBA
+## Git XL 
+- Install https://www.xltrail.com/git-xl
+
+## SourceTree
+- Open file C:\\{User}\\AppData\Local\Atlassian\SourceTree\git_local\etc\gitconfig
+    ```
+    [diff "xl"]
+	    command = git-xl-diff.exe
+    [merge "xl"]
+	    name = xl merge driver for Excel workbooks
+	    driver = git-xl-merge.exe %P %O %A %B
+    ```
+
+    + We can add it into local git
+- Open file C:\\{User}\\AppData\Local\Atlassian\SourceTree\git_local\etc\gitattributes
+    ```
+    *.xla diff=xl
+    *.xla merge=xl
+    *.xlam diff=xl
+    *.xlam merge=xl
+    *.xls diff=xl
+    *.xls merge=xl
+    *.xlsb diff=xl
+    *.xlsb merge=xl
+    *.xlsm diff=xl
+    *.xlsm merge=xl
+    *.xlsx diff=xl
+    *.xlsx merge=xl
+    *.xlt diff=xl
+    *.xlt merge=xl
+    *.xltm diff=xl
+    *.xltm merge=xl
+    *.xltx diff=xl
+    *.xltx merge=xl
+    ```
