@@ -1,3 +1,11 @@
+using ManagerAppNC.Components;
+using ManagerAppNC.Core.Infrastructures;
+using ManagerAppNC.Core.Infrastructures.Services;
+using ManagerAppNC.Core.Repositories;
+using ManagerAppNC.Core.Services;
+using ManagerAppNC.DI;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +22,21 @@ namespace ManagerAppNC
         [STAThread]
         static void Main()
         {
+            DIServiceProvider.init((services)=> {
+                services.AddSingleton<Main>();
+                services.AddSingleton<FBAccListComponent>();
+
+                services.AddSingleton<IFBAdsService, FBAdsService>();
+                services.AddSingleton<IFBAdsRepository, FBAdsRepository>();
+            });
+
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+
+            var mainForm = DIServiceProvider.Register<Main>();
+            Application.Run(mainForm);
+
         }
     }
 }

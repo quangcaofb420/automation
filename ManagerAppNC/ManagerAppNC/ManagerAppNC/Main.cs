@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManagerAppNC.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,10 +11,16 @@ using System.Windows.Forms;
 
 namespace ManagerAppNC
 {
-    public partial class Main : Form
+     partial class Main : Form
     {
-        public Main()
+        
+        private readonly IFBAdsService fbAdsService;
+        
+        public Main(IFBAdsService service)
         {
+            // this.service = service;
+            
+            this.fbAdsService = service;
             InitializeComponent();
         }
 

@@ -7,13 +7,14 @@ using System.Windows.Forms;
 
 namespace ManagerAppNC.Components
 {
-    public partial class FBAccListComponent : UserControl
+    partial class FBAccListComponent : UserControl
     {
-        private IFBAdsService service;
+        private IFBAdsService fbAdsService;
         private List<FBAcc> fbAccs = new List<FBAcc>();
-      
-        public FBAccListComponent()
+
+        public FBAccListComponent(IFBAdsService service)
         {
+            this.fbAdsService = service;
             InitializeComponent();
         }
 
@@ -22,18 +23,21 @@ namespace ManagerAppNC.Components
             this.LoadFBAccList();
         }
 
-        private async void LoadFBAccList() {
-           // this.fbAccs = await this.service.GetFBAccList();
+        private async void LoadFBAccList()
+        {
+            this.fbAccs = await this.fbAdsService.GetFBAccList();
             this.RefreshDataGridView();
         }
 
-        private void RefreshDataGridView() 
+        private void RefreshDataGridView()
         {
             var source = new BindingSource();
             source.DataSource = this.fbAccs;
             this.dgvFBAcc.DataSource = source;
-            this.dgvFBAcc.AutoResizeColumns(
-                DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
+
+            //dgvFBAcc.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+
         }
 
         public object GetFBAccs()

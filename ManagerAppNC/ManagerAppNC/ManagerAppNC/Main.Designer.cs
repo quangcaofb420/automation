@@ -1,4 +1,6 @@
 ﻿
+using ManagerAppNC.DI;
+
 namespace ManagerAppNC
 {
     partial class Main
@@ -29,7 +31,7 @@ namespace ManagerAppNC
         /// </summary>
         private void InitializeComponent()
         {
-            this.fbAccListComponent1 = new ManagerAppNC.Components.FBAccListComponent();
+            this.fbAccListComponent1 = DIServiceProvider.Register< ManagerAppNC.Components.FBAccListComponent>();
             this.SuspendLayout();
             // 
             // fbAccListComponent1
