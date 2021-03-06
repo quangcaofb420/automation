@@ -1,6 +1,11 @@
 # Manager App
  - Run `buildManagerAppNC.bat` to build app
- 
+ - Run Automation
+    - Copy files to specify Facebook account folder like `./{Facebook Account}/`
+        - `run.vbs`
+        - `WebDriver_ViewLiveStream.xlsm`
+        - Generate `fbacc.json` file with Facebook account info
+        
 # Selenium
 ## Config chromedriver
  - Check Chrome version in Chrome 3 dots >> Help >> About Google Chrome 
