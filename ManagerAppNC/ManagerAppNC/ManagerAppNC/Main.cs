@@ -1,17 +1,10 @@
 ﻿using ManagerAppNC.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ManagerAppNC
 {
-     partial class Main : Form
+    partial class Main : Form
     {
         
         private readonly IFBAdsService fbAdsService;
@@ -22,6 +15,8 @@ namespace ManagerAppNC
             
             this.fbAdsService = service;
             InitializeComponent();
+
+            ProcessorUtil.RunVBScript(Directory.GetCurrentDirectory(), "run.vbs");
         }
 
     }
