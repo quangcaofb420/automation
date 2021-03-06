@@ -31,7 +31,9 @@ namespace ManagerAppNC.Components
         {
             var source = new BindingSource();
             source.DataSource = this.fbAccs;
-            dgvFBAcc.DataSource = source;
+            this.dgvFBAcc.DataSource = source;
+            this.dgvFBAcc.AutoResizeColumns(
+                DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
         }
 
         public object GetFBAccs()
