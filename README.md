@@ -1,3 +1,6 @@
+# Manager App
+ - Run `buildManagerAppNC.bat` to build app
+ 
 # Selenium
 ## Config chromedriver
  - Check Chrome version in Chrome 3 dots >> Help >> About Google Chrome 
