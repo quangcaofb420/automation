@@ -16,6 +16,28 @@ namespace Core.Models
             script.Action = SlnAction.OpenWebsite;
             script.Param = param;
             return script;
+        } 
+        public static SlnScript If(params IfCondition[] coditions)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = SlnAction.IfCondition;
+            script.Param = coditions;
+            return script;
+        } 
+
+        public static SlnScript Input(Input param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = SlnAction.Input;
+            script.Param = param;
+            return script;
+        }
+        public static SlnScript Click(Click param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = SlnAction.Click;
+            script.Param = param;
+            return script;
         }
         public static SlnScript Exit()
         {

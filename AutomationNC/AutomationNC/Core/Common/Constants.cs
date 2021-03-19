@@ -8,6 +8,9 @@ namespace Core.Common
     public enum ACTION
     {
         OPEN_WEBSITE,
+        INPUT,
+        CLICK,
+        IF_CONDITION,
         REDIRECT_URL,
         EXIT
     }

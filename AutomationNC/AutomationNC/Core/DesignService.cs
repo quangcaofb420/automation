@@ -53,7 +53,7 @@ namespace Core
             SlnSenarior senarior = JsonConvert.DeserializeObject<SlnSenarior>(jsonStr);
             if (senarior == null)
             {
-                senarior = new  SlnSenarior();
+                senarior = SlnSenarior.GetInstance();
             }
             return senarior;
         }

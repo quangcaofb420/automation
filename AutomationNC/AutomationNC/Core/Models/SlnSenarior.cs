@@ -9,39 +9,36 @@ namespace Core.Models
 {
     public class SlnSenarior
     {
-        private List<SlnScript> _scripts = new List<SlnScript>();
-        // private SlnSeleniumWebDriver webDriver;
+        private List<SlnScript> scripts = new List<SlnScript>();
+        private SlnSeleniumWebDriver webDriver;
+        private static SlnSenarior instance;
         private Dictionary<string, object> variables;
-
-        public List<SlnScript> Scripts 
+        public static SlnSenarior GetInstance()
         {
-            get
+            if (instance == null)
             {
-                return _scripts;
+                instance = new SlnSenarior();
             }
-            set
-            {
-                _scripts = value;
-                    
-            }
+            return instance;
         }
-
-        public SlnSenarior()
+        private SlnSenarior()
         {
-            // webDriver = new SlnSeleniumWebDriver();
+            webDriver = new SlnSeleniumWebDriver();
             variables = new Dictionary<string, object>();
         }
 
         public void Process()
         {
-            //this.Script = new List<SlnScript>() {
-            //     SlnScript.OpenWebsite(new OpenWebsite(){ Url = "https://www.facebook.com/"}),
-            //     SlnScript.Exit()
-            //};
+            this.scripts = new List<SlnScript>() {
+                 SlnScript.OpenWebsite(new OpenWebsite(){ Url = "https://www.facebook.com/"}),
+                 //SlnScript.Input(new Input(){Control = "", Text = "" }),
+                 SlnScript.If(new IfCondition(){ Expression = () => { return true; }, Action = () => { } }),
+                 SlnScript.Exit()
+            };
 
             try
             {
-                foreach (SlnScript script in this.Scripts)
+                foreach (SlnScript script in this.scripts)
                 {
                     ProcessScript(script);
                 }
@@ -60,6 +57,15 @@ namespace Core.Models
                 case ACTION.OPEN_WEBSITE:
                     HandleOpenWebsite(script);
                     break;
+                case ACTION.INPUT:
+                    HandleInput(script);
+                    break;
+                case ACTION.CLICK:
+                    HandleClick(script);
+                    break;
+                case ACTION.IF_CONDITION:
+                    HandleIfCondition(script);
+                    break;
                 case ACTION.REDIRECT_URL:
                     break;
                 case ACTION.EXIT:
@@ -71,14 +77,33 @@ namespace Core.Models
         }
         private void HandleOpenWebsite(SlnScript script)
         {
-            string url = ExpressionUtils.GetExpressionValue( ((OpenWebsite)script.Param).Url);
-            // webDriver.OpenWebsite(url);
+            string url = ExpressionUtils.GetExpressionValue(((OpenWebsite)script.Param).Url);
+            webDriver.OpenWebsite(url);
+        }
+        private void HandleInput(SlnScript script)
+        {
+            string text = ExpressionUtils.GetExpressionValue(((Input)script.Param).Text);
+            webDriver.Input(((Input)script.Param).Control, text);
+        } 
+        private void HandleClick(SlnScript script)
+        {
+            webDriver.Click(((Input)script.Param).Control);
+        }
+        private void HandleIfCondition(SlnScript script)
+        {
+            IfCondition[] conditions = script.Param as IfCondition[];
+            foreach (IfCondition condition in conditions)
+            {
+                if (condition.Expression() == true)
+                {
+                    
+                }
+            }
+
         }
         private void HandleExit()
         {
-            // webDriver.Exit();
+            webDriver.Exit();
         }
-        
-
     }
 }

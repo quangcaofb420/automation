@@ -1,4 +1,4 @@
-﻿using AutomationNC.Business;
+﻿using Core.Models;
 using System;
 
 namespace AutomationNC
@@ -7,7 +7,7 @@ namespace AutomationNC
     {
         static void Main(string[] args)
         {
-             SlcSenarior.GetInstance().Process();
+             SlnSenarior.GetInstance().Process();
              Environment.Exit(-1);
 
         }
