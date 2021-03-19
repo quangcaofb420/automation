@@ -1,10 +1,10 @@
-﻿using AutomationNC.Core.Utilities;
+﻿using Core.Utilities;
 using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
 
-namespace AutomationNC.Core
+namespace AutomationNC.Business
 {
-    class SlnSeleniumWebDriver
+    public class SlnSeleniumWebDriver
     {
         private IWebDriver webDriver;
 

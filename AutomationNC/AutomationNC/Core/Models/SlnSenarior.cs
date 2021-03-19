@@ -1,43 +1,47 @@
-﻿using AutomationNC.Core.ActionParam;
-using AutomationNC.Core.Common;
-using AutomationNC.Core.Models;
-using AutomationNC.Core.Utilities;
+﻿
 using System;
 using System.Collections.Generic;
-using System.Text;
+using Core.ActionParam;
+using Core.Common;
+using Core.Utilities;
 
-namespace AutomationNC.Core
+namespace Core.Models
 {
-    class SlcSenarior
+    public class SlnSenarior
     {
-        private List<SlnScript> scripts = new List<SlnScript>();
-        private SlnSeleniumWebDriver webDriver;
-        private static SlcSenarior instance;
+        private List<SlnScript> _scripts = new List<SlnScript>();
+        // private SlnSeleniumWebDriver webDriver;
         private Dictionary<string, object> variables;
-        public static SlcSenarior GetInstance()
+
+        public List<SlnScript> Scripts 
         {
-            if (instance == null)
+            get
             {
-                instance = new SlcSenarior();
+                return _scripts;
             }
-            return instance;
+            set
+            {
+                _scripts = value;
+                    
+            }
         }
-        private SlcSenarior()
+
+        public SlnSenarior()
         {
-            webDriver = new SlnSeleniumWebDriver();
+            // webDriver = new SlnSeleniumWebDriver();
             variables = new Dictionary<string, object>();
         }
 
         public void Process()
         {
-            this.scripts = new List<SlnScript>() {
-                 SlnScript.OpenWebsite(new OpenWebsite(){ Url = "https://www.facebook.com/"}),
-                 SlnScript.Exit()
-            };
+            //this.Script = new List<SlnScript>() {
+            //     SlnScript.OpenWebsite(new OpenWebsite(){ Url = "https://www.facebook.com/"}),
+            //     SlnScript.Exit()
+            //};
 
             try
             {
-                foreach (SlnScript script in this.scripts)
+                foreach (SlnScript script in this.Scripts)
                 {
                     ProcessScript(script);
                 }
@@ -68,11 +72,11 @@ namespace AutomationNC.Core
         private void HandleOpenWebsite(SlnScript script)
         {
             string url = ExpressionUtils.GetExpressionValue( ((OpenWebsite)script.Param).Url);
-            webDriver.OpenWebsite(url);
+            // webDriver.OpenWebsite(url);
         }
         private void HandleExit()
         {
-            webDriver.Exit();
+            // webDriver.Exit();
         }
         
 

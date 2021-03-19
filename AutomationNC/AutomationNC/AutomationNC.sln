@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31025.218
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomationNC", "AutomationNC\AutomationNC.csproj", "{80491D66-16DB-4392-9C9A-032FB0A42267}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptDesigner", "ScriptDesigner\ScriptDesigner.csproj", "{9867B118-B6C2-4337-B321-A7CEA50F7B8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{80491D66-16DB-4392-9C9A-032FB0A42267}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80491D66-16DB-4392-9C9A-032FB0A42267}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80491D66-16DB-4392-9C9A-032FB0A42267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9867B118-B6C2-4337-B321-A7CEA50F7B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9867B118-B6C2-4337-B321-A7CEA50F7B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9867B118-B6C2-4337-B321-A7CEA50F7B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9867B118-B6C2-4337-B321-A7CEA50F7B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

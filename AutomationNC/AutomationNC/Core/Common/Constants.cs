@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AutomationNC.Core.Common
+﻿
+namespace Core.Common
 {
     class Constants
     {

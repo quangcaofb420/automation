@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutomationNC.Core
+namespace AutomationNC.Business
 {
     class MappingControls
     {
