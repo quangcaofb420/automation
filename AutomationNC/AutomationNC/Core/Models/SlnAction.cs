@@ -10,7 +10,7 @@ namespace Core.Models
         public static readonly SlnAction OpenWebsite = new SlnAction() { Name = ACTION.OPEN_WEBSITE, RequiredElement = false, ParamType = typeof(OpenWebsite) };
         public static readonly SlnAction Input = new SlnAction() { Name = ACTION.INPUT, RequiredElement = true, ParamType = typeof(Input) };
         public static readonly SlnAction Click = new SlnAction() { Name = ACTION.CLICK, RequiredElement = true, ParamType = typeof(Click) };
-        public static readonly SlnAction IfCondition = new SlnAction() { Name = ACTION.IF_CONDITION, RequiredElement = false, ParamType = typeof(IfCondition) };
+        public static readonly SlnAction IfCondition = new SlnAction() { Name = ACTION.IF_CONDITION, RequiredElement = false, ParamType = typeof(IfCondition[]) };
         public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.EXIT, RequiredElement = false };
 
         public ACTION Name { get; set; }

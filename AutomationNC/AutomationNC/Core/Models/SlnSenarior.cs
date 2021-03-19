@@ -9,45 +9,51 @@ namespace Core.Models
 {
     public class SlnSenarior
     {
-        private List<SlnScript> scripts = new List<SlnScript>();
-        private SlnSeleniumWebDriver webDriver;
-        private static SlnSenarior instance;
-        private Dictionary<string, object> variables;
+        private List<SlnScript> _scripts = new List<SlnScript>();
+        private SlnSeleniumWebDriver _webDriver;
+        private static SlnSenarior _instance;
+        private Dictionary<string, object> _variables;
         public static SlnSenarior GetInstance()
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = new SlnSenarior();
+                _instance = new SlnSenarior();
             }
-            return instance;
+            return _instance;
         }
         private SlnSenarior()
         {
-            webDriver = new SlnSeleniumWebDriver();
-            variables = new Dictionary<string, object>();
+            _webDriver = new SlnSeleniumWebDriver();
+            _variables = new Dictionary<string, object>();
         }
 
         public void Process()
         {
-            this.scripts = new List<SlnScript>() {
+            _scripts = new List<SlnScript>() {
                  SlnScript.OpenWebsite(new OpenWebsite(){ Url = "https://www.facebook.com/"}),
                  //SlnScript.Input(new Input(){Control = "", Text = "" }),
-                 SlnScript.If(new IfCondition(){ Expression = () => { return true; }, Action = () => { } }),
+                 SlnScript.If(new IfCondition(){ Expression = () => { return true; }, Actions = () => { return new SlnScript []{ }; } }),
                  SlnScript.Exit()
             };
 
             try
             {
-                foreach (SlnScript script in this.scripts)
-                {
-                    ProcessScript(script);
-                }
+                ProcessScripts(_scripts.ToArray());
             }
             catch (Exception ex)
             {
                 HandleExit();
             }
         }
+
+        private void ProcessScripts(SlnScript[] scripts)
+        {
+            foreach (SlnScript script in scripts)
+            {
+                ProcessScript(script);
+            }
+        }
+
 
         private void ProcessScript(SlnScript script)
         {
@@ -78,16 +84,16 @@ namespace Core.Models
         private void HandleOpenWebsite(SlnScript script)
         {
             string url = ExpressionUtils.GetExpressionValue(((OpenWebsite)script.Param).Url);
-            webDriver.OpenWebsite(url);
+            _webDriver.OpenWebsite(url);
         }
         private void HandleInput(SlnScript script)
         {
             string text = ExpressionUtils.GetExpressionValue(((Input)script.Param).Text);
-            webDriver.Input(((Input)script.Param).Control, text);
+            _webDriver.Input(((Input)script.Param).Control, text);
         } 
         private void HandleClick(SlnScript script)
         {
-            webDriver.Click(((Input)script.Param).Control);
+            _webDriver.Click(((Input)script.Param).Control);
         }
         private void HandleIfCondition(SlnScript script)
         {
@@ -96,14 +102,16 @@ namespace Core.Models
             {
                 if (condition.Expression() == true)
                 {
-                    
+                    SlnScript[] scripts = condition.Actions();
+                    ProcessScripts(scripts);
+                    break;
                 }
             }
 
         }
         private void HandleExit()
         {
-            webDriver.Exit();
+            _webDriver.Exit();
         }
     }
 }
