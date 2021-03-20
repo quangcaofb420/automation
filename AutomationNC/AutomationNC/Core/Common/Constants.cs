@@ -16,6 +16,11 @@ namespace Core.Common
         REDIRECT_URL,
         EXIT
     }
+    public enum FB_ACTION_TYPE
+    {
+        VIEW_LIVESTREAM,
+        AUTO_CREATE_POST_LIKE
+    }
 
     public enum OS
     {

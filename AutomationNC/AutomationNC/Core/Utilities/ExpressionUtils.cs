@@ -7,7 +7,7 @@ namespace Core.Utilities
     {
         public static object Evaluate(string expression)
         {
-            Expression expr = new Expression("1+2");
+            Expression expr = new Expression(expression);
             object result = expr.Evaluate();
             return result;
         }

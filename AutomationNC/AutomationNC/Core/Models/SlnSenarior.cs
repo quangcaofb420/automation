@@ -25,14 +25,14 @@ namespace Core.Models
         }
         private SlnSenarior()
         {
-            _webDriver = new SlnSeleniumWebDriver();
             _variables = new Dictionary<string, object>();
         }
 
         public void Process()
         {
+            _webDriver = new SlnSeleniumWebDriver();
             _scripts = new List<SlnScript>() {
-                 SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/" )),
+                 SlnScript.OpenWebsite(new OpenWebsite("", "\"https://www.facebook.com/\"" )),
                  SlnScript.Input(new Input(null, "")),
                  SlnScript.If(
                      new IfCondition(() => { return true; }, () => { return new SlnScript []{ }; })
@@ -57,7 +57,6 @@ namespace Core.Models
                 ProcessScript(script);
             }
         }
-
 
         private void ProcessScript(SlnScript script)
         {

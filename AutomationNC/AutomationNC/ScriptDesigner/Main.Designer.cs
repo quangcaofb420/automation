@@ -33,6 +33,7 @@ namespace ScriptDesigner
             this.dgvMappingControls = new System.Windows.Forms.DataGridView();
             this.btnSaveMappingControl = new System.Windows.Forms.Button();
             this.btnSaveSenarior = new System.Windows.Forms.Button();
+            this.cbbFBActionType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSenarior)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappingControls)).BeginInit();
             this.SuspendLayout();
@@ -43,11 +44,11 @@ namespace ScriptDesigner
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSenarior.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSenarior.Location = new System.Drawing.Point(12, 12);
+            this.dgvSenarior.Location = new System.Drawing.Point(12, 47);
             this.dgvSenarior.Name = "dgvSenarior";
             this.dgvSenarior.RowHeadersWidth = 51;
             this.dgvSenarior.RowTemplate.Height = 29;
-            this.dgvSenarior.Size = new System.Drawing.Size(398, 435);
+            this.dgvSenarior.Size = new System.Drawing.Size(348, 482);
             this.dgvSenarior.TabIndex = 0;
             // 
             // dgvMappingControls
@@ -55,17 +56,17 @@ namespace ScriptDesigner
             this.dgvMappingControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMappingControls.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMappingControls.Location = new System.Drawing.Point(416, 12);
+            this.dgvMappingControls.Location = new System.Drawing.Point(366, 47);
             this.dgvMappingControls.Name = "dgvMappingControls";
             this.dgvMappingControls.RowHeadersWidth = 51;
             this.dgvMappingControls.RowTemplate.Height = 29;
-            this.dgvMappingControls.Size = new System.Drawing.Size(531, 435);
+            this.dgvMappingControls.Size = new System.Drawing.Size(531, 482);
             this.dgvMappingControls.TabIndex = 1;
-           // 
+            // 
             // btnSaveMappingControl
             // 
             this.btnSaveMappingControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveMappingControl.Location = new System.Drawing.Point(751, 453);
+            this.btnSaveMappingControl.Location = new System.Drawing.Point(701, 535);
             this.btnSaveMappingControl.Name = "btnSaveMappingControl";
             this.btnSaveMappingControl.Size = new System.Drawing.Size(196, 29);
             this.btnSaveMappingControl.TabIndex = 2;
@@ -75,18 +76,33 @@ namespace ScriptDesigner
             // 
             // btnSaveSenarior
             // 
-            this.btnSaveSenarior.Location = new System.Drawing.Point(316, 453);
+            this.btnSaveSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveSenarior.Location = new System.Drawing.Point(266, 535);
             this.btnSaveSenarior.Name = "btnSaveSenarior";
             this.btnSaveSenarior.Size = new System.Drawing.Size(94, 29);
             this.btnSaveSenarior.TabIndex = 3;
             this.btnSaveSenarior.Text = "button1";
             this.btnSaveSenarior.UseVisualStyleBackColor = true;
             // 
+            // cbbFBActionType
+            // 
+            this.cbbFBActionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbFBActionType.FormattingEnabled = true;
+            this.cbbFBActionType.Items.AddRange(new object[] {
+            "View Livestream",
+            "Auto Create Post / Like"});
+            this.cbbFBActionType.Location = new System.Drawing.Point(13, 13);
+            this.cbbFBActionType.Name = "cbbFBActionType";
+            this.cbbFBActionType.Size = new System.Drawing.Size(160, 28);
+            this.cbbFBActionType.TabIndex = 4;
+            this.cbbFBActionType.SelectedIndexChanged += new System.EventHandler(this.cbbFBActionType_SelectedIndexChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(959, 494);
+            this.ClientSize = new System.Drawing.Size(909, 576);
+            this.Controls.Add(this.cbbFBActionType);
             this.Controls.Add(this.btnSaveSenarior);
             this.Controls.Add(this.btnSaveMappingControl);
             this.Controls.Add(this.dgvMappingControls);
@@ -105,6 +121,7 @@ namespace ScriptDesigner
         private System.Windows.Forms.DataGridView dgvMappingControls;
         private System.Windows.Forms.Button btnSaveMappingControl;
         private System.Windows.Forms.Button btnSaveSenarior;
+        private System.Windows.Forms.ComboBox cbbFBActionType;
     }
 }
 

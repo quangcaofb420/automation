@@ -5,7 +5,12 @@ namespace Core.Utilities
     {
         public static string GetWebDriverExecutePath()
         {
-            return @"C:\Program Files\SeleniumBasic";
+            return GetWorkingFolderPath();
+        }
+
+        public static string GetWorkingFolderPath()
+        {
+            return @"D:\LONG\automation";
         }
     }
 }

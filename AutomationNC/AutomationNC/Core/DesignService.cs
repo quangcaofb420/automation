@@ -1,5 +1,7 @@
 ﻿
+using Core.Common;
 using Core.Models;
+using Core.Utilities;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +11,9 @@ namespace Core
 {
     public class DesignService
     {
-        public static string GetMappingControlJsonFilePath()
+        public static string GetMappingControlJsonFilePath(FB_ACTION_TYPE type)
         {
-            string file = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/MappingControls.json";
+            string file = SeleniumUtils.GetWorkingFolderPath() + @"/MappingControls_" + type + ".json";
             if (!File.Exists(file))
             {
                 using (FileStream fs = File.Create(file))
@@ -22,9 +24,9 @@ namespace Core
             }
             return file;
         }
-        public static string GetSenariorJsonFilePath()
+        public static string GetSenariorJsonFilePath(FB_ACTION_TYPE type)
         {
-            string file = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/Senarior.json";
+            string file = SeleniumUtils.GetWorkingFolderPath() + @"/Senarior_"+ type + ".json";
             if (!File.Exists(file))
             {
                 using (FileStream fs = File.Create(file))
@@ -35,9 +37,9 @@ namespace Core
             }
             return file;
         }
-        public List<SlnControl> GetMappingControls()
+        public List<SlnControl> GetMappingControls(FB_ACTION_TYPE type)
         {
-            var jsonStr = File.ReadAllText(GetMappingControlJsonFilePath());
+            var jsonStr = File.ReadAllText(GetMappingControlJsonFilePath(type));
             List<SlnControl> controls = JsonConvert.DeserializeObject<List<SlnControl>>(jsonStr);
             if (controls == null)
             {
@@ -47,9 +49,9 @@ namespace Core
 
         }
 
-        public SlnSenarior GetSenarior()
+        public SlnSenarior GetSenarior(FB_ACTION_TYPE type)
         {
-            var jsonStr = File.ReadAllText(GetSenariorJsonFilePath());
+            var jsonStr = File.ReadAllText(GetSenariorJsonFilePath(type));
             SlnSenarior senarior = JsonConvert.DeserializeObject<SlnSenarior>(jsonStr);
             if (senarior == null)
             {
@@ -59,10 +61,10 @@ namespace Core
         }
 
 
-        public void SaveMappingControls(List<SlnControl> mappingControls)
+        public void SaveMappingControls(FB_ACTION_TYPE type, List<SlnControl> mappingControls)
         {
             string jsonStr = JsonConvert.SerializeObject(mappingControls);
-            File.WriteAllText(GetMappingControlJsonFilePath(), jsonStr);
+            File.WriteAllText(GetMappingControlJsonFilePath(type), jsonStr);
 
         }
     }

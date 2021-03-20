@@ -7,6 +7,7 @@ namespace AutomationNC
     {
         static void Main(string[] args)
         {
+
              SlnSenarior.GetInstance().Process();
              Environment.Exit(-1);
 
