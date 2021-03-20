@@ -11,6 +11,8 @@ namespace Core.Common
         INPUT,
         CLICK,
         IF_CONDITION,
+        GET_LABEL,
+        GET_TEXT_VALUE,
         REDIRECT_URL,
         EXIT
     }

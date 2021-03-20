@@ -47,7 +47,27 @@ namespace Core.Models
             }
         }
 
-        
+        public string GetLabel(SlnControl control)
+        {
+            string value = "";
+            IWebElement element = GetElement(control);
+            if (element != null)
+            {
+                value = element.Text;
+            }
+            return value ?? "";
+        }
+         public string GetTextValue(SlnControl control)
+        {
+            string value = "";
+            IWebElement element = GetElement(control);
+            if (element != null)
+            {
+                value = element.GetAttribute("value");
+            }
+            return value ?? "";
+        }
+
         public void Exit()
         {
             webDriver.Quit();
@@ -82,6 +102,6 @@ namespace Core.Models
             return element;
         }
 
-
+        
     }
 }

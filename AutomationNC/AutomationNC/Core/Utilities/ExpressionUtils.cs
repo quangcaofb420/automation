@@ -1,11 +1,15 @@
 ﻿
+using Expressive;
+
 namespace Core.Utilities
 {
    public  class ExpressionUtils
     {
-        public static string GetExpressionValue(string expr)
+        public static object Evaluate(string expression)
         {
-            return expr;
+            Expression expr = new Expression("1+2");
+            object result = expr.Evaluate();
+            return result;
         }
     }
 }

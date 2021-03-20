@@ -9,5 +9,11 @@ namespace Core.ActionParam
     {
         public SlnControl Control { get; set; }
         public string Text { get; set; }
+
+        public Input(SlnControl control, string text)
+        {
+            Control = control;
+            Text = text;
+        }
     }
 }

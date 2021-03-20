@@ -13,6 +13,8 @@ namespace Core.Models
         private SlnSeleniumWebDriver _webDriver;
         private static SlnSenarior _instance;
         private Dictionary<string, object> _variables;
+
+        public List<SlnScript> Scripts { get { return _scripts; } }
         public static SlnSenarior GetInstance()
         {
             if (_instance == null)
@@ -30,9 +32,11 @@ namespace Core.Models
         public void Process()
         {
             _scripts = new List<SlnScript>() {
-                 SlnScript.OpenWebsite(new OpenWebsite(){ Url = "https://www.facebook.com/"}),
-                 //SlnScript.Input(new Input(){Control = "", Text = "" }),
-                 SlnScript.If(new IfCondition(){ Expression = () => { return true; }, Actions = () => { return new SlnScript []{ }; } }),
+                 SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/" )),
+                 SlnScript.Input(new Input(null, "")),
+                 SlnScript.If(
+                     new IfCondition(() => { return true; }, () => { return new SlnScript []{ }; })
+                     ),
                  SlnScript.Exit()
             };
 
@@ -40,7 +44,7 @@ namespace Core.Models
             {
                 ProcessScripts(_scripts.ToArray());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 HandleExit();
             }
@@ -72,6 +76,12 @@ namespace Core.Models
                 case ACTION.IF_CONDITION:
                     HandleIfCondition(script);
                     break;
+                case ACTION.GET_LABEL:
+                    HandleGetLabel(script);
+                    break;
+                case ACTION.GET_TEXT_VALUE:
+                    HandleGetTextValue(script);
+                    break;
                 case ACTION.REDIRECT_URL:
                     break;
                 case ACTION.EXIT:
@@ -83,14 +93,14 @@ namespace Core.Models
         }
         private void HandleOpenWebsite(SlnScript script)
         {
-            string url = ExpressionUtils.GetExpressionValue(((OpenWebsite)script.Param).Url);
+            string url = GetExpressionValue(((OpenWebsite)script.Param).Url);
             _webDriver.OpenWebsite(url);
         }
         private void HandleInput(SlnScript script)
         {
-            string text = ExpressionUtils.GetExpressionValue(((Input)script.Param).Text);
+            string text = GetExpressionValue(((Input)script.Param).Text);
             _webDriver.Input(((Input)script.Param).Control, text);
-        } 
+        }
         private void HandleClick(SlnScript script)
         {
             _webDriver.Click(((Input)script.Param).Control);
@@ -107,11 +117,109 @@ namespace Core.Models
                     break;
                 }
             }
-
+        }
+        private void HandleGetLabel(SlnScript script)
+        {
+            GetLabel param = script.Param as GetLabel;
+            string variable = param.ToVariable;
+            string withExpression = param.WithExpression;
+            string label = _webDriver.GetLabel(param.Control);
+            SetVariable(variable, label);
+            if (withExpression != "")
+            {
+                string exprValue = GetExpressionValue(withExpression);
+                SetVariable(variable, exprValue);
+            }
+        }
+        private void HandleGetTextValue(SlnScript script)
+        {
+            GetTextValue param = script.Param as GetTextValue;
+            string variable = param.ToVariable;
+            string withExpression = param.WithExpression;
+            string value = _webDriver.GetTextValue(param.Control);
+            SetVariable(variable, value);
+            if (withExpression != "")
+            {
+                string exprValue = GetExpressionValue(withExpression);
+                SetVariable(variable, exprValue);
+            }
         }
         private void HandleExit()
         {
             _webDriver.Exit();
+        }
+
+        private void SetVariable(string variable, object value)
+        {
+            if (_variables.ContainsKey(variable))
+            {
+                _variables[variable] = value;
+            }
+            else
+            {
+                _variables.Add(variable, value);
+            }
+        }
+
+        private string GetVariableValue(string variable)
+        {
+            object value = null ;
+            string v = variable.Replace("{{", "").Replace("}}", "");
+            bool hasDot = v.Contains(".");
+            if (hasDot)
+            {
+                Dictionary<string, object> structure = new Dictionary<string, object>(_variables);
+                string[] vs = v.Split(".");
+                for (int i = 0; i < vs.Length - 1; i++)
+                {
+                    object item = structure["{{" + vs[i] + "}}"];
+                    if (item == null)
+                    {
+                        item = structure[vs[i]];
+                    }
+
+                    if (i < vs.Length - 1)
+                    {
+                        if (item == null)
+                        {
+                            break;
+                        }
+
+                        structure = item as Dictionary<string, object>;
+                    }
+                    else
+                    {
+                        value = item;
+                    }
+                }
+            }
+            else
+            {
+                value = _variables["{{" + v + "}}"];
+            }
+            return (string)value;
+        }
+
+        private string GetExpressionValue(string expr)
+        {
+            while (expr.Contains("{{") && expr.Contains("}}"))
+            {
+                int openVariable = expr.IndexOf("{{");
+                int closeVariable = expr.IndexOf("}}");
+                string variable = expr.Substring(openVariable, openVariable + 2);
+                string value = GetVariableValue(variable);
+                string leftStr = "";
+                if (openVariable > 0)
+                {
+                    leftStr = expr.Substring(0, openVariable - 1);
+                }
+                string middleStr = value;
+                string rightStr = expr.Substring(closeVariable + 2, expr.Length - (closeVariable + 1));
+                expr = leftStr + middleStr + rightStr;
+            }
+
+            object result = ExpressionUtils.Evaluate(expr);
+            return (string)result;
         }
     }
 }

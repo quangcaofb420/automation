@@ -24,6 +24,20 @@ namespace Core.Models
             script.Param = coditions;
             return script;
         } 
+         public static SlnScript GetLabel(GetLabel param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = SlnAction.GetLabel;
+            script.Param = param;
+            return script;
+        } 
+        public static SlnScript GetTextValue(GetTextValue param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = SlnAction.GetTextValue;
+            script.Param = param;
+            return script;
+        } 
 
         public static SlnScript Input(Input param)
         {

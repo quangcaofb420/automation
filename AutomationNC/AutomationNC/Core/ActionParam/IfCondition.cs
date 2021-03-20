@@ -10,5 +10,11 @@ namespace Core.ActionParam
     {
         public Func<bool> Expression;
         public Func<SlnScript[]> Actions;
+
+        public IfCondition(Func<bool> expression, Func<SlnScript[]> actions)
+        {
+            Expression = expression;
+            Actions = actions;
+        }
     }
 }
