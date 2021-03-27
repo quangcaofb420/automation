@@ -29,10 +29,17 @@ namespace ScriptDesigner.CútomControl
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.btnAction = new System.Windows.Forms.Button();
             this.cbbControl = new System.Windows.Forms.ComboBox();
             this.cbbAction = new System.Windows.Forms.ComboBox();
+            this.cmtAction = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemInsertAbove = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemInsertBelow = new System.Windows.Forms.ToolStripMenuItem();
             this.panelMain.SuspendLayout();
+            this.cmtAction.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelMain
@@ -41,6 +48,7 @@ namespace ScriptDesigner.CútomControl
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelMain.BackColor = System.Drawing.SystemColors.Control;
+            this.panelMain.Controls.Add(this.btnAction);
             this.panelMain.Controls.Add(this.cbbControl);
             this.panelMain.Controls.Add(this.cbbAction);
             this.panelMain.Location = new System.Drawing.Point(0, 0);
@@ -48,8 +56,21 @@ namespace ScriptDesigner.CútomControl
             this.panelMain.Size = new System.Drawing.Size(1024, 45);
             this.panelMain.TabIndex = 2;
             // 
+            // btnAction
+            // 
+            this.btnAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAction.BackColor = System.Drawing.Color.Red;
+            this.btnAction.Location = new System.Drawing.Point(994, 6);
+            this.btnAction.Name = "btnAction";
+            this.btnAction.Size = new System.Drawing.Size(30, 30);
+            this.btnAction.TabIndex = 3;
+            this.btnAction.UseVisualStyleBackColor = false;
+            this.btnAction.Click += new System.EventHandler(this.btnAction_Click);
+            // 
             // cbbControl
             // 
+            this.cbbControl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbControl.FormattingEnabled = true;
             this.cbbControl.Location = new System.Drawing.Point(205, 8);
             this.cbbControl.Name = "cbbControl";
@@ -58,12 +79,43 @@ namespace ScriptDesigner.CútomControl
             // 
             // cbbAction
             // 
+            this.cbbAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbAction.FormattingEnabled = true;
             this.cbbAction.Location = new System.Drawing.Point(8, 8);
             this.cbbAction.Name = "cbbAction";
             this.cbbAction.Size = new System.Drawing.Size(191, 28);
             this.cbbAction.TabIndex = 0;
             this.cbbAction.SelectedIndexChanged += new System.EventHandler(this.cbbAction_SelectedIndexChanged);
+            // 
+            // cmtAction
+            // 
+            this.cmtAction.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmtAction.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemInsertAbove,
+            this.toolStripMenuItemDelete,
+            this.toolStripMenuItemInsertBelow});
+            this.cmtAction.Name = "cmtAction";
+            this.cmtAction.Size = new System.Drawing.Size(162, 76);
+            this.cmtAction.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cmtAction_ItemClicked);
+            // 
+            // toolStripMenuItemInsertAbove
+            // 
+            this.toolStripMenuItemInsertAbove.Name = "toolStripMenuItemInsertAbove";
+            this.toolStripMenuItemInsertAbove.Size = new System.Drawing.Size(161, 24);
+            this.toolStripMenuItemInsertAbove.Text = "Insert Above";
+            // 
+            // toolStripMenuItemDelete
+            // 
+            this.toolStripMenuItemDelete.BackColor = System.Drawing.Color.Red;
+            this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
+            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(161, 24);
+            this.toolStripMenuItemDelete.Text = "Delete";
+            // 
+            // toolStripMenuItemInsertBelow
+            // 
+            this.toolStripMenuItemInsertBelow.Name = "toolStripMenuItemInsertBelow";
+            this.toolStripMenuItemInsertBelow.Size = new System.Drawing.Size(161, 24);
+            this.toolStripMenuItemInsertBelow.Text = "Insert Below";
             // 
             // UCScriptItem
             // 
@@ -74,6 +126,7 @@ namespace ScriptDesigner.CútomControl
             this.Name = "UCScriptItem";
             this.Size = new System.Drawing.Size(1024, 45);
             this.panelMain.ResumeLayout(false);
+            this.cmtAction.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -83,5 +136,10 @@ namespace ScriptDesigner.CútomControl
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.ComboBox cbbAction;
         private System.Windows.Forms.ComboBox cbbControl;
+        private System.Windows.Forms.Button btnAction;
+        private System.Windows.Forms.ContextMenuStrip cmtAction;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemInsertAbove;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDelete;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemInsertBelow;
     }
 }

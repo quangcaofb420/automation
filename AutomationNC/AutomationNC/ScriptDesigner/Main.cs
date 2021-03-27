@@ -52,9 +52,24 @@ namespace ScriptDesigner
         }
         private void GenerateScripts(List<SlnScript> scripts)
         {
-            this.lvSenarior.Items.Clear();
+            tblScript.RowStyles.Clear();   //now you have zero rowstyles
+
+            this.tblScript.RowCount = 0;
+            this.tblScript.RowCount += 1;
             UCScriptItem item = new UCScriptItem(SlnScript.Sleep(new Sleep(5)), 0, 0);
-            this.lvSenarior.Controls.Add(item);
+            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            this.tblScript.Controls.Add(item, 0, 0);
+
+            this.tblScript.RowCount += 1;
+            UCScriptItem item2 = new UCScriptItem(SlnScript.Input(new Input(null, "abc")), 1,1);
+            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            this.tblScript.Controls.Add(item2, 0, 1);
+
+            this.tblScript.RowCount += 1;
+            UCScriptItem item3 = new UCScriptItem(SlnScript.Sleep(new Sleep(5)), 0, 0);
+            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            this.tblScript.Controls.Add(item3, 0, 1);
+
             for (int i = 0; i < scripts.Count; i ++)
             {
                 SlnScript script = scripts[i];
@@ -65,7 +80,7 @@ namespace ScriptDesigner
         {
             //this.lvSenarior.Items.Add(new ListViewItem())
             UCScriptItem item = new UCScriptItem(script, index, 0);
-            this.lvSenarior.Controls.Add(item);
+            //this.lvSenarior.Controls.Add(item);
 
         }
 

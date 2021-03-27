@@ -19,9 +19,18 @@ namespace ScriptDesigner.CútomControl
             this._levelIndex = levelIndex;
             InitializeComponent();
             InitUI();
-            this.BackColor = index % 2 == 0 ? Color.FromArgb(180, 217, 255) : Color.FromArgb(223, 237, 251);
-            //this.panel1.Location = new System.Drawing.Point(50, 0);
+            int indent = 40;
+            this.panelMain.BackColor = index % 2 == 0 ? Color.FromArgb(180, 217, 255) : Color.FromArgb(223, 237, 251);
+            this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
+            this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
+            //this.Dock = DockStyle.Fill;
+            //this.Height = 50;
             LoadScript();
+        }
+
+        public SlnScript GetScript()
+        {
+            return _script;
         }
         private void InitUI()
         {
@@ -61,7 +70,7 @@ namespace ScriptDesigner.CútomControl
             if (paramType != null)
             {
                 string[] prs = ClassUtils.GetPropertyNames(paramType).Where(pr => requiredElement == false || pr != "Control").ToArray();
-                int x = this.cbbAction.Location.X + this.cbbAction.Width + (requiredElement ? this.cbbControl.Width : 0) + (_levelIndex * 50);
+                int x = this.cbbAction.Location.X + this.cbbAction.Width + (requiredElement ? this.cbbControl.Width : 0);
                 foreach (string pr in prs)
                 {
                     x += GenerateLabelParam(pr, x);
@@ -81,7 +90,7 @@ namespace ScriptDesigner.CútomControl
 
         private void RemoveAllControls()
         {
-            string[] acceptedControls = new string[] { "cbbAction", "cbbControl" };
+            string[] acceptedControls = new string[] { "cbbAction", "cbbControl", "btnAction" };
             while (this.panelMain.Controls.Count > acceptedControls.Length)
             {
                 ControlCollection controls = this.panelMain.Controls;
@@ -121,6 +130,16 @@ namespace ScriptDesigner.CútomControl
             label.AutoSize = true;
             this.panelMain.Controls.Add(label);
             return label.Width;
+        }
+
+        private void btnAction_Click(object sender, EventArgs e)
+        {
+            cmtAction.Show(PointToScreen(((Button)sender).Location));
+        }
+
+        private void cmtAction_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var a = 10;
         }
     }
 }

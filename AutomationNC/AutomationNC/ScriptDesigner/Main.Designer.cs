@@ -33,7 +33,7 @@ namespace ScriptDesigner
             this.btnSaveMappingControl = new System.Windows.Forms.Button();
             this.btnSaveSenarior = new System.Windows.Forms.Button();
             this.cbbFBActionType = new System.Windows.Forms.ComboBox();
-            this.lvSenarior = new System.Windows.Forms.ListView();
+            this.tblScript = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappingControls)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,17 +42,17 @@ namespace ScriptDesigner
             this.dgvMappingControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMappingControls.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMappingControls.Location = new System.Drawing.Point(670, 47);
+            this.dgvMappingControls.Location = new System.Drawing.Point(653, 47);
             this.dgvMappingControls.Name = "dgvMappingControls";
             this.dgvMappingControls.RowHeadersWidth = 51;
             this.dgvMappingControls.RowTemplate.Height = 29;
-            this.dgvMappingControls.Size = new System.Drawing.Size(531, 482);
+            this.dgvMappingControls.Size = new System.Drawing.Size(531, 455);
             this.dgvMappingControls.TabIndex = 1;
             // 
             // btnSaveMappingControl
             // 
             this.btnSaveMappingControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveMappingControl.Location = new System.Drawing.Point(1005, 535);
+            this.btnSaveMappingControl.Location = new System.Drawing.Point(988, 508);
             this.btnSaveMappingControl.Name = "btnSaveMappingControl";
             this.btnSaveMappingControl.Size = new System.Drawing.Size(196, 29);
             this.btnSaveMappingControl.TabIndex = 2;
@@ -63,7 +63,7 @@ namespace ScriptDesigner
             // btnSaveSenarior
             // 
             this.btnSaveSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveSenarior.Location = new System.Drawing.Point(570, 535);
+            this.btnSaveSenarior.Location = new System.Drawing.Point(553, 508);
             this.btnSaveSenarior.Name = "btnSaveSenarior";
             this.btnSaveSenarior.Size = new System.Drawing.Size(94, 29);
             this.btnSaveSenarior.TabIndex = 3;
@@ -83,24 +83,27 @@ namespace ScriptDesigner
             this.cbbFBActionType.TabIndex = 4;
             this.cbbFBActionType.SelectedIndexChanged += new System.EventHandler(this.cbbFBActionType_SelectedIndexChanged);
             // 
-            // lvSenarior
+            // tblScript
             // 
-            this.lvSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tblScript.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvSenarior.HideSelection = false;
-            this.lvSenarior.Location = new System.Drawing.Point(12, 47);
-            this.lvSenarior.Name = "lvSenarior";
-            this.lvSenarior.Size = new System.Drawing.Size(652, 482);
-            this.lvSenarior.TabIndex = 5;
-            this.lvSenarior.UseCompatibleStateImageBehavior = false;
+            this.tblScript.AutoScroll = true;
+            this.tblScript.ColumnCount = 1;
+            this.tblScript.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblScript.Location = new System.Drawing.Point(13, 48);
+            this.tblScript.Name = "tblScript";
+            this.tblScript.RowCount = 1;
+            this.tblScript.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblScript.Size = new System.Drawing.Size(634, 454);
+            this.tblScript.TabIndex = 5;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1213, 576);
-            this.Controls.Add(this.lvSenarior);
+            this.ClientSize = new System.Drawing.Size(1196, 549);
+            this.Controls.Add(this.tblScript);
             this.Controls.Add(this.cbbFBActionType);
             this.Controls.Add(this.btnSaveSenarior);
             this.Controls.Add(this.btnSaveMappingControl);
@@ -118,7 +121,7 @@ namespace ScriptDesigner
         private System.Windows.Forms.Button btnSaveMappingControl;
         private System.Windows.Forms.Button btnSaveSenarior;
         private System.Windows.Forms.ComboBox cbbFBActionType;
-        private System.Windows.Forms.ListView lvSenarior;
+        private System.Windows.Forms.TableLayoutPanel tblScript;
     }
 }
 
