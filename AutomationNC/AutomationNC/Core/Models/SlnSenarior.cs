@@ -32,17 +32,18 @@ namespace Core.Models
         {
             _webDriver = new SlnSeleniumWebDriver();
             _scripts = new List<SlnScript>() {
-                 SlnScript.OpenWebsite(new OpenWebsite("", "\"https://www.facebook.com/\"" )),
-                 SlnScript.Input(new Input(null, "")),
-                 SlnScript.If(
-                     new IfCondition(() => { return true; }, () => { return new SlnScript []{ }; })
-                     ),
-                 SlnScript.Exit()
+                SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/" )),
+                SlnScript.Sleep(new Sleep(5)),
+                SlnScript.Input(new Input(null, "")),
+                SlnScript.If(
+                    new IfCondition(null, () => { return new SlnScript []{ }; })
+                ),
+                SlnScript.Exit()
             };
 
             try
             {
-                ProcessScripts(_scripts.ToArray());
+                //ProcessScripts(_scripts.ToArray());
             }
             catch (Exception)
             {
@@ -81,6 +82,9 @@ namespace Core.Models
                 case ACTION.GET_TEXT_VALUE:
                     HandleGetTextValue(script);
                     break;
+                case ACTION.SLEEP:
+                    HandleSleep(script);
+                    break;
                 case ACTION.REDIRECT_URL:
                     break;
                 case ACTION.EXIT:
@@ -107,22 +111,29 @@ namespace Core.Models
         private void HandleIfCondition(SlnScript script)
         {
             IfCondition[] conditions = script.Param as IfCondition[];
-            foreach (IfCondition condition in conditions)
+            for (int i = 0; i < conditions.Length; i++)
             {
-                if (condition.Expression() == true)
+                IfCondition condition = conditions[i];
+                if (i == conditions.Length - 1 && condition.Expression == null)
+                {
+                    SlnScript[] scripts = condition.Actions();
+                    ProcessScripts(scripts);
+                }
+                else if (condition.Expression() == true)
                 {
                     SlnScript[] scripts = condition.Actions();
                     ProcessScripts(scripts);
                     break;
                 }
             }
+           
         }
-        private void HandleGetLabel(SlnScript script)
+        private async void HandleGetLabel(SlnScript script)
         {
             GetLabel param = script.Param as GetLabel;
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
-            string label = _webDriver.GetLabel(param.Control);
+            string label = await _webDriver.GetLabel(param.Control);
             SetVariable(variable, label);
             if (withExpression != "")
             {
@@ -130,18 +141,23 @@ namespace Core.Models
                 SetVariable(variable, exprValue);
             }
         }
-        private void HandleGetTextValue(SlnScript script)
+        private async void HandleGetTextValue(SlnScript script)
         {
             GetTextValue param = script.Param as GetTextValue;
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
-            string value = _webDriver.GetTextValue(param.Control);
+            string value = await _webDriver.GetTextValue(param.Control);
             SetVariable(variable, value);
             if (withExpression != "")
             {
                 string exprValue = GetExpressionValue(withExpression);
                 SetVariable(variable, exprValue);
             }
+        }
+        private void HandleSleep(SlnScript script)
+        {
+            Sleep param = script.Param as Sleep;
+            _webDriver.Sleep(param.Second);
         }
         private void HandleExit()
         {
@@ -162,7 +178,7 @@ namespace Core.Models
 
         private string GetVariableValue(string variable)
         {
-            object value = null ;
+            object value = null;
             string v = variable.Replace("{{", "").Replace("}}", "");
             bool hasDot = v.Contains(".");
             if (hasDot)
@@ -215,6 +231,10 @@ namespace Core.Models
                 string middleStr = value;
                 string rightStr = expr.Substring(closeVariable + 2, expr.Length - (closeVariable + 1));
                 expr = leftStr + middleStr + rightStr;
+            }
+            if (!expr.Contains("\""))
+            {
+                expr = "\"" + expr + "\"";
             }
 
             object result = ExpressionUtils.Evaluate(expr);

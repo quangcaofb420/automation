@@ -1,14 +1,16 @@
 ﻿using Core.Utilities;
 using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Core.Models
 {
     public class SlnSeleniumWebDriver
     {
-        private IWebDriver webDriver;
+        private IWebDriver _webDriver;
 
         public SlnSeleniumWebDriver()
         {
@@ -22,45 +24,45 @@ namespace Core.Models
             //options.AddArgument("headless");
             //options.AddArgument("disable-gpu");
 
-            webDriver = new EdgeDriver(service, options);
+            _webDriver = new EdgeDriver(service, options);
         }
 
         public string OpenWebsite(string url)
         {
-            webDriver.Navigate().GoToUrl(url);
-            return webDriver.CurrentWindowHandle;
+            _webDriver.Navigate().GoToUrl(url);
+            return _webDriver.CurrentWindowHandle;
         }
-        public void Input(SlnControl control, string text)
+        public async void Input(SlnControl control, string text)
         {
-            IWebElement element = GetElement(control);
+            IWebElement element = await GetElement(control);
             if (element != null)
             {
                 element.SendKeys(text);
             }
         }
-        public void Click(SlnControl control)
+        public async void Click(SlnControl control)
         {
-            IWebElement element = GetElement(control);
+            IWebElement element = await GetElement(control);
             if (element != null)
             {
                 element.Click();
             }
         }
 
-        public string GetLabel(SlnControl control)
+        public async Task<string> GetLabel(SlnControl control)
         {
             string value = "";
-            IWebElement element = GetElement(control);
+            IWebElement element = await GetElement(control);
             if (element != null)
             {
                 value = element.Text;
             }
             return value ?? "";
         }
-         public string GetTextValue(SlnControl control)
+        public async Task<string> GetTextValue(SlnControl control)
         {
             string value = "";
-            IWebElement element = GetElement(control);
+            IWebElement element = await GetElement(control);
             if (element != null)
             {
                 value = element.GetAttribute("value");
@@ -70,38 +72,43 @@ namespace Core.Models
 
         public void Exit()
         {
-            webDriver.Quit();
+            _webDriver.Quit();
         }
-
-
-
-        private bool CheckElementIsExist(SlnControl control)
+        public void Sleep(int second)
         {
-            return GetElement(control, 5) != null;
+
         }
 
-        private IWebElement GetElement(SlnControl control)
+
+
+        private async Task<bool> CheckElementIsExist(SlnControl control)
+        {
+            IWebElement element = await GetElement(control, 5);
+            return element != null;
+        }
+
+        private Task<IWebElement> GetElement(SlnControl control)
         {
             return GetElement(control, 30);
         }
-        private IWebElement GetElement(SlnControl control,int timeoutInSecond)
+        private async Task<IWebElement> GetElement(SlnControl control, int timeoutInSecond)
         {
             IWebElement element = null;
             int count = 0;
             while (count < timeoutInSecond)
             {
                 count++;
-                ReadOnlyCollection<IWebElement> elements = webDriver.FindElements(By.XPath(control.XPath));
+                ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.XPath(control.XPath));
                 if (elements.Count > 0)
                 {
                     element = elements[0];
                     break;
                 }
-                Thread.Sleep(1000);
+                await CommonUtils.Sleep(1000);
             }
             return element;
         }
 
-        
+
     }
 }

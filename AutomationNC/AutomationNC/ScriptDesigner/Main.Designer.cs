@@ -29,34 +29,20 @@ namespace ScriptDesigner
         /// </summary>
         private void InitializeComponent()
         {
-            this.dgvSenarior = new System.Windows.Forms.DataGridView();
             this.dgvMappingControls = new System.Windows.Forms.DataGridView();
             this.btnSaveMappingControl = new System.Windows.Forms.Button();
             this.btnSaveSenarior = new System.Windows.Forms.Button();
             this.cbbFBActionType = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSenarior)).BeginInit();
+            this.lvSenarior = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappingControls)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dgvSenarior
-            // 
-            this.dgvSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSenarior.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSenarior.Location = new System.Drawing.Point(12, 47);
-            this.dgvSenarior.Name = "dgvSenarior";
-            this.dgvSenarior.RowHeadersWidth = 51;
-            this.dgvSenarior.RowTemplate.Height = 29;
-            this.dgvSenarior.Size = new System.Drawing.Size(348, 482);
-            this.dgvSenarior.TabIndex = 0;
             // 
             // dgvMappingControls
             // 
             this.dgvMappingControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMappingControls.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMappingControls.Location = new System.Drawing.Point(366, 47);
+            this.dgvMappingControls.Location = new System.Drawing.Point(670, 47);
             this.dgvMappingControls.Name = "dgvMappingControls";
             this.dgvMappingControls.RowHeadersWidth = 51;
             this.dgvMappingControls.RowTemplate.Height = 29;
@@ -66,7 +52,7 @@ namespace ScriptDesigner
             // btnSaveMappingControl
             // 
             this.btnSaveMappingControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveMappingControl.Location = new System.Drawing.Point(701, 535);
+            this.btnSaveMappingControl.Location = new System.Drawing.Point(1005, 535);
             this.btnSaveMappingControl.Name = "btnSaveMappingControl";
             this.btnSaveMappingControl.Size = new System.Drawing.Size(196, 29);
             this.btnSaveMappingControl.TabIndex = 2;
@@ -77,7 +63,7 @@ namespace ScriptDesigner
             // btnSaveSenarior
             // 
             this.btnSaveSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveSenarior.Location = new System.Drawing.Point(266, 535);
+            this.btnSaveSenarior.Location = new System.Drawing.Point(570, 535);
             this.btnSaveSenarior.Name = "btnSaveSenarior";
             this.btnSaveSenarior.Size = new System.Drawing.Size(94, 29);
             this.btnSaveSenarior.TabIndex = 3;
@@ -97,31 +83,42 @@ namespace ScriptDesigner
             this.cbbFBActionType.TabIndex = 4;
             this.cbbFBActionType.SelectedIndexChanged += new System.EventHandler(this.cbbFBActionType_SelectedIndexChanged);
             // 
+            // lvSenarior
+            // 
+            this.lvSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvSenarior.HideSelection = false;
+            this.lvSenarior.Location = new System.Drawing.Point(12, 47);
+            this.lvSenarior.Name = "lvSenarior";
+            this.lvSenarior.Size = new System.Drawing.Size(652, 482);
+            this.lvSenarior.TabIndex = 5;
+            this.lvSenarior.UseCompatibleStateImageBehavior = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(909, 576);
+            this.ClientSize = new System.Drawing.Size(1213, 576);
+            this.Controls.Add(this.lvSenarior);
             this.Controls.Add(this.cbbFBActionType);
             this.Controls.Add(this.btnSaveSenarior);
             this.Controls.Add(this.btnSaveMappingControl);
             this.Controls.Add(this.dgvMappingControls);
-            this.Controls.Add(this.dgvSenarior);
             this.Name = "Main";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSenarior)).EndInit();
+            this.Text = "frmMain";
+            this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappingControls)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dgvSenarior;
         private System.Windows.Forms.DataGridView dgvMappingControls;
         private System.Windows.Forms.Button btnSaveMappingControl;
         private System.Windows.Forms.Button btnSaveSenarior;
         private System.Windows.Forms.ComboBox cbbFBActionType;
+        private System.Windows.Forms.ListView lvSenarior;
     }
 }
 

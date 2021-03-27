@@ -14,6 +14,7 @@ namespace Core.Models
         public static readonly SlnAction GetTextValue = new SlnAction() { Name = ACTION.GET_TEXT_VALUE, RequiredElement = true, ParamType = typeof(GetTextValue) };
         public static readonly SlnAction IfCondition = new SlnAction() { Name = ACTION.IF_CONDITION, RequiredElement = false, ParamType = typeof(IfCondition[]) };
         public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.EXIT, RequiredElement = false };
+        public static readonly SlnAction Sleep = new SlnAction() { Name = ACTION.SLEEP, RequiredElement = false, ParamType = typeof(Sleep) };
 
         public ACTION Name { get; set; }
         public bool RequiredElement { get; set; }

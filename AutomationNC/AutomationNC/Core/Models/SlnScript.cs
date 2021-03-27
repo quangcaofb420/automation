@@ -58,6 +58,13 @@ namespace Core.Models
             SlnScript script = new SlnScript();
             script.Action = SlnAction.Exit;
             return script;
+        } 
+        public static SlnScript Sleep(Sleep param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = SlnAction.Sleep;
+            script.Param = param;
+            return script;
         }
     }
 }
