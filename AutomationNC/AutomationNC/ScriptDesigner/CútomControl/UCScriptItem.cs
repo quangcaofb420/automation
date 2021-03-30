@@ -4,6 +4,12 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using Core.ActionParam;
+using OpenQA.Selenium.Interactions;
+using System.Runtime.CompilerServices;
+using ScriptDesigner.Common;
+using System.Collections.Generic;
+using Core.Common;
 
 namespace ScriptDesigner.CútomControl
 {
@@ -12,15 +18,21 @@ namespace ScriptDesigner.CútomControl
         private SlnScript _script;
         private int _index;
         private int _levelIndex;
-        public UCScriptItem(SlnScript script, int index, int levelIndex)
+        private Action<UCScriptItem, MENU_ACTION> _onMenuAction;
+
+        public SlnScript Script { get; }
+        public UCScriptItem Parent { get; set; }
+        public UCScriptItem(UCScriptItem parent, SlnScript script, int index, int levelIndex,Action<UCScriptItem, MENU_ACTION> onMenuAction)
         {
+            this.Parent = parent;
             this._script = script;
             this._index = index;
             this._levelIndex = levelIndex;
+            this._onMenuAction = onMenuAction;
             InitializeComponent();
             InitUI();
             int indent = 40;
-            this.panelMain.BackColor = index % 2 == 0 ? Color.FromArgb(180, 217, 255) : Color.FromArgb(223, 237, 251);
+            //this.panelMain.BackColor = index % 2 == 0 ? Color.FromArgb(180, 217, 255) : Color.FromArgb(223, 237, 251);
             this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
             this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
             //this.Dock = DockStyle.Fill;
@@ -34,13 +46,17 @@ namespace ScriptDesigner.CútomControl
         }
         private void InitUI()
         {
+            cbbAction.SelectedIndexChanged -= new EventHandler(cbbAction_SelectedIndexChanged);
             cbbAction.DataSource = Enum.GetValues(typeof(Core.Common.ACTION));
+            cbbAction.SelectedIndex = -1;
+            cbbAction.SelectedIndexChanged += new EventHandler(cbbAction_SelectedIndexChanged);
+
         }
 
         private void LoadScript()
         {
-            SlnAction action = _script.Action;
-            this.cbbAction.SelectedItem = action.Name;
+            ACTION action = ScriptUtils.GetActionByDescription(_script.Action);
+            this.cbbAction.SelectedItem = action;
         }
 
         private void cbbAction_SelectedIndexChanged(object sender, EventArgs e)
@@ -55,21 +71,119 @@ namespace ScriptDesigner.CútomControl
         private void UpdateUI()
         {
             RemoveAllControls();
-
             Core.Common.ACTION action = (Core.Common.ACTION)this.cbbAction.SelectedItem;
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             if (definedAction == null)
             {
                 return;
             }
+            bool isIfCondition = action == Core.Common.ACTION.IF_CONDITION;
+            this.btnAction.Visible = !isIfCondition;
+            if (action == Core.Common.ACTION.IF_CONDITION)
+            {
+                GenerateIfCondition();
+            }
+            else
+            {
+                GenerateNormalAction();
+            }
 
+        }
+        private void GenerateIfCondition()
+        {
+            this.cbbAction.Visible = false;
+            this.cbbControl.Visible = false;
+            this.AutoSize = true;
+            this.panelMain.AutoSize = true;
+
+            TableLayoutPanel tbl = CreateTableIfCondition();
+
+            tbl.RowStyles.Clear();   //now you have zero rowstyles
+            tbl.RowCount = 0;
+
+            List<SlnScript> conditions = _script.Param as List<SlnScript>;
+            for (int i = 0; i < conditions.Count; i++)
+            {
+                SlnScript condition = conditions[i];
+                UCScriptItem conditionItem = new UCScriptItem(this, condition, 0, _levelIndex + 1, this._onMenuAction);
+                tbl.RowCount += 1;
+                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
+
+
+                TableLayoutPanel tblActionss = CreateTableIfCondition();
+                tblActionss.RowStyles.Clear();   //now you have zero rowstyles
+                tblActionss.RowCount = 0;
+                Condition con = condition.Param as Condition;
+                List<SlnScript> scripts = con.Actions;
+                for (int j = 0; j < scripts.Count; j++)
+                {
+                    SlnScript script = scripts[j];
+                    UCScriptItem item = new UCScriptItem(this, script, 0, _levelIndex + 2, this._onMenuAction);
+                    //item.Dock = DockStyle.Fill;
+                    tblActionss.RowCount += 1;
+                    tblActionss.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    tblActionss.Controls.Add(item, 0, j + 1);
+                }
+
+                tbl.RowCount += 1;
+                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tbl.Controls.Add(tblActionss, 0, tbl.RowCount - 1);
+            }
+            this.panelMain.Controls.Add(tbl);
+
+
+            this.panelMain.Refresh();
+            this.Refresh();
+        }
+
+        private void GenerateCondition()
+        {
+            this.cbbAction.Visible = false;
+            this.cbbControl.Visible = false;
+            this.AutoSize = true;
+            this.panelMain.AutoSize = true;
+            
+            TableLayoutPanel tbl = CreateTableIfCondition();
+
+            tbl.RowStyles.Clear();   //now you have zero rowstyles
+            tbl.RowCount = 0;
+
+            UCScriptItem conditionItem = new UCScriptItem(this, _script, 0, _levelIndex + 1, this._onMenuAction);
+            tbl.RowCount += 1;
+            tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
+
+            Condition condition = _script.Param as Condition;
+            List<SlnScript> actions = condition.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                SlnScript action = actions[i];
+                UCScriptItem script = new UCScriptItem(this, action, 0, _levelIndex + 1, this._onMenuAction);
+                tbl.RowCount += 1;
+                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tbl.Controls.Add(script, 0, tbl.RowCount - 1);
+            }
+            this.panelMain.Controls.Add(tbl);
+
+
+            this.panelMain.Refresh();
+            this.Refresh();
+        }
+
+        private void GenerateNormalAction()
+        {
+            Core.Common.ACTION action = (Core.Common.ACTION)this.cbbAction.SelectedItem;
+            SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             bool requiredElement = definedAction.RequiredElement;
+            bool isCondition = action == Core.Common.ACTION.CONDITION;
+            this.cbbAction.Enabled = !isCondition;
             this.cbbControl.Visible = requiredElement;
 
             Type paramType = definedAction.ParamType;
             if (paramType != null)
             {
-                string[] prs = ClassUtils.GetPropertyNames(paramType).Where(pr => requiredElement == false || pr != "Control").ToArray();
+                string[] prs = ClassUtils.GetPropertyNames(paramType).Where(pr => requiredElement == false || pr != "Control").Where(pr => !isCondition || pr != "Actions").ToArray();
                 int x = this.cbbAction.Location.X + this.cbbAction.Width + (requiredElement ? this.cbbControl.Width : 0);
                 foreach (string pr in prs)
                 {
@@ -90,7 +204,7 @@ namespace ScriptDesigner.CútomControl
 
         private void RemoveAllControls()
         {
-            string[] acceptedControls = new string[] { "cbbAction", "cbbControl", "btnAction" };
+            string[] acceptedControls = new string[] { "cbbAction", "cbbControl", "btnAction", "tblÌConditionScript" };
             while (this.panelMain.Controls.Count > acceptedControls.Length)
             {
                 ControlCollection controls = this.panelMain.Controls;
@@ -140,6 +254,18 @@ namespace ScriptDesigner.CútomControl
         private void cmtAction_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             var a = 10;
+            _onMenuAction(this, MENU_ACTION.INSERT_BELOW);
+        }
+
+        private TableLayoutPanel CreateTableIfCondition()
+        {
+            TableLayoutPanel tbl = new System.Windows.Forms.TableLayoutPanel();
+            tbl.AutoSize = true;
+            tbl.ColumnCount = 1;
+            tbl.Location = new System.Drawing.Point(0, 0);
+            tbl.Name = "tblÌConditionScript";
+            //tbl.Size = new System.Drawing.Size(200, 200);
+            return tbl;
         }
     }
 }

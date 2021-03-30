@@ -10,31 +10,34 @@ namespace Core.Common
     public enum ACTION
     {
         [Description("OpenWebsite")]
-        OPEN_WEBSITE = 0,
+        OPEN_WEBSITE,
 
         [Description("Input")]
-        INPUT = 1,
+        INPUT,
 
         [Description("Click")]
-        CLICK = 2,
+        CLICK,
 
         [Description("IfCondition")]
-        IF_CONDITION = 3,
+        IF_CONDITION,
+        
+        [Description("Condition")]
+        CONDITION,
 
         [Description("GetLabel")]
-        GET_LABEL = 4,
+        GET_LABEL,
 
         [Description("GetTextValue")]
-        GET_TEXT_VALUE = 5,
+        GET_TEXT_VALUE,
 
         [Description("RedirectUrl")]
-        REDIRECT_URL = 6,
+        REDIRECT_URL,
 
         [Description("Exit")]
-        EXIT = 7,
+        EXIT,
 
         [Description("Sleep")]
-        SLEEP = 8
+        SLEEP
     }
     public enum FB_ACTION_TYPE
     {

@@ -58,10 +58,10 @@ namespace ScriptDesigner.CútomControl
             // 
             // btnAction
             // 
-            this.btnAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAction.BackColor = System.Drawing.Color.Red;
             this.btnAction.Location = new System.Drawing.Point(994, 6);
+            this.btnAction.MaximumSize = new System.Drawing.Size(50, 50);
             this.btnAction.Name = "btnAction";
             this.btnAction.Size = new System.Drawing.Size(30, 30);
             this.btnAction.TabIndex = 3;
@@ -107,9 +107,10 @@ namespace ScriptDesigner.CútomControl
             // toolStripMenuItemDelete
             // 
             this.toolStripMenuItemDelete.BackColor = System.Drawing.Color.Red;
+            this.toolStripMenuItemDelete.ForeColor = System.Drawing.SystemColors.Control;
             this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
             this.toolStripMenuItemDelete.Size = new System.Drawing.Size(161, 24);
-            this.toolStripMenuItemDelete.Text = "Delete";
+            this.toolStripMenuItemDelete.Text = "DELETE";
             // 
             // toolStripMenuItemInsertBelow
             // 

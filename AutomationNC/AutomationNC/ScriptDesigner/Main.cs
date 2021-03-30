@@ -3,6 +3,7 @@ using Core;
 using Core.ActionParam;
 using Core.Common;
 using Core.Models;
+using ScriptDesigner.Common;
 using ScriptDesigner.CútomControl;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,12 @@ namespace ScriptDesigner
     public partial class Main : Form
     {
         private List<SlnControl> mappingControls = new List<SlnControl>();
-        private SlnSenarior senarior;
         private DesignService service;
+        private SlnSenarior _senarior;
         public Main()
         {
             service = new DesignService();
+            _senarior =SlnSenarior.GetInstance();
             InitializeComponent();
         }
 
@@ -30,8 +32,33 @@ namespace ScriptDesigner
         }
         private void LoadSenarior()
         {
-            senarior = service.GetSenarior(GetFBActionType());
-            this.GenerateSenarior(senarior);
+            //senarior = service.GetSenarior(GetFBActionType());
+            _senarior.Scripts = new List<SlnScript>() {
+                SlnScript.OpenWebsite(new OpenWebsite("","https://www.facebook.com/")),
+                SlnScript.If(
+                    new IfCondition(
+                        new List<Condition>(){
+                            new Condition("a == 10",   
+                                new List<SlnScript> {
+                                    SlnScript.Input(new Input(null, "inside if 1")),
+                                    SlnScript.Input(new Input(null, "inside if 2"))
+                                }
+                            ),
+                            new Condition("a == 10",
+                                new List<SlnScript> {
+                                    SlnScript.Input(new Input(null, "inside if 1")),
+                                    SlnScript.Input(new Input(null, "inside if 2"))
+                                }
+                            )
+                        }
+                    )
+                ),
+                SlnScript.Sleep(new Sleep(5)),
+                SlnScript.Input(new Input(null, "{{a}}"))
+
+            };
+
+            this.GenerateSenarior();
         }
 
         private void btnSaveMappingControl_Click(object sender, EventArgs e)
@@ -46,43 +73,64 @@ namespace ScriptDesigner
             return FB_ACTION_TYPE.AUTO_CREATE_POST_LIKE;
         }
 
-        private void GenerateSenarior(SlnSenarior senarior)
+        private void GenerateSenarior()
         {
-            this.GenerateScripts(senarior.Scripts);           
+            this.GenerateScripts();           
         }
-        private void GenerateScripts(List<SlnScript> scripts)
+        private void GenerateScripts()
         {
             tblScript.RowStyles.Clear();   //now you have zero rowstyles
 
             this.tblScript.RowCount = 0;
-            this.tblScript.RowCount += 1;
-            UCScriptItem item = new UCScriptItem(SlnScript.Sleep(new Sleep(5)), 0, 0);
-            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.tblScript.Controls.Add(item, 0, 0);
 
-            this.tblScript.RowCount += 1;
-            UCScriptItem item2 = new UCScriptItem(SlnScript.Input(new Input(null, "abc")), 1,1);
-            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.tblScript.Controls.Add(item2, 0, 1);
+      
 
-            this.tblScript.RowCount += 1;
-            UCScriptItem item3 = new UCScriptItem(SlnScript.Sleep(new Sleep(5)), 0, 0);
-            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.tblScript.Controls.Add(item3, 0, 1);
-
-            for (int i = 0; i < scripts.Count; i ++)
+            for (int i = 0; i < _senarior.Scripts.Count; i ++)
             {
-                SlnScript script = scripts[i];
+                SlnScript script = _senarior.Scripts[i];
                 this.GenerateScriptItem(script, i);
             }
         }
          private void GenerateScriptItem(SlnScript script, int index)
         {
             //this.lvSenarior.Items.Add(new ListViewItem())
-            UCScriptItem item = new UCScriptItem(script, index, 0);
+            UCScriptItem item = new UCScriptItem(null, script, index, 0, OnMenuAction);
+            this.tblScript.RowCount += 1;
+            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            this.tblScript.Controls.Add(item, 0, index);
             //this.lvSenarior.Controls.Add(item);
 
         }
+
+        private void OnMenuAction(UCScriptItem item, MENU_ACTION action)
+        {
+            InsertEmpty(item.Script, action);
+        }
+
+        private void InsertEmpty(SlnScript item, MENU_ACTION action)
+        {
+            foreach (SlnScript script in _senarior.Scripts)
+            {
+                if (ContainScript(script, item))
+                {
+                    
+                }
+            }
+        }
+
+        private bool ContainScript(SlnScript main, SlnScript item)
+        {
+            if (main.GetId() == item.GetId())
+            {
+                return true;
+            }
+            //if (main.Action.Name == ACTION.IF_CONDITION)
+            //{
+                
+            //}
+            return false;
+        }
+
 
         private void cbbFBActionType_SelectedIndexChanged(object sender, EventArgs e)
         {

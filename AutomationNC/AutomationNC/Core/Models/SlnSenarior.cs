@@ -14,7 +14,7 @@ namespace Core.Models
         private static SlnSenarior _instance;
         private Dictionary<string, object> _variables;
 
-        public List<SlnScript> Scripts { get { return _scripts; } }
+        public List<SlnScript> Scripts { get { return _scripts; } set { this._scripts = value; } }
         public static SlnSenarior GetInstance()
         {
             if (_instance == null)
@@ -31,15 +31,15 @@ namespace Core.Models
         public void Process()
         {
             _webDriver = new SlnSeleniumWebDriver();
-            _scripts = new List<SlnScript>() {
-                SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/" )),
-                SlnScript.Sleep(new Sleep(5)),
-                SlnScript.Input(new Input(null, "")),
-                SlnScript.If(
-                    new IfCondition(null, () => { return new SlnScript []{ }; })
-                ),
-                SlnScript.Exit()
-            };
+            //_scripts = new List<SlnScript>() {
+            //    SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/" )),
+            //    SlnScript.Sleep(new Sleep(5)),
+            //    SlnScript.Input(new Input(null, "")),
+            //    SlnScript.If(
+            //        new IfCondition(null, new  List<SlnScript>())
+            //    ),
+            //    SlnScript.Exit()
+            //};
 
             try
             {
@@ -51,7 +51,7 @@ namespace Core.Models
             }
         }
 
-        private void ProcessScripts(SlnScript[] scripts)
+        private void ProcessScripts(List<SlnScript> scripts)
         {
             foreach (SlnScript script in scripts)
             {
@@ -61,7 +61,8 @@ namespace Core.Models
 
         private void ProcessScript(SlnScript script)
         {
-            ACTION action = script.Action.Name;
+            
+            ACTION action = ScriptUtils.GetActionByDescription(script.Action);
             switch (action)
             {
                 case ACTION.OPEN_WEBSITE:
@@ -110,23 +111,23 @@ namespace Core.Models
         }
         private void HandleIfCondition(SlnScript script)
         {
-            IfCondition[] conditions = script.Param as IfCondition[];
-            for (int i = 0; i < conditions.Length; i++)
-            {
-                IfCondition condition = conditions[i];
-                if (i == conditions.Length - 1 && condition.Expression == null)
-                {
-                    SlnScript[] scripts = condition.Actions();
-                    ProcessScripts(scripts);
-                }
-                else if (condition.Expression() == true)
-                {
-                    SlnScript[] scripts = condition.Actions();
-                    ProcessScripts(scripts);
-                    break;
-                }
-            }
-           
+            //IfCondition[] conditions = script.Param as IfCondition[];
+            //for (int i = 0; i < conditions.Length; i++)
+            //{
+            //    IfCondition condition = conditions[i];
+            //    if (i == conditions.Length - 1 && condition.Expression == null)
+            //    {
+            //        List<SlnScript> scripts = condition.Actions;
+            //        ProcessScripts(scripts);
+            //    }
+            //    else if ((Boolean)ExpressionUtils.Evaluate(condition.Expression) == true)
+            //    {
+            //        List<SlnScript> scripts = condition.Actions;
+            //        ProcessScripts(scripts);
+            //        break;
+            //    }
+            //}
+
         }
         private async void HandleGetLabel(SlnScript script)
         {

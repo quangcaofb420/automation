@@ -7,14 +7,13 @@ using System.Text;
 namespace Core.ActionParam
 {
     public class IfCondition
-    {
-        public Func<bool> Expression;
-        public Func<SlnScript[]> Actions;
+    {        
+        private List<Condition> _conditions;
 
-        public IfCondition(Func<bool> expression, Func<SlnScript[]> actions)
+        public List<Condition> Conditions { get { return _conditions == null ? new List<Condition>() : _conditions; } set { this._conditions = value; } }
+        public IfCondition(List<Condition> conditions)
         {
-            Expression = expression;
-            Actions = actions;
+            _conditions = conditions;
         }
     }
 }
