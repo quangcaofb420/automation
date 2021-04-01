@@ -43,19 +43,20 @@ namespace ScriptDesigner
                 SlnScript.OpenWebsite(new OpenWebsite("","https://www.facebook.com/")),
                 SlnScript.IfCondition(
                     new IfCondition(
-                        new List<Condition>(){
-                            new Condition("a == 10",   
+                        new List<SlnScript>(){
+                            SlnScript.Condition(new Condition("a == 10",
                                 new List<SlnScript> {
                                     SlnScript.Input("",new Input( "inside if 1")),
                                     SlnScript.Input("",new Input( "inside if 2"))
                                 }
-                            ),
-                            new Condition("a == 10",
+                            )),
+                            SlnScript.Condition(new Condition("a == 10",
                                 new List<SlnScript> {
                                     SlnScript.Input(null,new Input( "inside if 1")),
                                     SlnScript.Input(null,new Input("inside if 2"))
                                 }
-                            )
+                            ))
+                            
                         }
                     )
                 ),

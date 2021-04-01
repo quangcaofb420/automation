@@ -33,10 +33,9 @@ namespace Core.Models
         } 
         public static SlnScript IfCondition(IfCondition ifCondition)
         {
-            List<SlnScript> scripts = ifCondition.Conditions.Select(i =>  SlnScript.Condition(i)).ToList();
             SlnScript script = new SlnScript();
             script.Action = ACTION.IF_CONDITION.ToDescriptionString();
-            script.Param = scripts;
+            script.Param = ifCondition.Conditions;
             return script;
         } 
         public static SlnScript Condition(Condition condition)

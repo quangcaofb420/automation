@@ -86,6 +86,11 @@ namespace ScriptDesigner.CútomControl
             {
                 GenerateIfCondition();
             }
+            else if (action == ACTION.CONDITION)
+            {
+                GenerateNormalAction();
+                GenerateCondition();
+            }
             else
             {
                 GenerateNormalAction();
@@ -97,7 +102,6 @@ namespace ScriptDesigner.CútomControl
 
         private void GenerateIfCondition()
         {
- 
             this.cbbControl.Visible = false;
             this.AutoSize = true;
             this.panelMain.AutoSize = true;
@@ -113,7 +117,6 @@ namespace ScriptDesigner.CútomControl
                 conditions = new List<SlnScript>() { 
                     SlnScript.Condition(new Condition("true", new List<SlnScript>(){ SlnScript.Sleep(new Sleep(10))}))
                 };
-
             }
             for (int i = 0; i < conditions.Count; i++)
             {
@@ -122,35 +125,40 @@ namespace ScriptDesigner.CútomControl
                 tbl.RowCount += 1;
                 tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
-
-                TableLayoutPanel tblActionss = CreateTableIfCondition();
-
-                tblActionss.Location = new Point(0, 40);
-
-                tblActionss.RowStyles.Clear();   //now you have zero rowstyles
-                tblActionss.RowCount = 0;
-                Condition con = condition.Param as Condition;
-                List<SlnScript> scripts = con.Actions;
-                for (int j = 0; j < scripts.Count; j++)
-                {
-                    SlnScript script = scripts[j];
-                    UCScriptItem item = new UCScriptItem(tblActionss, script,  _levelIndex + 2, _mappingControls, _getMappingControlsFunc);
-                    tblActionss.RowCount += 1;
-                    tblActionss.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    tblActionss.Controls.Add(item, 0, j + 1);
-                }
-
-                tbl.RowCount += 1;
-                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl.Controls.Add(tblActionss, 0, tbl.RowCount - 1);
             }
             this.panelMain.Controls.Add(tbl);
-
 
             this.panelMain.Refresh();
             this.Refresh();
         }
 
+        private void GenerateCondition()
+        {
+            this.cbbControl.Visible = false;
+            this.AutoSize = true;
+            this.panelMain.AutoSize = true;
+
+            Condition condition = _script.Param as Condition;
+
+            TableLayoutPanel tbl = CreateTableIfCondition();
+
+            tbl.RowStyles.Clear();   //now you have zero rowstyles
+            tbl.RowCount = 0;
+      
+            List<SlnScript> scripts = condition.Actions;
+            for (int i = 0; i < scripts.Count; i++)
+            {
+                SlnScript script = scripts[i];
+                UCScriptItem item = new UCScriptItem(tbl, script, _levelIndex + 2, _mappingControls, _getMappingControlsFunc);
+                tbl.RowCount += 1;
+                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tbl.Controls.Add(item, 0, i + 1);
+            }
+            this.panelMain.Controls.Add(tbl);
+
+            this.panelMain.Refresh();
+            this.Refresh();
+        }
         private void GenerateNormalAction()
         {
             Core.Common.ACTION action = (Core.Common.ACTION)this.cbbAction.SelectedItem;
@@ -188,19 +196,44 @@ namespace ScriptDesigner.CútomControl
             ACTION action = GetSelectedAction();
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             Type paramType = definedAction.ParamType;
-            String selectedControl = "";
+            String selectedControl = null ;
             bool requiredElement = definedAction.RequiredElement;
+            List<SlnScript> conditionActions = new List<SlnScript>();
             if (action == ACTION.IF_CONDITION || action == ACTION.CONDITION)
             {
-                return _script;
+                if (action == ACTION.IF_CONDITION)
+                {
+                    List<SlnScript> conditions = new List<SlnScript>();
+                    TableLayoutPanel tbl = this.panelMain.Controls[3] as TableLayoutPanel;
+                    for (int i = 0; i < tbl.RowCount; i++)
+                    {
+                        UCScriptItem conditionUI = tbl.GetControlFromPosition(0, i) as UCScriptItem;
+                        SlnScript condition = conditionUI.GetScript();
+                        conditions.Add(condition);
+                    }
+
+                    IfCondition ifCondition = new IfCondition(conditions);
+                    SlnScript script = SlnScript.IfCondition(ifCondition);
+                    return script;
+                }
+                else
+                {
+                    TableLayoutPanel tblActions = this.panelMain.Controls[5] as TableLayoutPanel;
+                    for (int i = 1; i < tblActions.RowCount + 1; i++)
+                    {
+                        UCScriptItem conditionUI = tblActions.GetControlFromPosition(0, i) as UCScriptItem;
+                        SlnScript act = conditionUI.GetScript();
+                        conditionActions.Add(act);
+                    }
+                }
             }
-            if (requiredElement)
+            if (requiredElement && cbbControl.SelectedItem != null)
             {
                 selectedControl = cbbControl.SelectedItem.ToString();
             }
 
             string[] prs = ClassUtils.GetPropertyNames(paramType).Where(pr => requiredElement == false || pr != "Control").ToArray();
-            List<string> args = new List<string>();
+            List<object> args = new List<object>();
            
             for (int i = 0; i < prs.Length; i++)
             {
@@ -213,7 +246,16 @@ namespace ScriptDesigner.CútomControl
                     args.Add(value);
                 }
             }
+
+
+            if (action == ACTION.CONDITION)
+            {
+                // add list of script actions
+                args.Add(conditionActions);
+            }
+
             object instanceArg = ClassUtils.Constructor(paramType, args.ToArray());
+
 
             object res = ClassUtils.CallStaticFunction(typeof(SlnScript), paramType.Name, requiredElement ? new[] {selectedControl, instanceArg } : new[] { instanceArg });
 
@@ -221,9 +263,13 @@ namespace ScriptDesigner.CútomControl
            
         }
 
-        private void txtParam_TextChanged(object sender, EventArgs e)
+        private void txtParam_MouseHover(object sender, EventArgs e)
         {
-            //TextBox textbox = (TextBox)sender;
+            TextBox textbox = (TextBox)sender;
+            int VisibleTime = 1000;  //in milliseconds
+
+            ToolTip tt = new ToolTip();
+            tt.Show(textbox.Text, textbox, 0, 0, VisibleTime);
             //Size size = TextRenderer.MeasureText(textbox.Text, textbox.Font);
             //textbox.Width = size.Width < 50 ? 50 : (size.Width > 300 ? 300 : size.Width);
         }
@@ -235,10 +281,9 @@ namespace ScriptDesigner.CútomControl
             textbox.Location = new System.Drawing.Point(locationX + 12, 0);
             textbox.Name = "txt" + paramname;
             //textbox.Text = "txt" + paramname;
-            textbox.Width = 300;
-
+            //textbox.Width = 300;
             textbox.Text = defaultValue;
-            textbox.TextChanged += new EventHandler(txtParam_TextChanged);
+            textbox.MouseHover += new EventHandler(txtParam_MouseHover);
             //textbox.TextAlign = HorizontalAlignment.Center;
             this.panelMain.Controls.Add(textbox);
             return textbox.Width;
@@ -263,14 +308,14 @@ namespace ScriptDesigner.CútomControl
         private void cmtAction_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             //_onMenuAction(this, MENU_ACTION.INSERT_BELOW);
-            TableLayoutPanel tbl = (TableLayoutPanel)ParentObj;
-            TableLayoutPanelCellPosition cellPosition = tbl.GetPositionFromControl(this);
-            int rowIndex = cellPosition.Row;
+            //TableLayoutPanel tbl = (TableLayoutPanel)ParentObj;
+            //TableLayoutPanelCellPosition cellPosition = tbl.GetPositionFromControl(this);
+            //int rowIndex = cellPosition.Row;
 
-            UCScriptItem script = new UCScriptItem(tbl, SlnScript.Sleep(new Sleep(10)), _levelIndex, _mappingControls, _getMappingControlsFunc);
-            tbl.RowCount += 1;
-            tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tbl.Controls.Add(script, 0, rowIndex);
+            //UCScriptItem script = new UCScriptItem(tbl, SlnScript.Sleep(new Sleep(10)), _levelIndex, _mappingControls, _getMappingControlsFunc);
+            //tbl.RowCount += 1;
+            //tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            //tbl.Controls.Add(script, 0, rowIndex);
             SlnScript sc = GetScript();
 
 

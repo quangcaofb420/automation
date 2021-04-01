@@ -5,10 +5,10 @@ namespace Core.ActionParam
 {
     public class IfCondition
     {        
-        private List<Condition> _conditions;
+        private List<SlnScript> _conditions;
 
-        public List<Condition> Conditions { get { return _conditions == null ? new List<Condition>() : _conditions; } set { this._conditions = value; } }
-        public IfCondition(List<Condition> conditions)
+        public List<SlnScript> Conditions { get { return _conditions == null ? new List<SlnScript>() : _conditions; } set { this._conditions = value; } }
+        public IfCondition(List<SlnScript> conditions)
         {
             _conditions = conditions;
         }
