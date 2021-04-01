@@ -1,19 +1,15 @@
 ﻿using Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Core.ActionParam
 {
     public class GetLabel
     {
-        public SlnControl Control { get; set; }
-        public string WithExpression { get; set; }
-        public string ToVariable { get; set; }
+        public String WithExpression { get; set; }
+        public String ToVariable { get; set; }
 
-        public GetLabel(SlnControl control, string withExpression, string toVariable)
+        public GetLabel( String withExpression, String toVariable)
         {
-            Control = control;
             WithExpression = withExpression;
             ToVariable = toVariable;
         }

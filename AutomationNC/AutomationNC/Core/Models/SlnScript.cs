@@ -10,8 +10,8 @@ namespace Core.Models
 {
     public class SlnScript
     {
-        public string Action { get; set; }
-        public string Control { get; set; }
+        public String Action { get; set; }
+        public String Control { get; set; }
         public object Param { get; set; }
 
         private string _id;
@@ -31,7 +31,7 @@ namespace Core.Models
             script.Param = param;
             return script;
         } 
-        public static SlnScript If(IfCondition ifCondition)
+        public static SlnScript IfCondition(IfCondition ifCondition)
         {
             List<SlnScript> scripts = ifCondition.Conditions.Select(i =>  SlnScript.Condition(i)).ToList();
             SlnScript script = new SlnScript();
@@ -46,32 +46,36 @@ namespace Core.Models
             script.Param = condition;
             return script;
         } 
-         public static SlnScript GetLabel(GetLabel param)
+         public static SlnScript GetLabel(String control, GetLabel param)
         {
             SlnScript script = new SlnScript();
             script.Action = ACTION.GET_LABEL.ToDescriptionString();
+            script.Control = control;
             script.Param = param;
             return script;
         } 
-        public static SlnScript GetTextValue(GetTextValue param)
+        public static SlnScript GetTextValue(String control, GetTextValue param)
         {
             SlnScript script = new SlnScript();
             script.Action = ACTION.GET_TEXT_VALUE.ToDescriptionString();
+            script.Control = control;
             script.Param = param;
             return script;
         } 
 
-        public static SlnScript Input(Input param)
+        public static SlnScript Input(String control, Input param)
         {
             SlnScript script = new SlnScript();
             script.Action = ACTION.INPUT.ToDescriptionString();
+            script.Control = control;
             script.Param = param;
             return script;
         }
-        public static SlnScript Click(Click param)
+        public static SlnScript Click(String control, Click param)
         {
             SlnScript script = new SlnScript();
             script.Action = ACTION.CLICK.ToDescriptionString();
+            script.Control = control;
             script.Param = param;
             return script;
         }

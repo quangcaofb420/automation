@@ -13,7 +13,7 @@ namespace ScriptDesigner
 {
     public partial class Main : Form
     {
-        private List<SlnControl> mappingControls = new List<SlnControl>();
+        private List<SlnControl> _mappingControls = new List<SlnControl>();
         private DesignService service;
         private SlnSenarior _senarior;
         public Main()
@@ -23,11 +23,17 @@ namespace ScriptDesigner
             InitializeComponent();
         }
 
+        private List<SlnControl> GetMappingControls()
+        {
+           List<SlnControl> mappingControls = service.GetMappingControls(GetFBActionType());
+            return mappingControls;
+        }
+
         private void LoadMappingControls()
         {
-            mappingControls = service.GetMappingControls(GetFBActionType());
+            _mappingControls = GetMappingControls() ;
             var source = new BindingSource();
-            source.DataSource = mappingControls;
+            source.DataSource = _mappingControls;
             this.dgvMappingControls.DataSource = source;
         }
         private void LoadSenarior()
@@ -35,26 +41,26 @@ namespace ScriptDesigner
             //senarior = service.GetSenarior(GetFBActionType());
             _senarior.Scripts = new List<SlnScript>() {
                 SlnScript.OpenWebsite(new OpenWebsite("","https://www.facebook.com/")),
-                SlnScript.If(
+                SlnScript.IfCondition(
                     new IfCondition(
                         new List<Condition>(){
                             new Condition("a == 10",   
                                 new List<SlnScript> {
-                                    SlnScript.Input(new Input(null, "inside if 1")),
-                                    SlnScript.Input(new Input(null, "inside if 2"))
+                                    SlnScript.Input("",new Input( "inside if 1")),
+                                    SlnScript.Input("",new Input( "inside if 2"))
                                 }
                             ),
                             new Condition("a == 10",
                                 new List<SlnScript> {
-                                    SlnScript.Input(new Input(null, "inside if 1")),
-                                    SlnScript.Input(new Input(null, "inside if 2"))
+                                    SlnScript.Input(null,new Input( "inside if 1")),
+                                    SlnScript.Input(null,new Input("inside if 2"))
                                 }
                             )
                         }
                     )
                 ),
                 SlnScript.Sleep(new Sleep(5)),
-                SlnScript.Input(new Input(null, "{{a}}"))
+                SlnScript.Input(null,new Input( "{{a}}"))
 
             };
 
@@ -79,6 +85,8 @@ namespace ScriptDesigner
         }
         private void GenerateScripts()
         {
+            tblScript.Controls.Clear();
+            tblScript.RowCount = 0;
             tblScript.RowStyles.Clear();   //now you have zero rowstyles
 
             this.tblScript.RowCount = 0;
@@ -94,30 +102,13 @@ namespace ScriptDesigner
          private void GenerateScriptItem(SlnScript script, int index)
         {
             //this.lvSenarior.Items.Add(new ListViewItem())
-            UCScriptItem item = new UCScriptItem(null, script, index, 0, OnMenuAction);
+            UCScriptItem item = new UCScriptItem(tblScript, script, 0, _mappingControls, GetMappingControls);
             this.tblScript.RowCount += 1;
             this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             this.tblScript.Controls.Add(item, 0, index);
             //this.lvSenarior.Controls.Add(item);
 
         }
-
-        private void OnMenuAction(UCScriptItem item, MENU_ACTION action)
-        {
-            InsertEmpty(item.Script, action);
-        }
-
-        private void InsertEmpty(SlnScript item, MENU_ACTION action)
-        {
-            foreach (SlnScript script in _senarior.Scripts)
-            {
-                if (ContainScript(script, item))
-                {
-                    
-                }
-            }
-        }
-
         private bool ContainScript(SlnScript main, SlnScript item)
         {
             if (main.GetId() == item.GetId())
@@ -131,7 +122,6 @@ namespace ScriptDesigner
             return false;
         }
 
-
         private void cbbFBActionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadMappingControls();
@@ -140,7 +130,13 @@ namespace ScriptDesigner
 
         private void Main_Load(object sender, EventArgs e)
         {
-            this.LoadSenarior();
+            //this.LoadSenarior();
+        }
+
+        private void btnSaveSenarior_Click(object sender, EventArgs e)
+        {
+           Control controk =  tblScript.GetControlFromPosition(0, 1);
+            var a = 10;
         }
     }
 }

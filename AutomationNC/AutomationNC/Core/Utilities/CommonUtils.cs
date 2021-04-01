@@ -10,5 +10,10 @@ namespace Core.Utilities
         {
             await Task.Delay(2000); // Wait 2 seconds without blocking
         }
+
+        public static string UUID()
+        {
+            return System.Guid.NewGuid().ToString();
+        }
     }
 }

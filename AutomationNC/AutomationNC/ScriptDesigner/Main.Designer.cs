@@ -63,12 +63,13 @@ namespace ScriptDesigner
             // btnSaveSenarior
             // 
             this.btnSaveSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveSenarior.Location = new System.Drawing.Point(553, 508);
+            this.btnSaveSenarior.Location = new System.Drawing.Point(531, 508);
             this.btnSaveSenarior.Name = "btnSaveSenarior";
-            this.btnSaveSenarior.Size = new System.Drawing.Size(94, 29);
+            this.btnSaveSenarior.Size = new System.Drawing.Size(116, 29);
             this.btnSaveSenarior.TabIndex = 3;
-            this.btnSaveSenarior.Text = "button1";
+            this.btnSaveSenarior.Text = "Save Senarior";
             this.btnSaveSenarior.UseVisualStyleBackColor = true;
+            this.btnSaveSenarior.Click += new System.EventHandler(this.btnSaveSenarior_Click);
             // 
             // cbbFBActionType
             // 

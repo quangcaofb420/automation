@@ -1,9 +1,9 @@
-﻿using Core.Models;
+﻿
+using System;
 
 namespace Core.ActionParam
 {
     public class Click
     {
-        public SlnControl Control { get; set; }
     }
 }

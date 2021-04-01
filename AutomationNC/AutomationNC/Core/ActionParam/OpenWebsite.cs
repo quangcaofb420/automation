@@ -1,12 +1,14 @@
 ﻿
+using System;
+
 namespace Core.ActionParam
 {
     public class OpenWebsite
     {
-        public string Browser { get; set; }
-        public string Url { get; set; }
+        public String Browser { get; set; }
+        public String Url { get; set; }
 
-        public OpenWebsite(string browser, string url)
+        public OpenWebsite(String browser, String url)
         {
             Browser = browser;
             Url = url;

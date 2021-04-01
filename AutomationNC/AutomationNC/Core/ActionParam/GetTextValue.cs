@@ -1,16 +1,15 @@
 ﻿using Core.Models;
+using System;
 
 namespace Core.ActionParam
 {
     public class GetTextValue
     {
-        public SlnControl Control { get; set; }
-        public string WithExpression { get; set; }
-        public string ToVariable { get; set; }
+        public String WithExpression { get; set; }
+        public String ToVariable { get; set; }
 
-        public GetTextValue(SlnControl control, string withExpression, string toVariable)
+        public GetTextValue(String withExpression, String toVariable)
         {
-            Control = control;
             WithExpression = withExpression;
             ToVariable = toVariable;
         }

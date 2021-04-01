@@ -103,11 +103,11 @@ namespace Core.Models
         private void HandleInput(SlnScript script)
         {
             string text = GetExpressionValue(((Input)script.Param).Text);
-            _webDriver.Input(((Input)script.Param).Control, text);
+            _webDriver.Input(script.Control, text);
         }
         private void HandleClick(SlnScript script)
         {
-            _webDriver.Click(((Input)script.Param).Control);
+            _webDriver.Click(script.Control);
         }
         private void HandleIfCondition(SlnScript script)
         {
@@ -134,7 +134,7 @@ namespace Core.Models
             GetLabel param = script.Param as GetLabel;
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
-            string label = await _webDriver.GetLabel(param.Control);
+            string label = await _webDriver.GetLabel(script.Control);
             SetVariable(variable, label);
             if (withExpression != "")
             {
@@ -147,7 +147,7 @@ namespace Core.Models
             GetTextValue param = script.Param as GetTextValue;
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
-            string value = await _webDriver.GetTextValue(param.Control);
+            string value = await _webDriver.GetTextValue(script.Control);
             SetVariable(variable, value);
             if (withExpression != "")
             {

@@ -20,6 +20,26 @@ namespace Core.Utilities
             return str;
         }
 
+        public static object Constructor(Type type, object[] args)
+        {
+            Type[] types = args.Select(p => p.GetType()).ToArray();
+            ConstructorInfo ctor = type.GetConstructor(types);
+            object instanceArg = ctor.Invoke(args);
+            return instanceArg;
+        }
+
+        public static object CallStaticFunction(Type type, string staticFunctionName, object[] args)
+        {
+            MethodInfo? methodInfo = type.GetMethod(staticFunctionName, BindingFlags.Public | BindingFlags.Static);
+            if (methodInfo == null)
+            {
+                return null;
+            }
+            object? res = methodInfo.Invoke(null, args);
+
+            return res ?? null;
+        }
+
         public static T GetStaticPropperty<T>(Type type, string staticProppertyName)
         {
             try

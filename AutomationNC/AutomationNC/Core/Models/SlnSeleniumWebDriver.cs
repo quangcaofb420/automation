@@ -32,37 +32,37 @@ namespace Core.Models
             _webDriver.Navigate().GoToUrl(url);
             return _webDriver.CurrentWindowHandle;
         }
-        public async void Input(SlnControl control, string text)
+        public async void Input(string xpath, string text)
         {
-            IWebElement element = await GetElement(control);
+            IWebElement element = await GetElement(xpath);
             if (element != null)
             {
                 element.SendKeys(text);
             }
         }
-        public async void Click(SlnControl control)
+        public async void Click(string xpath)
         {
-            IWebElement element = await GetElement(control);
+            IWebElement element = await GetElement(xpath);
             if (element != null)
             {
                 element.Click();
             }
         }
 
-        public async Task<string> GetLabel(SlnControl control)
+        public async Task<string> GetLabel(string xpath)
         {
             string value = "";
-            IWebElement element = await GetElement(control);
+            IWebElement element = await GetElement(xpath);
             if (element != null)
             {
                 value = element.Text;
             }
             return value ?? "";
         }
-        public async Task<string> GetTextValue(SlnControl control)
+        public async Task<string> GetTextValue(string xpath)
         {
             string value = "";
-            IWebElement element = await GetElement(control);
+            IWebElement element = await GetElement(xpath);
             if (element != null)
             {
                 value = element.GetAttribute("value");
@@ -81,24 +81,24 @@ namespace Core.Models
 
 
 
-        private async Task<bool> CheckElementIsExist(SlnControl control)
+        private async Task<bool> CheckElementIsExist(string xpath)
         {
-            IWebElement element = await GetElement(control, 5);
+            IWebElement element = await GetElement(xpath, 5);
             return element != null;
         }
 
-        private Task<IWebElement> GetElement(SlnControl control)
+        private Task<IWebElement> GetElement(string xpath)
         {
-            return GetElement(control, 30);
+            return GetElement(xpath, 30);
         }
-        private async Task<IWebElement> GetElement(SlnControl control, int timeoutInSecond)
+        private async Task<IWebElement> GetElement(string xpath, int timeoutInSecond)
         {
             IWebElement element = null;
             int count = 0;
             while (count < timeoutInSecond)
             {
                 count++;
-                ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.XPath(control.XPath));
+                ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.XPath(xpath));
                 if (elements.Count > 0)
                 {
                     element = elements[0];
