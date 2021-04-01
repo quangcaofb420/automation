@@ -161,7 +161,7 @@ namespace ScriptDesigner.CútomControl
             this.cbbControl.Visible = requiredElement;
             if (requiredElement)
             {
-                object control = ClassUtils.GetProppertyValue(_script.Param, "Control");
+               String control = _script.Control;
                 if (control != null)
                 {
                     cbbControl.SelectedItem = control.ToString();

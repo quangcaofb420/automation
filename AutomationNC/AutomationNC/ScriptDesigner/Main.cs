@@ -60,7 +60,7 @@ namespace ScriptDesigner
                     )
                 ),
                 SlnScript.Sleep(new Sleep(5)),
-                SlnScript.Input(null,new Input( "{{a}}"))
+                SlnScript.Input("txtUser",new Input( "{{a}}"))
 
             };
 
