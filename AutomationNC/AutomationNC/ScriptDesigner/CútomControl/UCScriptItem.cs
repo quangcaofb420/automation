@@ -33,11 +33,10 @@ namespace ScriptDesigner.CútomControl
             this.cbbControl.SelectedIndex = -1;
             InitUI();
             int indent = 40;
-            //this.panelMain.BackColor =  Color.FromArgb(180, 217, 255) ;
+            //this.panelMain.AutoSize = true;
+            this.panelMain.BackColor = Color.FromArgb(180, 217, 255);
             this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
             this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
-            //this.Dock = DockStyle.Fill;
-            //this.Height = 50;
             LoadScript();
         }
 
@@ -73,15 +72,14 @@ namespace ScriptDesigner.CútomControl
         private void UpdateUI()
         {
             RemoveAllControls();
+            this.Height = 30;
             Core.Common.ACTION action = GetSelectedAction() ;
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             if (definedAction == null)
             {
                 return;
             }
-            bool isIfCondition = action == Core.Common.ACTION.IF_CONDITION;
             CreateContextMenuAction(action);
-            //this.btnAction.Visible = !isIfCondition;
             if (action == Core.Common.ACTION.IF_CONDITION)
             {
                 GenerateIfCondition();
@@ -108,14 +106,17 @@ namespace ScriptDesigner.CútomControl
 
             TableLayoutPanel tbl = CreateTableIfCondition();
 
-            tbl.RowStyles.Clear();   //now you have zero rowstyles
-            tbl.RowCount = 0;
-
             List<SlnScript> conditions = _script.Param as List<SlnScript>;
             if (conditions == null || conditions.Count == 0)
             {
-                conditions = new List<SlnScript>() { 
-                    SlnScript.Condition(new Condition("true", new List<SlnScript>(){ SlnScript.Sleep(new Sleep(10))}))
+                conditions = new List<SlnScript>() {
+                    SlnScript.Condition(
+                        new Condition("true",
+                        new List<SlnScript>(){
+                                SlnScript.Sleep(new Sleep(10))
+                            }
+                        )
+                    )
                 };
             }
             for (int i = 0; i < conditions.Count; i++)
@@ -127,7 +128,6 @@ namespace ScriptDesigner.CútomControl
                 tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
             }
             this.panelMain.Controls.Add(tbl);
-
             this.panelMain.Refresh();
             this.Refresh();
         }
@@ -141,18 +141,16 @@ namespace ScriptDesigner.CútomControl
             Condition condition = _script.Param as Condition;
 
             TableLayoutPanel tbl = CreateTableIfCondition();
+            tbl.BackColor = Color.Yellow;
 
-            tbl.RowStyles.Clear();   //now you have zero rowstyles
-            tbl.RowCount = 0;
-      
             List<SlnScript> scripts = condition.Actions;
             for (int i = 0; i < scripts.Count; i++)
             {
                 SlnScript script = scripts[i];
-                UCScriptItem item = new UCScriptItem(tbl, script, _levelIndex + 2, _mappingControls, _getMappingControlsFunc);
+                UCScriptItem item = new UCScriptItem(tbl, script, _levelIndex, _mappingControls, _getMappingControlsFunc);
                 tbl.RowCount += 1;
                 tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl.Controls.Add(item, 0, i + 1);
+                tbl.Controls.Add(item, 0, tbl.RowCount - 1);
             }
             this.panelMain.Controls.Add(tbl);
 
@@ -325,12 +323,16 @@ namespace ScriptDesigner.CútomControl
         private TableLayoutPanel CreateTableIfCondition()
         {
             TableLayoutPanel tbl = new System.Windows.Forms.TableLayoutPanel();
+            tbl.Controls.Clear();
             tbl.AutoSize = true;
-            tbl.ColumnCount = 1;
+            //tbl.RowCount = 0;
+            //tbl.ColumnCount = 1;
             tbl.Location = new System.Drawing.Point(0, 30);
-            tbl.Name = "TableLayoutPanel_" + this.Id + "_"+ CommonUtils.UUID();
+            tbl.Height = 0;
+            tbl.Name = "TableLayoutPanel";
             //tbl.Size = new System.Drawing.Size(200, 200);
-            //tbl.BackColor = Color.Yellow;
+            tbl.RowStyles.Clear();   //now you have zero rowstyles
+
             return tbl;
         }
 
@@ -338,14 +340,17 @@ namespace ScriptDesigner.CútomControl
         {
             if (e.KeyCode == Keys.F5)
             {
-                var a = 10;
+                object selectedItem = cbbControl.SelectedItem;
+                List<SlnControl> controls = _getMappingControlsFunc();
+                this.cbbControl.DataSource = null;
+                this.cbbControl.DataSource = _mappingControls.Select(c => c.Name).ToList();
+                this.cbbControl.SelectedItem = selectedItem;
             }
         }
 
         private void CreateContextMenuAction(ACTION action)
         {
             this.cmtAction.Items.Clear();
-
             if (action == ACTION.CONDITION)
             {
                 this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "InsertConditionAbove", Text = "Insert Condition Above", ToolTipText = action.ToDescriptionString() });
