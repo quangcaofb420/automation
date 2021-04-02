@@ -39,10 +39,11 @@ namespace Core.Common
         [Description("Sleep")]
         SLEEP
     }
-    public enum FB_ACTION_TYPE
+    public enum FILE_ACTION
     {
-        VIEW_LIVESTREAM,
-        AUTO_CREATE_POST_LIKE
+        CONTROLS,
+        SCRIPTS,
+        FB_ACTIONS
     }
 
     public enum OS

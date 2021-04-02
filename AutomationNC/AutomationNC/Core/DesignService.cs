@@ -11,22 +11,11 @@ namespace Core
 {
     public class DesignService
     {
-        public static string GetMappingControlJsonFilePath(FB_ACTION_TYPE type)
+      
+
+        public static string GetFile(FBAction fbAction, FILE_ACTION name)
         {
-            string file = SeleniumUtils.GetWorkingFolderPath() + @"/MappingControls_" + type + ".json";
-            if (!File.Exists(file))
-            {
-                using (FileStream fs = File.Create(file))
-                {
-                    fs.Close();
-                }
-                    
-            }
-            return file;
-        }
-        public static string GetSenariorJsonFilePath(FB_ACTION_TYPE type)
-        {
-            string file = SeleniumUtils.GetWorkingFolderPath() + @"/Senarior_"+ type + ".json";
+            string file = SeleniumUtils.GetWorkingFolderPath() + @"/" + (fbAction != null ? fbAction.Action : "") + "_" + name + ".json";
             if (!File.Exists(file))
             {
                 using (FileStream fs = File.Create(file))
@@ -37,35 +26,48 @@ namespace Core
             }
             return file;
         }
-        public List<SlnControl> GetMappingControls(FB_ACTION_TYPE type)
+
+        public List<SlnControl> GetMappingControls(FBAction fbAction)
         {
-            var jsonStr = File.ReadAllText(GetMappingControlJsonFilePath(type));
-            List<SlnControl> controls = JsonConvert.DeserializeObject<List<SlnControl>>(jsonStr);
+            return GetList<SlnControl>(fbAction, FILE_ACTION.CONTROLS);
+        }
+        public List<SlnScript> GetScripts(FBAction fbAction)
+        {
+            return GetList<SlnScript>(fbAction, FILE_ACTION.SCRIPTS);
+        }
+        
+        public List<FBAction> GetFBActions()
+        {
+            return GetList<FBAction>(null, FILE_ACTION.FB_ACTIONS);
+        }
+
+        private List<T> GetList<T>(FBAction fbAction, FILE_ACTION name)
+        {
+            string file = GetFile(fbAction, name);
+            var jsonStr = File.ReadAllText(file);
+            List<T> controls = JsonConvert.DeserializeObject<List<T>>(jsonStr);
             if (controls == null)
             {
-                controls = new List<SlnControl>();
+                controls = new List<T>();
             }
             return controls;
-
         }
 
-        public SlnSenarior GetSenarior(FB_ACTION_TYPE type)
+        public void SaveFBActions(List<FBAction> actions)
         {
-            var jsonStr = File.ReadAllText(GetSenariorJsonFilePath(type));
-            SlnSenarior senarior = JsonConvert.DeserializeObject<SlnSenarior>(jsonStr);
-            if (senarior == null)
-            {
-                senarior = SlnSenarior.GetInstance();
-            }
-            return senarior;
+            string jsonStr = JsonConvert.SerializeObject(actions);
+            File.WriteAllText(GetFile(null, FILE_ACTION.FB_ACTIONS), jsonStr);
         }
 
-
-        public void SaveMappingControls(FB_ACTION_TYPE type, List<SlnControl> mappingControls)
+        public void SaveMappingControls(FBAction fBAction, List<SlnControl> mappingControls)
         {
             string jsonStr = JsonConvert.SerializeObject(mappingControls);
-            File.WriteAllText(GetMappingControlJsonFilePath(type), jsonStr);
-
+            File.WriteAllText(GetFile(fBAction, FILE_ACTION.CONTROLS), jsonStr);
+        }
+        public void SaveScripts(FBAction fBAction, List<SlnScript> scripts)
+        {
+            string jsonStr = JsonConvert.SerializeObject(scripts);
+            File.WriteAllText(GetFile(fBAction, FILE_ACTION.SCRIPTS), jsonStr);
         }
     }
 }

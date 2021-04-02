@@ -15,15 +15,8 @@ namespace Core.Models
         private Dictionary<string, object> _variables;
 
         public List<SlnScript> Scripts { get { return _scripts; } set { this._scripts = value; } }
-        public static SlnSenarior GetInstance()
-        {
-            if (_instance == null)
-            {
-                _instance = new SlnSenarior();
-            }
-            return _instance;
-        }
-        private SlnSenarior()
+       
+        public SlnSenarior()
         {
             _variables = new Dictionary<string, object>();
         }

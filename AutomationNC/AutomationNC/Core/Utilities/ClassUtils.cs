@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -60,9 +61,14 @@ namespace Core.Utilities
         } 
         public static object? GetProppertyValue(object obj, string proppertyName)
         {
+            Type type = obj.GetType();
+            return GetProppertyValue(type, obj, proppertyName);
+        }
+        public static object? GetProppertyValue(Type type, object obj, string proppertyName)
+        {
             try
             {
-                PropertyInfo? pi = obj.GetType().GetProperty(proppertyName);
+                PropertyInfo? pi = type.GetProperty(proppertyName);
                 if (pi != null)
                 {
                     object value = pi.GetValue(obj, null);
@@ -70,7 +76,16 @@ namespace Core.Utilities
                 }
             }
             catch (Exception ex)
-            { 
+            {
+                try
+                {
+                    string str = JsonConvert.SerializeObject(obj);
+                    dynamic src = JsonConvert.DeserializeObject(str);
+                    object value = src[proppertyName];
+                    return value;
+                }
+                catch (Exception jex)
+                { }
             }
             return null;
         }

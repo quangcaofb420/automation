@@ -4,6 +4,9 @@
     <Compile Update="CútomControl\UCScriptItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="CútomControl\UCSenarior.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Main.cs">
       <SubType>Form</SubType>
     </Compile>

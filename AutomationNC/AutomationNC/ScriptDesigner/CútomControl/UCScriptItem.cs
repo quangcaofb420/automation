@@ -34,7 +34,7 @@ namespace ScriptDesigner.CútomControl
             InitUI();
             int indent = 40;
             //this.panelMain.AutoSize = true;
-            this.panelMain.BackColor = Color.FromArgb(180, 217, 255);
+            //this.panelMain.BackColor = Color.FromArgb(180, 217, 255);
             this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
             this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
             LoadScript();
@@ -141,7 +141,6 @@ namespace ScriptDesigner.CútomControl
             Condition condition = _script.Param as Condition;
 
             TableLayoutPanel tbl = CreateTableIfCondition();
-            tbl.BackColor = Color.Yellow;
 
             List<SlnScript> scripts = condition.Actions;
             for (int i = 0; i < scripts.Count; i++)
@@ -182,7 +181,7 @@ namespace ScriptDesigner.CútomControl
                 {
                     x += GenerateLabelParam(pr, x);
 
-                    string defaultValue = (ClassUtils.GetProppertyValue(_script.Param, pr) ?? "").ToString();
+                    string defaultValue = (ClassUtils.GetProppertyValue(paramType, _script.Param, pr) ?? "").ToString();
                     x += GenerateTextboxParam(pr, x, defaultValue);
                     x += 10;
                 }
@@ -257,7 +256,7 @@ namespace ScriptDesigner.CútomControl
 
             object res = ClassUtils.CallStaticFunction(typeof(SlnScript), paramType.Name, requiredElement ? new[] {selectedControl, instanceArg } : new[] { instanceArg });
 
-            return _script;
+            return res as SlnScript;
            
         }
 
@@ -276,7 +275,7 @@ namespace ScriptDesigner.CútomControl
         private int GenerateTextboxParam(string paramname, int locationX, string defaultValue)
         {
             TextBox textbox = new TextBox();
-            textbox.Location = new System.Drawing.Point(locationX + 12, 0);
+            textbox.Location = new System.Drawing.Point(locationX + 12, 1);
             textbox.Name = "txt" + paramname;
             //textbox.Text = "txt" + paramname;
             //textbox.Width = 300;
@@ -343,7 +342,7 @@ namespace ScriptDesigner.CútomControl
                 object selectedItem = cbbControl.SelectedItem;
                 List<SlnControl> controls = _getMappingControlsFunc();
                 this.cbbControl.DataSource = null;
-                this.cbbControl.DataSource = _mappingControls.Select(c => c.Name).ToList();
+                this.cbbControl.DataSource = controls.Select(c => c.Name).ToList();
                 this.cbbControl.SelectedItem = selectedItem;
             }
         }
