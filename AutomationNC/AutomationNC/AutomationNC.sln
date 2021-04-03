@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.218
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomationNC", "AutomationNC\AutomationNC.csproj", "{80491D66-16DB-4392-9C9A-032FB0A42267}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomationNC", "AutomationNC\AutomationNC.csproj", "{80491D66-16DB-4392-9C9A-032FB0A42267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptDesigner", "ScriptDesigner\ScriptDesigner.csproj", "{9867B118-B6C2-4337-B321-A7CEA50F7B8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptDesigner", "ScriptDesigner\ScriptDesigner.csproj", "{9867B118-B6C2-4337-B321-A7CEA50F7B8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagerAppNC", "..\..\ManagerAppNC\ManagerAppNC\ManagerAppNC\ManagerAppNC.csproj", "{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE12F41F-2FEF-40C2-8F81-AE6257B63BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

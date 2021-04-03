@@ -11,12 +11,9 @@ namespace ManagerAppNC
         
         public Main(IFBAdsService service)
         {
-            // this.service = service;
-            
+
             this.fbAdsService = service;
             InitializeComponent();
-
-            ProcessorUtil.RunVBScript(Directory.GetCurrentDirectory(), "run.vbs");
         }
 
     }

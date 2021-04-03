@@ -40,6 +40,7 @@ namespace ScriptDesigner
             this.label1 = new System.Windows.Forms.Label();
             this.btnAddFBAction = new System.Windows.Forms.Button();
             this.btnDeleteFBAction = new System.Windows.Forms.Button();
+            this.btnEunSenarior = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappingControls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFBActions)).BeginInit();
             this.SuspendLayout();
@@ -161,11 +162,22 @@ namespace ScriptDesigner
             this.btnDeleteFBAction.Text = "DEL";
             this.btnDeleteFBAction.UseVisualStyleBackColor = false;
             // 
+            // btnEunSenarior
+            // 
+            this.btnEunSenarior.Location = new System.Drawing.Point(399, 154);
+            this.btnEunSenarior.Name = "btnEunSenarior";
+            this.btnEunSenarior.Size = new System.Drawing.Size(58, 29);
+            this.btnEunSenarior.TabIndex = 13;
+            this.btnEunSenarior.Text = "Run";
+            this.btnEunSenarior.UseVisualStyleBackColor = true;
+            this.btnEunSenarior.Click += new System.EventHandler(this.btnEunSenarior_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1006, 721);
+            this.Controls.Add(this.btnEunSenarior);
             this.Controls.Add(this.btnDeleteFBAction);
             this.Controls.Add(this.btnAddFBAction);
             this.Controls.Add(this.label1);
@@ -200,6 +212,7 @@ namespace ScriptDesigner
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnAddFBAction;
         private System.Windows.Forms.Button btnDeleteFBAction;
+        private System.Windows.Forms.Button btnEunSenarior;
     }
 }
 

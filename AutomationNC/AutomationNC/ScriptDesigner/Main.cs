@@ -127,5 +127,11 @@ namespace ScriptDesigner
         {
             _service.SaveFBActions(actions);
         }
+
+        private void btnEunSenarior_Click(object sender, EventArgs e)
+        {
+            _senarior.Scripts = ucSenarior.GetScripts();
+            _senarior.Process();
+        }
     }
 }

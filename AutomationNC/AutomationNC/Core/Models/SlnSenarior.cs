@@ -24,24 +24,15 @@ namespace Core.Models
         public void Process()
         {
             _webDriver = new SlnSeleniumWebDriver();
-            //_scripts = new List<SlnScript>() {
-            //    SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/" )),
-            //    SlnScript.Sleep(new Sleep(5)),
-            //    SlnScript.Input(new Input(null, "")),
-            //    SlnScript.If(
-            //        new IfCondition(null, new  List<SlnScript>())
-            //    ),
-            //    SlnScript.Exit()
-            //};
-
             try
             {
-                //ProcessScripts(_scripts.ToArray());
+                ProcessScripts(_scripts);
             }
             catch (Exception)
             {
                 HandleExit();
             }
+            HandleExit();
         }
 
         private void ProcessScripts(List<SlnScript> scripts)
@@ -90,20 +81,25 @@ namespace Core.Models
         }
         private void HandleOpenWebsite(SlnScript script)
         {
-            string url = GetExpressionValue(((OpenWebsite)script.Param).Url);
+            OpenWebsite param = script.Param.To<OpenWebsite>();
+            string url = GetExpressionValue(param.Url);
             _webDriver.OpenWebsite(url);
         }
         private void HandleInput(SlnScript script)
         {
-            string text = GetExpressionValue(((Input)script.Param).Text);
+            Input param = script.Param.To<Input>();
+            
+            string text = GetExpressionValue(param.Text);
             _webDriver.Input(script.Control, text);
         }
         private void HandleClick(SlnScript script)
         {
+            Click param = script.Param.To<Click>();
             _webDriver.Click(script.Control);
         }
         private void HandleIfCondition(SlnScript script)
         {
+
             //IfCondition[] conditions = script.Param as IfCondition[];
             //for (int i = 0; i < conditions.Length; i++)
             //{
@@ -124,7 +120,7 @@ namespace Core.Models
         }
         private async void HandleGetLabel(SlnScript script)
         {
-            GetLabel param = script.Param as GetLabel;
+            GetLabel param = script.Param.To<GetLabel>();
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
             string label = await _webDriver.GetLabel(script.Control);
@@ -137,7 +133,7 @@ namespace Core.Models
         }
         private async void HandleGetTextValue(SlnScript script)
         {
-            GetTextValue param = script.Param as GetTextValue;
+            GetTextValue param = script.Param.To<GetTextValue>();
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
             string value = await _webDriver.GetTextValue(script.Control);
@@ -150,7 +146,7 @@ namespace Core.Models
         }
         private void HandleSleep(SlnScript script)
         {
-            Sleep param = script.Param as Sleep;
+            Sleep param = script.Param.To<Sleep>();
             _webDriver.Sleep(param.Second);
         }
         private void HandleExit()

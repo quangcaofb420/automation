@@ -9,12 +9,16 @@ namespace ManagerAppNC.Components
 {
     partial class FBAccListComponent : UserControl
     {
-        private IFBAdsService fbAdsService;
-        private List<FBAcc> fbAccs = new List<FBAcc>();
+        private IFBAdsService _fbAdsService;
+        private List<FBAcc> _fbAccs = new List<FBAcc>();
 
         public FBAccListComponent(IFBAdsService service)
         {
-            this.fbAdsService = service;
+            _fbAdsService = service;
+            InitializeComponent();
+        }  
+        public FBAccListComponent()
+        {
             InitializeComponent();
         }
 
@@ -25,24 +29,24 @@ namespace ManagerAppNC.Components
 
         private async void LoadFBAccList()
         {
-            this.fbAccs = await this.fbAdsService.GetFBAccList();
-            this.RefreshDataGridView();
+            if (_fbAdsService != null)
+            {
+                _fbAccs = await _fbAdsService.GetFBAccList();
+                this.RefreshDataGridView();
+            }
         }
 
         private void RefreshDataGridView()
         {
             var source = new BindingSource();
-            source.DataSource = this.fbAccs;
+            source.DataSource = _fbAccs;
             this.dgvFBAcc.DataSource = source;
-
-            //dgvFBAcc.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
 
         }
 
-        public object GetFBAccs()
+        public List<FBAcc> GetFBAccs()
         {
-            return this.fbAccs;
+            return _fbAccs;
         }
     }
 }

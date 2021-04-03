@@ -31,6 +31,15 @@ namespace Core.Utilities
         }
         public static T To<T>(this object param)
         {
+            //try
+            //{
+            //    T t = (T)param;
+            //    if (t != null)
+            //    {
+            //        return t;
+            //    }
+            //}
+            //catch (Exception ex) { }
             string str = JsonConvert.SerializeObject(param);
             return JsonConvert.DeserializeObject<T>(str);
         }

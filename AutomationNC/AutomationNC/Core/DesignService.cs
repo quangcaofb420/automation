@@ -35,6 +35,10 @@ namespace Core
         {
             return GetList<SlnScript>(fbAction, FILE_ACTION.SCRIPTS);
         }
+          public List<SlnScript> GetScripts(string fbAction)
+        {
+            return GetList<SlnScript>(new FBAction(fbAction), FILE_ACTION.SCRIPTS);
+        }
         
         public List<FBAction> GetFBActions()
         {

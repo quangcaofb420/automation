@@ -7,5 +7,10 @@ namespace Core.Models
     public class FBAction
     {
         public String Action { get; set; }
+
+        public FBAction(string actionName)
+        {
+            Action = actionName;
+        }
     }
 }
