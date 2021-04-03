@@ -34,11 +34,9 @@ namespace ScriptDesigner.CútomControl
         {
             tblScript.Controls.Clear();
             tblScript.RowCount = 0;
-            tblScript.RowStyles.Clear();   //now you have zero rowstyles
+            tblScript.RowStyles.Clear();
 
-            this.tblScript.RowCount = 0;
-
-
+            tblScript.RowCount = 0;
 
             for (int i = 0; i < _senarior.Scripts.Count; i++)
             {
@@ -49,21 +47,19 @@ namespace ScriptDesigner.CútomControl
         private void GenerateScriptItem(SlnScript script, int index)
         {
             List<SlnControl> mappingControls = GetMappingControls();
-            //this.lvSenarior.Items.Add(new ListViewItem())
             UCScriptItem item = new UCScriptItem(tblScript, script, 0, mappingControls, GetMappingControls);
-            this.tblScript.RowCount += 1;
-            this.tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.tblScript.Controls.Add(item, 0, index);
-            //this.lvSenarior.Controls.Add(item);
-
+            tblScript.RowCount += 1;
+            tblScript.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblScript.Controls.Add(item, 0, index);
         }
+   
         public List<SlnScript> GetScripts()
         {
             List<SlnScript> scripts = new List<SlnScript>();
             int rowCouunt = tblScript.RowCount;
-            for (int i = 0; i < rowCouunt; i++)
+            for (int i = 0; i < tblScript.Controls.Count; i++)
             {
-                UCScriptItem uCScript = tblScript.GetControlFromPosition(0, i) as UCScriptItem;
+                UCScriptItem uCScript = tblScript.Controls[i] as UCScriptItem;
                 if (uCScript != null)
                 {
                     SlnScript script = uCScript.GetScript();

@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using Core.ActionParam;
 using System.Collections.Generic;
 using Core.Common;
-using System.Reflection;
 
 namespace ScriptDesigner.CútomControl
 {
@@ -16,32 +15,33 @@ namespace ScriptDesigner.CútomControl
         private SlnScript _script;
         private int _levelIndex;
         private string Id { get; set; }
-        public TableLayoutPanel ParentObj { get; set; }
+        public TableLayoutPanel _parent;
         private List<SlnControl> _mappingControls;
         private Func<List<SlnControl>> _getMappingControlsFunc;
-        public UCScriptItem(TableLayoutPanel parent, SlnScript script, int levelIndex, List<SlnControl> mappingControls, Func<List<SlnControl>> getMappingControlsFunc)
+        private TableLayoutPanel tbl;
+        public UCScriptItem(TableLayoutPanel parent, SlnScript script, int levelIndex, List<SlnControl> mappingControls, Func<List<SlnControl>> getMappingControlsFunc )
         {
-            this.Id = "UCScriptItem_" + script.GetId() + "_" + CommonUtils.UUID();
-            this.ParentObj = parent;
+            this.Id = CommonUtils.UUID();
+            this._parent = parent;
             this._script = script;
             this._levelIndex = levelIndex;
             this._mappingControls = mappingControls;
             this._getMappingControlsFunc = getMappingControlsFunc;
             
             InitializeComponent();
-            this.cbbControl.DataSource = _mappingControls.Select(c => c.Name).ToList();
-            this.cbbControl.SelectedIndex = -1;
             InitUI();
-            int indent = 40;
-            //this.panelMain.AutoSize = true;
-            //this.panelMain.BackColor = Color.FromArgb(180, 217, 255);
-            this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
-            this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
             LoadScript();
         }
 
         private void InitUI()
         {
+            this.cbbControl.DataSource = _mappingControls.Select(c => c.Name).ToList();
+            this.cbbControl.SelectedIndex = -1;
+
+            int indent = 40;
+            this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
+            this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
+
             cbbAction.SelectedIndexChanged -= new EventHandler(cbbAction_SelectedIndexChanged);
             cbbAction.DataSource = Enum.GetValues(typeof(Core.Common.ACTION));
             cbbAction.SelectedIndex = -1;
@@ -57,11 +57,6 @@ namespace ScriptDesigner.CútomControl
         private void cbbAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateUI();
-            InitData();
-        }
-        private void InitData()
-        {
-          
         }
 
         private ACTION GetSelectedAction()
@@ -69,6 +64,7 @@ namespace ScriptDesigner.CútomControl
             Core.Common.ACTION action = (Core.Common.ACTION)this.cbbAction.SelectedItem;
             return action;
         }
+
         private void UpdateUI()
         {
             RemoveAllControls();
@@ -96,17 +92,15 @@ namespace ScriptDesigner.CútomControl
 
         }
 
-       
-
         private void GenerateIfCondition()
         {
             this.cbbControl.Visible = false;
             this.AutoSize = true;
             this.panelMain.AutoSize = true;
 
-            TableLayoutPanel tbl = CreateTableIfCondition();
+            tbl = CreateTableIfCondition();
 
-            List<SlnScript> conditions = _script.Param as List<SlnScript>;
+            List<SlnScript> conditions = _script.Param.ToList<SlnScript>();
             if (conditions == null || conditions.Count == 0)
             {
                 conditions = new List<SlnScript>() {
@@ -122,7 +116,7 @@ namespace ScriptDesigner.CútomControl
             for (int i = 0; i < conditions.Count; i++)
             {
                 SlnScript condition = conditions[i];
-                UCScriptItem conditionItem = new UCScriptItem(tbl, condition,  _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
+                UCScriptItem conditionItem = new UCScriptItem( tbl, condition,  _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
                 tbl.RowCount += 1;
                 tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
@@ -138,15 +132,15 @@ namespace ScriptDesigner.CútomControl
             this.AutoSize = true;
             this.panelMain.AutoSize = true;
 
-            Condition condition = _script.Param as Condition;
+            Condition condition = _script.Param.To<Condition>();
 
-            TableLayoutPanel tbl = CreateTableIfCondition();
+            tbl = CreateTableIfCondition();
 
             List<SlnScript> scripts = condition.Actions;
             for (int i = 0; i < scripts.Count; i++)
             {
                 SlnScript script = scripts[i];
-                UCScriptItem item = new UCScriptItem(tbl, script, _levelIndex, _mappingControls, _getMappingControlsFunc);
+                UCScriptItem item = new UCScriptItem( tbl, script, _levelIndex, _mappingControls, _getMappingControlsFunc);
                 tbl.RowCount += 1;
                 tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 tbl.Controls.Add(item, 0, tbl.RowCount - 1);
@@ -202,9 +196,10 @@ namespace ScriptDesigner.CútomControl
                 {
                     List<SlnScript> conditions = new List<SlnScript>();
                     TableLayoutPanel tbl = this.panelMain.Controls[3] as TableLayoutPanel;
-                    for (int i = 0; i < tbl.RowCount; i++)
+
+                    for (int i = 0; i < tbl.Controls.Count ; i++)
                     {
-                        UCScriptItem conditionUI = tbl.GetControlFromPosition(0, i) as UCScriptItem;
+                        UCScriptItem conditionUI = tbl.Controls[i] as UCScriptItem;
                         SlnScript condition = conditionUI.GetScript();
                         conditions.Add(condition);
                     }
@@ -216,11 +211,14 @@ namespace ScriptDesigner.CútomControl
                 else
                 {
                     TableLayoutPanel tblActions = this.panelMain.Controls[5] as TableLayoutPanel;
-                    for (int i = 1; i < tblActions.RowCount + 1; i++)
+                    for (int i = 0; i < tblActions.Controls.Count ; i++)
                     {
-                        UCScriptItem conditionUI = tblActions.GetControlFromPosition(0, i) as UCScriptItem;
-                        SlnScript act = conditionUI.GetScript();
-                        conditionActions.Add(act);
+                        UCScriptItem conditionUI = tblActions.Controls[i] as UCScriptItem;
+                        if (conditionUI != null)
+                        {
+                            SlnScript act = conditionUI.GetScript();
+                            conditionActions.Add(act);
+                        }
                     }
                 }
             }
@@ -296,7 +294,20 @@ namespace ScriptDesigner.CútomControl
             this.panelMain.Controls.Add(label);
             return label.Width;
         }
-
+        private TableLayoutPanel CreateTableIfCondition()
+        {
+            TableLayoutPanel tblC = new System.Windows.Forms.TableLayoutPanel();
+            tblC.BackColor = Color.FromArgb(40, new Random().Next(100, 240), new Random().Next(100, 240), new Random().Next(100, 240));
+            tblC.Controls.Clear();
+            tblC.AutoSize = true;
+            tblC.RowCount = 0;
+            tblC.ColumnCount = 1;
+            tblC.Location = new System.Drawing.Point(0, 30);
+            tblC.Height = 0;
+            tblC.Name = "TableLayoutPanel";
+            tblC.RowStyles.Clear();   //now you have zero rowstyles
+            return tblC;
+        }
         private void btnAction_Click(object sender, EventArgs e)
         {
             cmtAction.Show(PointToScreen(((Button)sender).Location));
@@ -304,35 +315,76 @@ namespace ScriptDesigner.CútomControl
 
         private void cmtAction_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            //_onMenuAction(this, MENU_ACTION.INSERT_BELOW);
-            //TableLayoutPanel tbl = (TableLayoutPanel)ParentObj;
-            //TableLayoutPanelCellPosition cellPosition = tbl.GetPositionFromControl(this);
-            //int rowIndex = cellPosition.Row;
+            List<UCScriptItem> controls = new List<UCScriptItem>();
+            int rowIndex = -1;
+            for (int i = 0; i < _parent.Controls.Count; i++)
+            {
+                UCScriptItem c = _parent.Controls[i] as UCScriptItem;
+                if(c != null)
+                {
+                    controls.Add(c);
+                    if (c.Id == this.Id)
+                    {
+                        rowIndex = i;
+                    }
+                }
+            }
+            TableLayoutPanelCellPosition cellPosition = _parent.GetPositionFromControl(this);
 
-            //UCScriptItem script = new UCScriptItem(tbl, SlnScript.Sleep(new Sleep(10)), _levelIndex, _mappingControls, _getMappingControlsFunc);
-            //tbl.RowCount += 1;
-            //tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            //tbl.Controls.Add(script, 0, rowIndex);
-            SlnScript sc = GetScript();
+            if (e.ClickedItem.Name == MNU_InsertAbove || e.ClickedItem.Name == MNU_InsertBelow)
+            {
+                rowIndex += e.ClickedItem.Name == MNU_InsertBelow ? 1 : 0;
+                if (rowIndex == -1)
+                {
+                    rowIndex = 0;
+                }
+                
+                UCScriptItem script = new UCScriptItem(_parent, SlnScript.Sleep(new Sleep(10)), _levelIndex, _mappingControls, _getMappingControlsFunc);
+               
+                controls.Insert(rowIndex, script);
+               
+            }
+            else if (e.ClickedItem.Name == MNU_InsertConditionAbove || e.ClickedItem.Name == MNU_InsertConditionBelow)
+            {
+                rowIndex += e.ClickedItem.Name == MNU_InsertConditionBelow ? 1 : 0;
+                if (rowIndex == -1)
+                {
+                    rowIndex = 0;
+                }
+                
+                UCScriptItem script = new UCScriptItem(_parent, SlnScript.Condition(
+                        new Condition("true",
+                        new List<SlnScript>(){
+                                SlnScript.Sleep(new Sleep(10))
+                            }
+                        )
+                    ), _levelIndex, _mappingControls, _getMappingControlsFunc);
+               
+                controls.Insert(rowIndex, script);
+               
+            }
+            else if (e.ClickedItem.Name == MNU_Delete)
+            {
+                controls.RemoveAt(rowIndex);
+            }
+            else if (e.ClickedItem.Name == MNU_InsertConditionBelow)
+            {
+                var ccccca = 10;
+            }
 
-
-            var a = 10;
-        }
-
-        private TableLayoutPanel CreateTableIfCondition()
-        {
-            TableLayoutPanel tbl = new System.Windows.Forms.TableLayoutPanel();
-            tbl.Controls.Clear();
-            tbl.AutoSize = true;
-            //tbl.RowCount = 0;
-            //tbl.ColumnCount = 1;
-            tbl.Location = new System.Drawing.Point(0, 30);
-            tbl.Height = 0;
-            tbl.Name = "TableLayoutPanel";
-            //tbl.Size = new System.Drawing.Size(200, 200);
-            tbl.RowStyles.Clear();   //now you have zero rowstyles
-
-            return tbl;
+            _parent.SuspendLayout();
+            _parent.RowCount = 0;
+            _parent.Controls.Clear();
+            _parent.RowStyles.Clear();
+            
+            for (int i = 0; i < controls.Count; i++)
+            {
+                Control c = controls[i];
+                _parent.RowCount += 1;
+                _parent.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                _parent.Controls.Add(c, 0, _parent.RowCount - 1);
+            }
+            _parent.ResumeLayout();
         }
 
         private void cbbControl_KeyDown(object sender, KeyEventArgs e)
@@ -352,21 +404,21 @@ namespace ScriptDesigner.CútomControl
             this.cmtAction.Items.Clear();
             if (action == ACTION.CONDITION)
             {
-                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "InsertConditionAbove", Text = "Insert Condition Above", ToolTipText = action.ToDescriptionString() });
-                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "InsertConditionBelow", Text = "Insert Condition Below", ToolTipText = action.ToDescriptionString() });
+                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertConditionAbove, Text = "Insert Condition Above", ToolTipText = action.ToDescriptionString() });
+                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertConditionBelow, Text = "Insert Condition Below", ToolTipText = action.ToDescriptionString() });
             }
             else if (action == ACTION.IF_CONDITION)
             {
-                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "InsertCondition", Text = "Insert Condition", ToolTipText = action.ToDescriptionString() });
+                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertCondition, Text = "Insert Condition", ToolTipText = action.ToDescriptionString() });
             }
 
             if (action != ACTION.CONDITION)
             {
-                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "InsertAbove", Text = "Insert Above", ToolTipText = action.ToDescriptionString() });
-                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "InsertBelow", Text = "Insert Below", ToolTipText = action.ToDescriptionString() });
+                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertAbove, Text = "Insert Above", ToolTipText = action.ToDescriptionString() });
+                this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertBelow, Text = "Insert Below", ToolTipText = action.ToDescriptionString() });
             }
 
-            this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = "Delete", Text = "DELETE", BackColor = Color.Red, ForeColor = Color.White, ToolTipText = action.ToDescriptionString() });
+            this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_Delete, Text = "DELETE", BackColor = Color.Red, ForeColor = Color.White, ToolTipText = action.ToDescriptionString() });
         }
 
         private void RemoveAllControls()
@@ -391,5 +443,13 @@ namespace ScriptDesigner.CútomControl
             this.Refresh();
 
         }
+
+        private static readonly string MNU_InsertConditionAbove = "InsertConditionAbove";
+        private static readonly string MNU_InsertConditionBelow = "InsertConditionBelow";
+        private static readonly string MNU_InsertCondition = "InsertCondition";
+        private static readonly string MNU_InsertAbove = "InsertAbove";
+        private static readonly string MNU_InsertBelow = "InsertBelow";
+        private static readonly string MNU_Delete = "Delete";
     }
+    
 }

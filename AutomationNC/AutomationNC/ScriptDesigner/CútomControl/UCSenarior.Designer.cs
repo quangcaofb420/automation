@@ -37,6 +37,7 @@ namespace ScriptDesigner.CútomControl
             this.tblScript.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tblScript.AutoSize = true;
             this.tblScript.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.tblScript.ColumnCount = 1;
             this.tblScript.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -55,6 +56,7 @@ namespace ScriptDesigner.CútomControl
             this.Name = "UCSenarior";
             this.Size = new System.Drawing.Size(704, 515);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
