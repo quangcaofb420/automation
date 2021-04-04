@@ -34,7 +34,9 @@ namespace ManagerAppNC
         {
             this.fbAccListComponent1 = new ManagerAppNC.Components.FBAccListComponent();
             this.pnMain = new System.Windows.Forms.Panel();
+            this.dgvFBAction = new System.Windows.Forms.DataGridView();
             this.pnMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFBAction)).BeginInit();
             this.SuspendLayout();
             // 
             // fbAccListComponent1
@@ -51,11 +53,28 @@ namespace ManagerAppNC
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnMain.AutoScroll = true;
+            this.pnMain.Controls.Add(this.dgvFBAction);
             this.pnMain.Controls.Add(this.fbAccListComponent1);
             this.pnMain.Location = new System.Drawing.Point(12, 12);
             this.pnMain.Name = "pnMain";
             this.pnMain.Size = new System.Drawing.Size(1900, 1031);
             this.pnMain.TabIndex = 1;
+            // 
+            // dgvFBAction
+            // 
+            this.dgvFBAction.AllowUserToAddRows = false;
+            this.dgvFBAction.AllowUserToDeleteRows = false;
+            this.dgvFBAction.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvFBAction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFBAction.Enabled = false;
+            this.dgvFBAction.Location = new System.Drawing.Point(548, 11);
+            this.dgvFBAction.MultiSelect = false;
+            this.dgvFBAction.Name = "dgvFBAction";
+            this.dgvFBAction.RowHeadersWidth = 51;
+            this.dgvFBAction.RowTemplate.Height = 29;
+            this.dgvFBAction.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvFBAction.Size = new System.Drawing.Size(332, 295);
+            this.dgvFBAction.TabIndex = 1;
             // 
             // Main
             // 
@@ -67,6 +86,7 @@ namespace ManagerAppNC
             this.Text = "Main";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.pnMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFBAction)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -75,6 +95,7 @@ namespace ManagerAppNC
 
         private Components.FBAccListComponent fbAccListComponent1;
         private System.Windows.Forms.Panel pnMain;
+        private System.Windows.Forms.DataGridView dgvFBAction;
     }
 }
 

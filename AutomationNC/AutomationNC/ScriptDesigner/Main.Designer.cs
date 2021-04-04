@@ -41,6 +41,7 @@ namespace ScriptDesigner
             this.btnAddFBAction = new System.Windows.Forms.Button();
             this.btnDeleteFBAction = new System.Windows.Forms.Button();
             this.btnEunSenarior = new System.Windows.Forms.Button();
+            this.cbbFBActionHandleTYpe = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappingControls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFBActions)).BeginInit();
             this.SuspendLayout();
@@ -129,7 +130,7 @@ namespace ScriptDesigner
             // 
             this.txtActionName.Location = new System.Drawing.Point(68, 156);
             this.txtActionName.Name = "txtActionName";
-            this.txtActionName.Size = new System.Drawing.Size(191, 27);
+            this.txtActionName.Size = new System.Drawing.Size(119, 27);
             this.txtActionName.TabIndex = 9;
             // 
             // label1
@@ -143,7 +144,7 @@ namespace ScriptDesigner
             // 
             // btnAddFBAction
             // 
-            this.btnAddFBAction.Location = new System.Drawing.Point(266, 154);
+            this.btnAddFBAction.Location = new System.Drawing.Point(335, 155);
             this.btnAddFBAction.Name = "btnAddFBAction";
             this.btnAddFBAction.Size = new System.Drawing.Size(58, 29);
             this.btnAddFBAction.TabIndex = 11;
@@ -172,11 +173,21 @@ namespace ScriptDesigner
             this.btnEunSenarior.UseVisualStyleBackColor = true;
             this.btnEunSenarior.Click += new System.EventHandler(this.btnEunSenarior_Click);
             // 
+            // cbbFBActionHandleTYpe
+            // 
+            this.cbbFBActionHandleTYpe.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbFBActionHandleTYpe.FormattingEnabled = true;
+            this.cbbFBActionHandleTYpe.Location = new System.Drawing.Point(193, 156);
+            this.cbbFBActionHandleTYpe.Name = "cbbFBActionHandleTYpe";
+            this.cbbFBActionHandleTYpe.Size = new System.Drawing.Size(136, 28);
+            this.cbbFBActionHandleTYpe.TabIndex = 14;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1006, 721);
+            this.Controls.Add(this.cbbFBActionHandleTYpe);
             this.Controls.Add(this.btnEunSenarior);
             this.Controls.Add(this.btnDeleteFBAction);
             this.Controls.Add(this.btnAddFBAction);
@@ -213,6 +224,7 @@ namespace ScriptDesigner
         private System.Windows.Forms.Button btnAddFBAction;
         private System.Windows.Forms.Button btnDeleteFBAction;
         private System.Windows.Forms.Button btnEunSenarior;
+        private System.Windows.Forms.ComboBox cbbFBActionHandleTYpe;
     }
 }
 

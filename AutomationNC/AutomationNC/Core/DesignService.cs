@@ -11,8 +11,6 @@ namespace Core
 {
     public class DesignService
     {
-      
-
         public static string GetFile(FBAction fbAction, FILE_ACTION name)
         {
             string file = SeleniumUtils.GetWorkingFolderPath() + @"/" + (fbAction != null ? fbAction.Action : "") + "_" + name + ".json";
@@ -35,9 +33,11 @@ namespace Core
         {
             return GetList<SlnScript>(fbAction, FILE_ACTION.SCRIPTS);
         }
-          public List<SlnScript> GetScripts(string fbAction)
+        public List<SlnScript> GetScripts(string fbAction)
         {
-            return GetList<SlnScript>(new FBAction(fbAction), FILE_ACTION.SCRIPTS);
+            List<FBAction> actions = this.GetFBActions();
+            FBAction action = actions.Find(a => a.Action == fbAction);
+            return GetList<SlnScript>(action, FILE_ACTION.SCRIPTS);
         }
         
         public List<FBAction> GetFBActions()

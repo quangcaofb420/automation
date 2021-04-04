@@ -10,7 +10,7 @@ namespace Core.Utilities
 
         public static string GetWorkingFolderPath()
         {
-            return @"D:\LONG\automation";
+            return @"C:\QuangCaoFB420";
         }
 
     }

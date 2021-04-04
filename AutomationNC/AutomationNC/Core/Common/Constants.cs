@@ -44,6 +44,13 @@ namespace Core.Common
         CONTROLS,
         SCRIPTS,
         FB_ACTIONS
+    } 
+    public enum FB_ACTION_HANDLE
+    {
+        SIMPLE,
+        LOOP_FB_ACC,
+        MIXED_LOOP_FB_ACC,
+        WATCH_VIDEO_STREAM
     }
 
     public enum OS

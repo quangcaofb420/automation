@@ -1,6 +1,7 @@
 ﻿
 using Core;
 using Core.ActionParam;
+using Core.Common;
 using Core.Models;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace ScriptDesigner
 
         private void LoadData()
         {
+            LoadFBActionHandleType();
             LoadFBAction();
         }
         private void LoadDataFBAction()
@@ -31,7 +33,11 @@ namespace ScriptDesigner
             LoadMappingControls();
             LoadSenarior();
         }
+        private void LoadFBActionHandleType()
+        {
+            cbbFBActionHandleTYpe.DataSource = Enum.GetValues(typeof(FB_ACTION_HANDLE));
 
+        }
         private void LoadFBAction()
         {
             List<FBAction> fBActions = GetFBActions();
@@ -111,14 +117,14 @@ namespace ScriptDesigner
         private void btnAddFBAction_Click(object sender, EventArgs e)
         {
             string action = txtActionName.Text;
+            string handleType = cbbFBActionHandleTYpe.SelectedItem.ToString();
             if (action == "")
             {
                 return;
             }
             txtActionName.Text = "";
             List<FBAction> actions = (dgvFBActions.DataSource as BindingSource).DataSource as List<FBAction>;
-            FBAction act = new FBAction();
-            act.Action = action;
+            FBAction act = new FBAction(action, handleType);
             actions.Add(act);
             SaveFBActions(actions);
             LoadFBAction();
