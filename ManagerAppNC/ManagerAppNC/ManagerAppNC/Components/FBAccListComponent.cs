@@ -24,7 +24,7 @@ namespace ManagerAppNC.Components
 
         private void FBAccListComponent_Load(object sender, EventArgs e)
         {
-            this.LoadFBAccList();
+            LoadFBAccList();
         }
 
         private async void LoadFBAccList()
@@ -32,7 +32,7 @@ namespace ManagerAppNC.Components
             if (_fbAdsService != null)
             {
                 _fbAccs = await _fbAdsService.GetFBAccList();
-                this.RefreshDataGridView();
+                RefreshDataGridView();
             }
         }
 
@@ -40,13 +40,17 @@ namespace ManagerAppNC.Components
         {
             var source = new BindingSource();
             source.DataSource = _fbAccs;
-            this.dgvFBAcc.DataSource = source;
-
+            dgvFBAcc.DataSource = source;
         }
 
         public List<FBAcc> GetFBAccs()
         {
             return _fbAccs;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadFBAccList();
         }
     }
 }

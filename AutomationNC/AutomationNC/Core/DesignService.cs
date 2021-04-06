@@ -5,6 +5,7 @@ using Core.Utilities;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Core
@@ -72,6 +73,26 @@ namespace Core
         {
             string jsonStr = JsonConvert.SerializeObject(scripts);
             File.WriteAllText(GetFile(fBAction, FILE_ACTION.SCRIPTS), jsonStr);
+        }
+
+        public List<FBAction> RemoveFBAction(FBAction fBAction)
+        {
+            List<FBAction> actions = GetFBActions();
+            actions = actions.Where(act => act.Action != fBAction.Action).ToList();
+            SaveFBActions(actions);
+
+            string script = GetFile(fBAction, FILE_ACTION.SCRIPTS);
+            if (File.Exists(script))
+            {
+                File.Delete(script);
+            }
+            string mappingControl = GetFile(fBAction, FILE_ACTION.CONTROLS);
+            if (File.Exists(mappingControl))
+            {
+                File.Delete(mappingControl);
+            }
+
+            return actions;
         }
     }
 }

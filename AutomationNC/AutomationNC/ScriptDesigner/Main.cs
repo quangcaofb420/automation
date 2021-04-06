@@ -41,9 +41,7 @@ namespace ScriptDesigner
         private void LoadFBAction()
         {
             List<FBAction> fBActions = GetFBActions();
-            
             dgvFBActions.AutoGenerateColumns = true;
-
             BindingSource source = new BindingSource();
             source.DataSource = fBActions;
             dgvFBActions.DataSource = source;
@@ -82,8 +80,11 @@ namespace ScriptDesigner
 
         private void btnSaveMappingControl_Click(object sender, EventArgs e)
         {
-            List<SlnControl> controls = (dgvMappingControls.DataSource as BindingSource).DataSource as List<SlnControl>;
-            _service.SaveMappingControls(_fbAction, controls);
+            if (dgvMappingControls.DataSource != null)
+            {
+                List<SlnControl> controls = (dgvMappingControls.DataSource as BindingSource).DataSource as List<SlnControl>;
+                _service.SaveMappingControls(_fbAction, controls);
+            }
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -138,6 +139,22 @@ namespace ScriptDesigner
         {
             _senarior.Scripts = ucSenarior.GetScripts();
             _senarior.Process();
+        }
+
+        private void btnDeleteFBAction_Click(object sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = dgvFBActions.SelectedRows;
+            if (selectedRows.Count > 0)
+            {
+                FBAction fBAction = selectedRows[0].DataBoundItem as FBAction;
+                DialogResult dialogResult = MessageBox.Show("Do you want to delete  \"" + fBAction.Action + "\"", "Delete", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    _service.RemoveFBAction(fBAction);
+                    LoadFBAction();
+                }
+            }
+             
         }
     }
 }

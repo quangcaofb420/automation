@@ -49,19 +49,19 @@ namespace ScriptDesigner
             // dgvMappingControls
             // 
             this.dgvMappingControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dgvMappingControls.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMappingControls.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMappingControls.Location = new System.Drawing.Point(463, 196);
+            this.dgvMappingControls.Location = new System.Drawing.Point(13, 258);
             this.dgvMappingControls.Name = "dgvMappingControls";
             this.dgvMappingControls.RowHeadersWidth = 51;
             this.dgvMappingControls.RowTemplate.Height = 29;
-            this.dgvMappingControls.Size = new System.Drawing.Size(531, 478);
+            this.dgvMappingControls.Size = new System.Drawing.Size(392, 451);
             this.dgvMappingControls.TabIndex = 1;
             // 
             // btnSaveMappingControl
             // 
-            this.btnSaveMappingControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveMappingControl.Location = new System.Drawing.Point(798, 680);
+            this.btnSaveMappingControl.Location = new System.Drawing.Point(13, 223);
             this.btnSaveMappingControl.Name = "btnSaveMappingControl";
             this.btnSaveMappingControl.Size = new System.Drawing.Size(196, 29);
             this.btnSaveMappingControl.TabIndex = 2;
@@ -71,8 +71,8 @@ namespace ScriptDesigner
             // 
             // btnSaveSenarior
             // 
-            this.btnSaveSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveSenarior.Location = new System.Drawing.Point(341, 680);
+            this.btnSaveSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveSenarior.Location = new System.Drawing.Point(814, 12);
             this.btnSaveSenarior.Name = "btnSaveSenarior";
             this.btnSaveSenarior.Size = new System.Drawing.Size(116, 29);
             this.btnSaveSenarior.TabIndex = 3;
@@ -85,9 +85,10 @@ namespace ScriptDesigner
             this.ucSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ucSenarior.Location = new System.Drawing.Point(12, 196);
+            this.ucSenarior.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ucSenarior.Location = new System.Drawing.Point(424, 47);
             this.ucSenarior.Name = "ucSenarior";
-            this.ucSenarior.Size = new System.Drawing.Size(445, 478);
+            this.ucSenarior.Size = new System.Drawing.Size(570, 662);
             this.ucSenarior.TabIndex = 5;
             // 
             // dgvFBActions
@@ -103,12 +104,12 @@ namespace ScriptDesigner
             this.dgvFBActions.RowHeadersWidth = 51;
             this.dgvFBActions.RowTemplate.Height = 29;
             this.dgvFBActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFBActions.Size = new System.Drawing.Size(380, 135);
+            this.dgvFBActions.Size = new System.Drawing.Size(328, 135);
             this.dgvFBActions.TabIndex = 6;
             // 
             // btnSaveFBActions
             // 
-            this.btnSaveFBActions.Location = new System.Drawing.Point(399, 119);
+            this.btnSaveFBActions.Location = new System.Drawing.Point(347, 118);
             this.btnSaveFBActions.Name = "btnSaveFBActions";
             this.btnSaveFBActions.Size = new System.Drawing.Size(58, 29);
             this.btnSaveFBActions.TabIndex = 7;
@@ -118,7 +119,7 @@ namespace ScriptDesigner
             // 
             // btnLoadDBAction
             // 
-            this.btnLoadDBAction.Location = new System.Drawing.Point(399, 13);
+            this.btnLoadDBAction.Location = new System.Drawing.Point(347, 12);
             this.btnLoadDBAction.Name = "btnLoadDBAction";
             this.btnLoadDBAction.Size = new System.Drawing.Size(58, 29);
             this.btnLoadDBAction.TabIndex = 8;
@@ -130,7 +131,7 @@ namespace ScriptDesigner
             // 
             this.txtActionName.Location = new System.Drawing.Point(68, 156);
             this.txtActionName.Name = "txtActionName";
-            this.txtActionName.Size = new System.Drawing.Size(119, 27);
+            this.txtActionName.Size = new System.Drawing.Size(100, 27);
             this.txtActionName.TabIndex = 9;
             // 
             // label1
@@ -144,7 +145,7 @@ namespace ScriptDesigner
             // 
             // btnAddFBAction
             // 
-            this.btnAddFBAction.Location = new System.Drawing.Point(335, 155);
+            this.btnAddFBAction.Location = new System.Drawing.Point(347, 156);
             this.btnAddFBAction.Name = "btnAddFBAction";
             this.btnAddFBAction.Size = new System.Drawing.Size(58, 29);
             this.btnAddFBAction.TabIndex = 11;
@@ -156,16 +157,18 @@ namespace ScriptDesigner
             // 
             this.btnDeleteFBAction.BackColor = System.Drawing.Color.Red;
             this.btnDeleteFBAction.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnDeleteFBAction.Location = new System.Drawing.Point(399, 68);
+            this.btnDeleteFBAction.Location = new System.Drawing.Point(347, 67);
             this.btnDeleteFBAction.Name = "btnDeleteFBAction";
             this.btnDeleteFBAction.Size = new System.Drawing.Size(58, 29);
             this.btnDeleteFBAction.TabIndex = 12;
             this.btnDeleteFBAction.Text = "DEL";
             this.btnDeleteFBAction.UseVisualStyleBackColor = false;
+            this.btnDeleteFBAction.Click += new System.EventHandler(this.btnDeleteFBAction_Click);
             // 
             // btnEunSenarior
             // 
-            this.btnEunSenarior.Location = new System.Drawing.Point(399, 154);
+            this.btnEunSenarior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEunSenarior.Location = new System.Drawing.Point(936, 12);
             this.btnEunSenarior.Name = "btnEunSenarior";
             this.btnEunSenarior.Size = new System.Drawing.Size(58, 29);
             this.btnEunSenarior.TabIndex = 13;
@@ -177,9 +180,9 @@ namespace ScriptDesigner
             // 
             this.cbbFBActionHandleTYpe.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbFBActionHandleTYpe.FormattingEnabled = true;
-            this.cbbFBActionHandleTYpe.Location = new System.Drawing.Point(193, 156);
+            this.cbbFBActionHandleTYpe.Location = new System.Drawing.Point(174, 156);
             this.cbbFBActionHandleTYpe.Name = "cbbFBActionHandleTYpe";
-            this.cbbFBActionHandleTYpe.Size = new System.Drawing.Size(136, 28);
+            this.cbbFBActionHandleTYpe.Size = new System.Drawing.Size(167, 28);
             this.cbbFBActionHandleTYpe.TabIndex = 14;
             // 
             // Main

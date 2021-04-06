@@ -31,6 +31,7 @@ namespace ManagerAppNC.Components
         {
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.dgvFBAcc = new System.Windows.Forms.DataGridView();
+            this.btnRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFBAcc)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,7 +41,7 @@ namespace ManagerAppNC.Components
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearch.Location = new System.Drawing.Point(10, 10);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(358, 27);
+            this.txtSearch.Size = new System.Drawing.Size(274, 27);
             this.txtSearch.TabIndex = 0;
             // 
             // dgvFBAcc
@@ -57,10 +58,22 @@ namespace ManagerAppNC.Components
             this.dgvFBAcc.Size = new System.Drawing.Size(358, 362);
             this.dgvFBAcc.TabIndex = 1;
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Location = new System.Drawing.Point(290, 10);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(77, 29);
+            this.btnRefresh.TabIndex = 2;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // FBAccListComponent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.dgvFBAcc);
             this.Controls.Add(this.txtSearch);
             this.Name = "FBAccListComponent";
@@ -77,5 +90,6 @@ namespace ManagerAppNC.Components
 
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.DataGridView dgvFBAcc;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
