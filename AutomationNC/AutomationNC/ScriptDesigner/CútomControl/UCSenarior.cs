@@ -24,8 +24,7 @@ namespace ScriptDesigner.CútomControl
 
             if (_senarior == null || _senarior.Scripts == null || _senarior.Scripts.Count == 0)
             {
-                _senarior = new SlnSenarior();
-                _senarior.Scripts = new List<SlnScript>() { SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/")) };
+                _senarior = new SlnSenarior(new List<SlnScript>() { SlnScript.OpenWebsite(new OpenWebsite("", "https://www.facebook.com/")) });
             }
             GenerateScripts();
         }
@@ -71,7 +70,7 @@ namespace ScriptDesigner.CútomControl
 
         private List<SlnControl> GetMappingControls()
         {
-            List<SlnControl> mappingControls = _service.GetMappingControls(_fbAction);
+            List<SlnControl> mappingControls = _service.GetMappingControls(_fbAction.Action);
             return mappingControls;
         }
     }

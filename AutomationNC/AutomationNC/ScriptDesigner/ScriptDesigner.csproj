@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ControlUtils\ControlUtils.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 

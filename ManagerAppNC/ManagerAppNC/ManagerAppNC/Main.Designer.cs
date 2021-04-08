@@ -34,6 +34,8 @@ namespace ManagerAppNC
         {
             this.fbAccListComponent1 = new ManagerAppNC.Components.FBAccListComponent();
             this.pnMain = new System.Windows.Forms.Panel();
+            this.btnRun = new System.Windows.Forms.Button();
+            this.btnRunAll = new System.Windows.Forms.Button();
             this.dgvFBAction = new System.Windows.Forms.DataGridView();
             this.pnMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFBAction)).BeginInit();
@@ -41,7 +43,8 @@ namespace ManagerAppNC
             // 
             // fbAccListComponent1
             // 
-            this.fbAccListComponent1.Location = new System.Drawing.Point(0, 0);
+            this.fbAccListComponent1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.fbAccListComponent1.Location = new System.Drawing.Point(1358, 82);
             this.fbAccListComponent1.Name = "fbAccListComponent1";
             this.fbAccListComponent1.Padding = new System.Windows.Forms.Padding(10);
             this.fbAccListComponent1.Size = new System.Drawing.Size(542, 314);
@@ -53,12 +56,38 @@ namespace ManagerAppNC
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnMain.AutoScroll = true;
+            this.pnMain.Controls.Add(this.btnRun);
+            this.pnMain.Controls.Add(this.btnRunAll);
             this.pnMain.Controls.Add(this.dgvFBAction);
             this.pnMain.Controls.Add(this.fbAccListComponent1);
             this.pnMain.Location = new System.Drawing.Point(12, 12);
             this.pnMain.Name = "pnMain";
             this.pnMain.Size = new System.Drawing.Size(1900, 1031);
             this.pnMain.TabIndex = 1;
+            // 
+            // btnRun
+            // 
+            this.btnRun.Location = new System.Drawing.Point(338, 0);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(149, 29);
+            this.btnRun.TabIndex = 3;
+            this.btnRun.Text = "Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
+            // 
+            // btnRunAll
+            // 
+            this.btnRunAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunAll.BackColor = System.Drawing.Color.Red;
+            this.btnRunAll.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnRunAll.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnRunAll.Location = new System.Drawing.Point(1751, 0);
+            this.btnRunAll.Name = "btnRunAll";
+            this.btnRunAll.Size = new System.Drawing.Size(149, 76);
+            this.btnRunAll.TabIndex = 2;
+            this.btnRunAll.Text = "RUN ALL";
+            this.btnRunAll.UseVisualStyleBackColor = false;
+            this.btnRunAll.Click += new System.EventHandler(this.btnRunAll_Click);
             // 
             // dgvFBAction
             // 
@@ -67,7 +96,7 @@ namespace ManagerAppNC
             this.dgvFBAction.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvFBAction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvFBAction.Enabled = false;
-            this.dgvFBAction.Location = new System.Drawing.Point(548, 11);
+            this.dgvFBAction.Location = new System.Drawing.Point(0, 0);
             this.dgvFBAction.MultiSelect = false;
             this.dgvFBAction.Name = "dgvFBAction";
             this.dgvFBAction.RowHeadersWidth = 51;
@@ -96,6 +125,8 @@ namespace ManagerAppNC
         private Components.FBAccListComponent fbAccListComponent1;
         private System.Windows.Forms.Panel pnMain;
         private System.Windows.Forms.DataGridView dgvFBAction;
+        private System.Windows.Forms.Button btnRunAll;
+        private System.Windows.Forms.Button btnRun;
     }
 }
 

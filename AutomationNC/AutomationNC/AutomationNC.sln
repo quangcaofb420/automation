@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagerAppNC", "..\..\ManagerAppNC\ManagerAppNC\ManagerAppNC\ManagerAppNC.csproj", "{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlUtils", "ControlUtils\ControlUtils.csproj", "{91E64122-95F2-481F-9EC1-4A29F6596FC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A814456-BE6B-4427-97F8-CC77F2FA2F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E64122-95F2-481F-9EC1-4A29F6596FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E64122-95F2-481F-9EC1-4A29F6596FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E64122-95F2-481F-9EC1-4A29F6596FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E64122-95F2-481F-9EC1-4A29F6596FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

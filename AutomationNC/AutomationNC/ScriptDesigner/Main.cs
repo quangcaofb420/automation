@@ -1,4 +1,5 @@
 ﻿
+using ControlUtils;
 using Core;
 using Core.ActionParam;
 using Core.Common;
@@ -18,7 +19,6 @@ namespace ScriptDesigner
         public Main()
         {
             _service = new DesignService();
-            _senarior = new SlnSenarior();
             InitializeComponent();
             LoadData();
         }
@@ -55,15 +55,10 @@ namespace ScriptDesigner
 
         private List<SlnControl> GetMappingControls()
         {
-            List<SlnControl> mappingControls = _service.GetMappingControls(_fbAction);
+            List<SlnControl> mappingControls = _service.GetMappingControls(_fbAction.Action);
             return mappingControls;
         }
-         private List<SlnScript> GetScripts()
-        {
-            List<SlnScript> scripts = _service.GetScripts(_fbAction);
-            return scripts;
-        }
-
+     
         private void LoadMappingControls()
         {
             this.dgvMappingControls.DataSource = null;
@@ -74,7 +69,7 @@ namespace ScriptDesigner
         }
         private void LoadSenarior()
         {
-            _senarior.Scripts = GetScripts();
+            _senarior = _service.GetSenarior(_fbAction.Action);
             ucSenarior.SetSenarior(_fbAction, _senarior);
         }
 
@@ -83,7 +78,7 @@ namespace ScriptDesigner
             if (dgvMappingControls.DataSource != null)
             {
                 List<SlnControl> controls = (dgvMappingControls.DataSource as BindingSource).DataSource as List<SlnControl>;
-                _service.SaveMappingControls(_fbAction, controls);
+                _service.SaveMappingControls(_fbAction.Action, controls);
             }
         }
 
@@ -95,7 +90,8 @@ namespace ScriptDesigner
         private void btnSaveSenarior_Click(object sender, EventArgs e)
         {
             List<SlnScript> scripts = ucSenarior.GetScripts();
-            _service.SaveScripts(_fbAction, scripts);
+            _senarior.Scripts = scripts;
+            _service.SaveSenarior(_fbAction.Action, _senarior);
         }
 
         private void btnSaveFBActions_Click(object sender, EventArgs e)
@@ -106,11 +102,10 @@ namespace ScriptDesigner
 
         private void btnLoadDBAction_Click(object sender, EventArgs e)
         {
-            DataGridViewSelectedRowCollection selectedRows = dgvFBActions.SelectedRows;
-            if (selectedRows.Count > 0)
+            FBAction action = dgvFBActions.SelectedData<FBAction>();
+            if (action != null)
             {
-                FBAction fBAction = selectedRows[0].DataBoundItem as FBAction;
-                _fbAction = fBAction; 
+                _fbAction = action;
                 LoadDataFBAction();
             }
         }
@@ -137,24 +132,23 @@ namespace ScriptDesigner
 
         private void btnEunSenarior_Click(object sender, EventArgs e)
         {
-            _senarior.Scripts = ucSenarior.GetScripts();
-            _senarior.Process();
+            List<SlnScript> scripts = ucSenarior.GetScripts();
+            SlnSenarior temp = new SlnSenarior(scripts);
+            temp.Process();
         }
 
         private void btnDeleteFBAction_Click(object sender, EventArgs e)
         {
-            DataGridViewSelectedRowCollection selectedRows = dgvFBActions.SelectedRows;
-            if (selectedRows.Count > 0)
+            FBAction action = dgvFBActions.SelectedData<FBAction>();
+            if (action != null) 
             {
-                FBAction fBAction = selectedRows[0].DataBoundItem as FBAction;
-                DialogResult dialogResult = MessageBox.Show("Do you want to delete  \"" + fBAction.Action + "\"", "Delete", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Do you want to delete  \"" + action.Action + "\"", "Delete", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    _service.RemoveFBAction(fBAction);
+                    _service.RemoveFBAction(action.Action);
                     LoadFBAction();
                 }
             }
-             
         }
     }
 }

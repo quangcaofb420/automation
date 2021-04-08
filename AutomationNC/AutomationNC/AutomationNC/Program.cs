@@ -13,9 +13,8 @@ namespace AutomationNC
             {
                 string fbAction = args[0];
                 DesignService designService = new DesignService();
-                List<SlnScript> scripts = designService.GetScripts(fbAction);
-                SlnSenarior slnSenarior = new SlnSenarior();
-                slnSenarior.Scripts = scripts;
+
+                SlnSenarior slnSenarior = designService.GetSenarior(fbAction);
                 slnSenarior.Process();
             }
         }

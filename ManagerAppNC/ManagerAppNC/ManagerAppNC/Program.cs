@@ -5,11 +5,7 @@ using ManagerAppNC.Core.Repositories;
 using ManagerAppNC.Core.Services;
 using ManagerAppNC.DI;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ManagerAppNC

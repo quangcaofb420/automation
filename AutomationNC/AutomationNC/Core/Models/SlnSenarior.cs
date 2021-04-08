@@ -11,13 +11,13 @@ namespace Core.Models
     {
         private List<SlnScript> _scripts = new List<SlnScript>();
         private SlnSeleniumWebDriver _webDriver;
-        private static SlnSenarior _instance;
         private Dictionary<string, object> _variables;
 
         public List<SlnScript> Scripts { get { return _scripts; } set { this._scripts = value; } }
        
-        public SlnSenarior()
+        public SlnSenarior(List<SlnScript> scripts)
         {
+            _scripts = scripts;
             _variables = new Dictionary<string, object>();
         }
 

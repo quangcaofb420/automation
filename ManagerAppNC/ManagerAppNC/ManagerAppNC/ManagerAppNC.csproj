@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AutomationNC\AutomationNC\ControlUtils\ControlUtils.csproj" />
     <ProjectReference Include="..\..\..\AutomationNC\AutomationNC\Core\Core.csproj" />
   </ItemGroup>
 

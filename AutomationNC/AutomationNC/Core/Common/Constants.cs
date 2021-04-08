@@ -42,7 +42,7 @@ namespace Core.Common
     public enum FILE_ACTION
     {
         CONTROLS,
-        SCRIPTS,
+        SENARIOR,
         FB_ACTIONS
     } 
     public enum FB_ACTION_HANDLE

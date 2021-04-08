@@ -43,5 +43,10 @@ namespace Core.Utilities
             string str = JsonConvert.SerializeObject(param);
             return JsonConvert.DeserializeObject<T>(str);
         }
+        public static T ToEnum<T>(this string param)
+        {
+            T t = (T)Enum.Parse(typeof(T), param);
+            return t;
+        }
     }
 }
