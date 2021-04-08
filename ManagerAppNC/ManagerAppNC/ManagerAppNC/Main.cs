@@ -57,7 +57,10 @@ namespace ManagerAppNC
         private void RunScriptInSimpleMode(FBAction action)
         {
             SlnSenarior senarior = _designService.GetSenarior(action.Action);
-            
+            if (senarior != null)
+            {
+                senarior.Process();
+            }
         }
 
         private void btnRun_Click(object sender, System.EventArgs e)

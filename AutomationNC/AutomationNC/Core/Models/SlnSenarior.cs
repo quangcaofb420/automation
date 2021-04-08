@@ -24,15 +24,17 @@ namespace Core.Models
         public void Process()
         {
             _webDriver = new SlnSeleniumWebDriver();
+            
             try
             {
                 ProcessScripts(_scripts);
+                HandleExit();
             }
             catch (Exception)
             {
                 HandleExit();
             }
-            HandleExit();
+           
         }
 
         private void ProcessScripts(List<SlnScript> scripts)
@@ -99,24 +101,24 @@ namespace Core.Models
         }
         private void HandleIfCondition(SlnScript script)
         {
+            List<SlnScript> conditions = script.Param.ToList<SlnScript>();
+            for (int i = 0; i < conditions.Count; i++)
+            {
+                SlnScript con = conditions[i];
+                Condition condition = con.Param.To<Condition>(); 
 
-            //IfCondition[] conditions = script.Param as IfCondition[];
-            //for (int i = 0; i < conditions.Length; i++)
-            //{
-            //    IfCondition condition = conditions[i];
-            //    if (i == conditions.Length - 1 && condition.Expression == null)
-            //    {
-            //        List<SlnScript> scripts = condition.Actions;
-            //        ProcessScripts(scripts);
-            //    }
-            //    else if ((Boolean)ExpressionUtils.Evaluate(condition.Expression) == true)
-            //    {
-            //        List<SlnScript> scripts = condition.Actions;
-            //        ProcessScripts(scripts);
-            //        break;
-            //    }
-            //}
-
+                if (i == conditions.Count - 1 && (condition.Expression == null || condition.Expression == "") )
+                {
+                    List<SlnScript> scripts = condition.Actions;
+                    ProcessScripts(scripts);
+                }
+                else if ((Boolean)ExpressionUtils.Evaluate(condition.Expression) == true)
+                {
+                    List<SlnScript> scripts = condition.Actions;
+                    ProcessScripts(scripts);
+                    break;
+                }
+            }
         }
         private async void HandleGetLabel(SlnScript script)
         {

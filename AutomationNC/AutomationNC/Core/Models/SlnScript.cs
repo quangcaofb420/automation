@@ -3,8 +3,6 @@ using Core.ActionParam;
 using Core.Common;
 using Core.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Models
 {
@@ -17,7 +15,7 @@ namespace Core.Models
         private string _id;
         public SlnScript()
         {
-            this._id = System.Guid.NewGuid().ToString();
+            this._id = CommonUtils.UUID();
         }
 
         public string GetId()

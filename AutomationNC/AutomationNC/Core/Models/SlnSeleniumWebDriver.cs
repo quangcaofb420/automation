@@ -78,9 +78,6 @@ namespace Core.Models
         {
 
         }
-
-
-
         private async Task<bool> CheckElementIsExist(string xpath)
         {
             IWebElement element = await GetElement(xpath, 5);

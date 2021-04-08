@@ -33,8 +33,7 @@ namespace Core
      
         public SlnSenarior GetSenarior(string fbActionName)
         {
-            List<SlnScript> scripts = GetList<SlnScript>(fbActionName, FILE_ACTION.SENARIOR);
-            SlnSenarior senarior = new SlnSenarior(scripts);
+            SlnSenarior senarior =GetObject<SlnSenarior>(fbActionName, FILE_ACTION.SENARIOR);
             return senarior;
         }
         
@@ -53,6 +52,13 @@ namespace Core
                 controls = new List<T>();
             }
             return controls;
+        }
+        private T GetObject<T>(string fbAction, FILE_ACTION name)
+        {
+            string file = GetFile( fbAction, name);
+            var jsonStr = File.ReadAllText(file);
+            T t = JsonConvert.DeserializeObject<T>(jsonStr);
+            return t;
         }
 
         public void SaveFBActions(List<FBAction> actions)
