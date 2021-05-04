@@ -85,6 +85,11 @@ namespace ScriptDesigner.CútomControl
                 GenerateNormalAction();
                 GenerateCondition();
             }
+            else if (action == ACTION.LOOP_JSON_FILE)
+            {
+                GenerateNormalAction();
+                GenerateLoopJsonFile();
+            }
             else
             {
                 GenerateNormalAction();
@@ -150,12 +155,41 @@ namespace ScriptDesigner.CútomControl
             this.panelMain.Refresh();
             this.Refresh();
         }
+        private void GenerateLoopJsonFile()
+        {
+            this.cbbControl.Visible = false;
+            this.AutoSize = true;
+            this.panelMain.AutoSize = true;
+
+            tbl = CreateTableLoopJsonFile();
+
+            List<SlnScript> actions = _script.Param.ToList<SlnScript>();
+            if (actions == null || actions.Count == 0)
+            {
+                actions = new List<SlnScript>() {
+                    SlnScript.Sleep(
+                        new Sleep(10)
+                    )
+                };
+            }
+            for (int i = 0; i < actions.Count; i++)
+            {
+                SlnScript condition = actions[i];
+                UCScriptItem conditionItem = new UCScriptItem(tbl, condition, _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
+                tbl.RowCount += 1;
+                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
+            }
+            this.panelMain.Controls.Add(tbl);
+            this.panelMain.Refresh();
+            this.Refresh();
+        }
         private void GenerateNormalAction()
         {
             Core.Common.ACTION action = (Core.Common.ACTION)this.cbbAction.SelectedItem;
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             bool requiredElement = definedAction.RequiredElement;
-            bool isCondition = action == Core.Common.ACTION.CONDITION;
+            bool isCondition = action == Core.Common.ACTION.CONDITION || action == Core.Common.ACTION.LOOP_JSON_FILE;
             this.cbbAction.Enabled = !isCondition;
             this.cbbControl.Visible = requiredElement;
             if (requiredElement)
@@ -222,6 +256,21 @@ namespace ScriptDesigner.CútomControl
                     }
                 }
             }
+            else if (action == ACTION.LOOP_JSON_FILE)
+            {
+               
+                TableLayoutPanel tblActions = this.panelMain.Controls[5] as TableLayoutPanel;
+                for (int i = 0; i < tblActions.Controls.Count ; i++)
+                {
+                    UCScriptItem actionUI = tblActions.Controls[i] as UCScriptItem;
+                    if (actionUI != null)
+                    {
+                        SlnScript act = actionUI.GetScript();
+                        conditionActions.Add(act);
+                    }
+                }
+               
+            }
             if (requiredElement && cbbControl.SelectedItem != null)
             {
                 selectedControl = cbbControl.SelectedItem.ToString();
@@ -243,7 +292,7 @@ namespace ScriptDesigner.CútomControl
             }
 
 
-            if (action == ACTION.CONDITION)
+            if (action == ACTION.CONDITION || action == ACTION.LOOP_JSON_FILE)
             {
                 // add list of script actions
                 args.Add(conditionActions);
@@ -295,6 +344,20 @@ namespace ScriptDesigner.CútomControl
             return label.Width;
         }
         private TableLayoutPanel CreateTableIfCondition()
+        {
+            TableLayoutPanel tblC = new System.Windows.Forms.TableLayoutPanel();
+            tblC.BackColor = Color.FromArgb(40, new Random().Next(100, 240), new Random().Next(100, 240), new Random().Next(100, 240));
+            tblC.Controls.Clear();
+            tblC.AutoSize = true;
+            tblC.RowCount = 0;
+            tblC.ColumnCount = 1;
+            tblC.Location = new System.Drawing.Point(0, 30);
+            tblC.Height = 0;
+            tblC.Name = "TableLayoutPanel";
+            tblC.RowStyles.Clear();   //now you have zero rowstyles
+            return tblC;
+        }
+        private TableLayoutPanel CreateTableLoopJsonFile()
         {
             TableLayoutPanel tblC = new System.Windows.Forms.TableLayoutPanel();
             tblC.BackColor = Color.FromArgb(40, new Random().Next(100, 240), new Random().Next(100, 240), new Random().Next(100, 240));

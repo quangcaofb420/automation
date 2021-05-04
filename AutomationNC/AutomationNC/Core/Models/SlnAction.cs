@@ -16,6 +16,7 @@ namespace Core.Models
         public static readonly SlnAction Condition = new SlnAction() { Name = ACTION.CONDITION, RequiredElement = false, ParamType = typeof(Condition) };
         public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.EXIT, RequiredElement = false };
         public static readonly SlnAction Sleep = new SlnAction() { Name = ACTION.SLEEP, RequiredElement = false, ParamType = typeof(Sleep) };
+        public static readonly SlnAction LoopJsonFile = new SlnAction() { Name = ACTION.LOOP_JSON_FILE, RequiredElement = false, ParamType = typeof(LoopJsonFile) };
 
         public ACTION Name { get; set; }
         public bool RequiredElement { get; set; }

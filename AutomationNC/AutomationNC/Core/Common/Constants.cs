@@ -37,7 +37,11 @@ namespace Core.Common
         EXIT,
 
         [Description("Sleep")]
-        SLEEP
+        SLEEP,
+
+        [Description("LoopJsonFile")]
+        LOOP_JSON_FILE
+
     }
     public enum FILE_ACTION
     {

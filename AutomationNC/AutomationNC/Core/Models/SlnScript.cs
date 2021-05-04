@@ -36,6 +36,13 @@ namespace Core.Models
             script.Param = ifCondition.Conditions;
             return script;
         } 
+        public static SlnScript LoopJsonFile(LoopJsonFile json)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.LOOP_JSON_FILE.ToDescriptionString();
+            script.Param = json;
+            return script;
+        } 
         public static SlnScript Condition(Condition condition)
         {
             SlnScript script = new SlnScript();
