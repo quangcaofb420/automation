@@ -18,7 +18,7 @@ namespace ScriptDesigner
         private FBAction _fbAction = null;
         public Main()
         {
-            _service = new DesignService();
+            _service =  DesignService.GetInstance();
             InitializeComponent();
             LoadData();
         }
@@ -70,6 +70,10 @@ namespace ScriptDesigner
         private void LoadSenarior()
         {
             _senarior = _service.GetSenarior(_fbAction.Action);
+            if (_senarior == null) 
+            {
+                _senarior = new SlnSenarior(_fbAction.Action, new List<SlnScript>());
+            }
             ucSenarior.SetSenarior(_fbAction, _senarior);
         }
 
@@ -133,7 +137,7 @@ namespace ScriptDesigner
         private void btnEunSenarior_Click(object sender, EventArgs e)
         {
             List<SlnScript> scripts = ucSenarior.GetScripts();
-            SlnSenarior temp = new SlnSenarior(scripts);
+            SlnSenarior temp = new SlnSenarior(_fbAction.Action, scripts);
             temp.Process();
         }
 

@@ -76,7 +76,7 @@ namespace Core.Models
         }
         public void Sleep(int second)
         {
-
+            Thread.Sleep(second * 1000);
         }
         private async Task<bool> CheckElementIsExist(string xpath)
         {

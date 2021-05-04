@@ -12,6 +12,26 @@ namespace Core
 {
     public class DesignService
     {
+        private static DesignService _instance = null;
+        private DesignService()
+        { }
+
+        public SlnControl GetControlByName(string fbAction, string controlName)
+        {
+            List<SlnControl> controls = GetMappingControls(fbAction);
+            SlnControl control = controls.FirstOrDefault<SlnControl>(p => p.Name == controlName);
+            return control;
+
+        }
+
+        public static DesignService GetInstance()
+        {
+            if (DesignService._instance == null) 
+            {
+                DesignService._instance = new DesignService();
+            }
+            return DesignService._instance;
+        }
         public static string GetFile(string fbAction, FILE_ACTION name)
         {
             string file = SeleniumUtils.GetWorkingFolderPath() + @"/" + fbAction  + "_" + name + ".json";

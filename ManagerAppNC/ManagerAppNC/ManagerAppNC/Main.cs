@@ -17,7 +17,7 @@ namespace ManagerAppNC
         public Main(IFBAdsService service)
         {
             _fbAdsService = service;
-            _designService = new DesignService();
+            _designService =  DesignService.GetInstance();
             InitializeComponent();
 
             LoadData();

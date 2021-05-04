@@ -7,13 +7,10 @@ namespace Core.ActionParam
     public class Sleep
     {
         public Int32 Second { get; set; }
-        public Sleep(Int32 second)
+        public Sleep(object second)
         {
-            this.Second = second;
+            this.Second = Int32.Parse(second.ToString());
         } 
-        public Sleep(String second)
-        {
-            this.Second = Int32.Parse(second);
-        }
+      
     }
 }

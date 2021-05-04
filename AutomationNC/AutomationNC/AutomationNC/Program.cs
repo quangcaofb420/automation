@@ -12,7 +12,7 @@ namespace AutomationNC
             if (args.Length > 0)
             {
                 string fbAction = args[0];
-                DesignService designService = new DesignService();
+                DesignService designService =  DesignService.GetInstance();
 
                 SlnSenarior slnSenarior = designService.GetSenarior(fbAction);
                 slnSenarior.Process();

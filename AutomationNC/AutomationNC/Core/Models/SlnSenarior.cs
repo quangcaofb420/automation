@@ -12,13 +12,18 @@ namespace Core.Models
         private List<SlnScript> _scripts = new List<SlnScript>();
         private SlnSeleniumWebDriver _webDriver;
         private Dictionary<string, object> _variables;
+        private DesignService _designService;
 
         public List<SlnScript> Scripts { get { return _scripts; } set { this._scripts = value; } }
-       
-        public SlnSenarior(List<SlnScript> scripts)
+
+        public string FbAction { private set; get; }       
+        public SlnSenarior(string fbAction, List<SlnScript> scripts)
         {
+            FbAction = fbAction;
+            _scripts = scripts;
             _scripts = scripts;
             _variables = new Dictionary<string, object>();
+            _designService = DesignService.GetInstance();
         }
 
         public void Process()
@@ -90,14 +95,14 @@ namespace Core.Models
         private void HandleInput(SlnScript script)
         {
             Input param = script.Param.To<Input>();
-            
             string text = GetExpressionValue(param.Text);
-            _webDriver.Input(script.Control, text);
+            SlnControl control = GetControl(script.Control);
+            _webDriver.Input(control.XPath, text);
         }
         private void HandleClick(SlnScript script)
         {
-            Click param = script.Param.To<Click>();
-            _webDriver.Click(script.Control);
+            SlnControl control = GetControl(script.Control);
+            _webDriver.Click(control.XPath);
         }
         private void HandleIfCondition(SlnScript script)
         {
@@ -125,7 +130,8 @@ namespace Core.Models
             GetLabel param = script.Param.To<GetLabel>();
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
-            string label = await _webDriver.GetLabel(script.Control);
+            SlnControl control = GetControl(script.Control);
+            string label = await _webDriver.GetLabel(control.XPath);
             SetVariable(variable, label);
             if (withExpression != "")
             {
@@ -138,7 +144,8 @@ namespace Core.Models
             GetTextValue param = script.Param.To<GetTextValue>();
             string variable = param.ToVariable;
             string withExpression = param.WithExpression;
-            string value = await _webDriver.GetTextValue(script.Control);
+            SlnControl control = GetControl(script.Control);
+            string value = await _webDriver.GetTextValue(control.XPath);
             SetVariable(variable, value);
             if (withExpression != "")
             {
@@ -231,6 +238,12 @@ namespace Core.Models
 
             object result = ExpressionUtils.Evaluate(expr);
             return (string)result;
+        }
+
+        private SlnControl GetControl(string controlName)
+        {
+            SlnControl control = _designService.GetControlByName(FbAction, controlName);
+            return control;
         }
     }
 }
