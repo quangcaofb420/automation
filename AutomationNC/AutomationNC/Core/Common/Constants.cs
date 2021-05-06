@@ -10,37 +10,37 @@ namespace Core.Common
     public enum ACTION
     {
         [Description("OpenWebsite")]
-        OPEN_WEBSITE,
+        OpenWebsite,
 
         [Description("Input")]
-        INPUT,
+        Input,
 
         [Description("Click")]
-        CLICK,
+        Click,
 
         [Description("IfCondition")]
-        IF_CONDITION,
+        IfCondition,
         
         [Description("Condition")]
-        CONDITION,
+        Condition,
 
         [Description("GetLabel")]
-        GET_LABEL,
+        GetLabel,
 
         [Description("GetTextValue")]
-        GET_TEXT_VALUE,
+        GetTextValue,
 
         [Description("RedirectUrl")]
-        REDIRECT_URL,
+        RedirectUrl,
 
         [Description("Exit")]
-        EXIT,
+        Exit,
 
         [Description("Sleep")]
-        SLEEP,
+        Sleep,
 
         [Description("LoopJsonFile")]
-        LOOP_JSON_FILE
+        LoopJsonFile
 
     }
     public enum FILE_ACTION

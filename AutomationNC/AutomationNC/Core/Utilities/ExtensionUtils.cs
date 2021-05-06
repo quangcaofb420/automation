@@ -18,6 +18,16 @@ namespace Core.Utilities
                .GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
+        public static bool CanChange(this ACTION val)
+        {
+            return val != ACTION.Condition;
+        }
+        public static bool HasChildrenActions(this ACTION val)
+        {
+            return val == ACTION.IfCondition
+                || val == ACTION.Condition
+                || val == ACTION.LoopJsonFile;
+        }
         public static List<T> ToList<T>(this object param)
         {
             try

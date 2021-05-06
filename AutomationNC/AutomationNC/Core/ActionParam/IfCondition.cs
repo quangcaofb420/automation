@@ -3,14 +3,11 @@ using System.Collections.Generic;
 
 namespace Core.ActionParam
 {
-    public class IfCondition
+    public class IfCondition: ParentAction
     {        
-        private List<SlnScript> _conditions;
-
-        public List<SlnScript> Conditions { get { return _conditions == null ? new List<SlnScript>() : _conditions; } set { this._conditions = value; } }
         public IfCondition(List<SlnScript> conditions)
         {
-            _conditions = conditions;
+            Actions = conditions;
         }
     }
 }

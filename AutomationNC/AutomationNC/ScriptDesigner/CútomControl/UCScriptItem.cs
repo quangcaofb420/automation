@@ -13,6 +13,7 @@ namespace ScriptDesigner.CútomControl
     public partial class UCScriptItem : UserControl
     {
         private SlnScript _script;
+        private SlnScript _scriptBk;
         private int _levelIndex;
         private string Id { get; set; }
         public TableLayoutPanel _parent;
@@ -24,6 +25,7 @@ namespace ScriptDesigner.CútomControl
             this.Id = CommonUtils.UUID();
             this._parent = parent;
             this._script = script;
+            this._scriptBk = script;
             this._levelIndex = levelIndex;
             this._mappingControls = mappingControls;
             this._getMappingControlsFunc = getMappingControlsFunc;
@@ -70,131 +72,37 @@ namespace ScriptDesigner.CútomControl
             RemoveAllControls();
             this.Height = 30;
             Core.Common.ACTION action = GetSelectedAction() ;
+            if (_scriptBk.Action != action.ToDescriptionString())
+            {
+                _script.Action = action.ToDescriptionString();
+                _script.InitParam();
+            }
+            else
+            {
+                _script = _scriptBk;
+            }
+            
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             if (definedAction == null)
             {
                 return;
             }
+
             CreateContextMenuAction(action);
-            if (action == Core.Common.ACTION.IF_CONDITION)
-            {
-                GenerateIfCondition();
-            }
-            else if (action == ACTION.CONDITION)
-            {
-                GenerateNormalAction();
-                GenerateCondition();
-            }
-            else if (action == ACTION.LOOP_JSON_FILE)
-            {
-                GenerateNormalAction();
-                GenerateLoopJsonFile();
-            }
-            else
-            {
-                GenerateNormalAction();
-            }
-
+            GenerateUIScript();
         }
 
-        private void GenerateIfCondition()
-        {
-            this.cbbControl.Visible = false;
-            this.AutoSize = true;
-            this.panelMain.AutoSize = true;
-
-            tbl = CreateTableIfCondition();
-
-            List<SlnScript> conditions = _script.Param.ToList<SlnScript>();
-            if (conditions == null || conditions.Count == 0)
-            {
-                conditions = new List<SlnScript>() {
-                    SlnScript.Condition(
-                        new Condition("true",
-                        new List<SlnScript>(){
-                                SlnScript.Sleep(new Sleep(10))
-                            }
-                        )
-                    )
-                };
-            }
-            for (int i = 0; i < conditions.Count; i++)
-            {
-                SlnScript condition = conditions[i];
-                UCScriptItem conditionItem = new UCScriptItem( tbl, condition,  _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
-                tbl.RowCount += 1;
-                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
-            }
-            this.panelMain.Controls.Add(tbl);
-            this.panelMain.Refresh();
-            this.Refresh();
-        }
-
-        private void GenerateCondition()
-        {
-            this.cbbControl.Visible = false;
-            this.AutoSize = true;
-            this.panelMain.AutoSize = true;
-
-            Condition condition = _script.Param.To<Condition>();
-
-            tbl = CreateTableIfCondition();
-
-            List<SlnScript> scripts = condition.Actions;
-            for (int i = 0; i < scripts.Count; i++)
-            {
-                SlnScript script = scripts[i];
-                UCScriptItem item = new UCScriptItem( tbl, script, _levelIndex, _mappingControls, _getMappingControlsFunc);
-                tbl.RowCount += 1;
-                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl.Controls.Add(item, 0, tbl.RowCount - 1);
-            }
-            this.panelMain.Controls.Add(tbl);
-
-            this.panelMain.Refresh();
-            this.Refresh();
-        }
-        private void GenerateLoopJsonFile()
-        {
-            this.cbbControl.Visible = false;
-            this.AutoSize = true;
-            this.panelMain.AutoSize = true;
-
-            tbl = CreateTableLoopJsonFile();
-
-            List<SlnScript> actions = _script.Param.ToList<SlnScript>();
-            if (actions == null || actions.Count == 0)
-            {
-                actions = new List<SlnScript>() {
-                    SlnScript.Sleep(
-                        new Sleep(10)
-                    )
-                };
-            }
-            for (int i = 0; i < actions.Count; i++)
-            {
-                SlnScript condition = actions[i];
-                UCScriptItem conditionItem = new UCScriptItem(tbl, condition, _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
-                tbl.RowCount += 1;
-                tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
-            }
-            this.panelMain.Controls.Add(tbl);
-            this.panelMain.Refresh();
-            this.Refresh();
-        }
-        private void GenerateNormalAction()
+        private void GenerateUIScript()
         {
             Core.Common.ACTION action = (Core.Common.ACTION)this.cbbAction.SelectedItem;
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
             bool requiredElement = definedAction.RequiredElement;
-            bool isCondition = action == Core.Common.ACTION.CONDITION || action == Core.Common.ACTION.LOOP_JSON_FILE;
-            this.cbbAction.Enabled = !isCondition;
+            bool canChange = action.CanChange();
+            this.cbbAction.Enabled = canChange;
             this.cbbControl.Visible = requiredElement;
             if (requiredElement)
             {
-               String control = _script.Control;
+                String control = _script.Control;
                 if (control != null)
                 {
                     cbbControl.SelectedItem = control.ToString();
@@ -203,7 +111,11 @@ namespace ScriptDesigner.CútomControl
             Type paramType = definedAction.ParamType;
             if (paramType != null)
             {
-                string[] prs = ClassUtils.GetPropertyNames(paramType).Where(pr => requiredElement == false || pr != "Control").Where(pr => !isCondition || pr != "Actions").ToArray();
+                string[] prs = ClassUtils.GetPropertyNames(paramType)
+                    .Where(pr => requiredElement == false || pr != "Control")
+                    .Where(pr => !canChange || pr != "Actions")
+                    .Where(pr => canChange || pr != "Actions" || action != ACTION.Condition)
+                    .ToArray();
                 int x = this.cbbAction.Location.X + this.cbbAction.Width + (requiredElement ? this.cbbControl.Width : 0) + 10;
                 foreach (string pr in prs)
                 {
@@ -214,6 +126,27 @@ namespace ScriptDesigner.CútomControl
                     x += 10;
                 }
             }
+
+            if (action.HasChildrenActions())
+            {
+                this.AutoSize = true;
+                this.panelMain.AutoSize = true;
+                tbl = CreateTable();
+                List<SlnScript> childrenActions = _script.GetChildrenActions();
+
+                for (int i = 0; i < childrenActions.Count; i++)
+                {
+                    SlnScript child = childrenActions[i];
+                    UCScriptItem conditionItem = new UCScriptItem(tbl, child, _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
+                    tbl.RowCount += 1;
+                    tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
+                }
+                this.panelMain.Controls.Add(tbl);
+            }
+
+            this.panelMain.Refresh();
+            this.Refresh();
         }
 
         public SlnScript GetScript()
@@ -224,9 +157,9 @@ namespace ScriptDesigner.CútomControl
             String selectedControl = null ;
             bool requiredElement = definedAction.RequiredElement;
             List<SlnScript> conditionActions = new List<SlnScript>();
-            if (action == ACTION.IF_CONDITION || action == ACTION.CONDITION)
+            if (action == ACTION.IfCondition || action == ACTION.Condition)
             {
-                if (action == ACTION.IF_CONDITION)
+                if (action == ACTION.IfCondition)
                 {
                     List<SlnScript> conditions = new List<SlnScript>();
                     TableLayoutPanel tbl = this.panelMain.Controls[3] as TableLayoutPanel;
@@ -256,7 +189,7 @@ namespace ScriptDesigner.CútomControl
                     }
                 }
             }
-            else if (action == ACTION.LOOP_JSON_FILE)
+            else if (action == ACTION.LoopJsonFile)
             {
                
                 TableLayoutPanel tblActions = this.panelMain.Controls[5] as TableLayoutPanel;
@@ -292,14 +225,13 @@ namespace ScriptDesigner.CútomControl
             }
 
 
-            if (action == ACTION.CONDITION || action == ACTION.LOOP_JSON_FILE)
+            if (action == ACTION.Condition || action == ACTION.LoopJsonFile)
             {
                 // add list of script actions
                 args.Add(conditionActions);
             }
 
             object instanceArg = ClassUtils.Constructor(paramType, args.ToArray());
-
 
             object res = ClassUtils.CallStaticFunction(typeof(SlnScript), paramType.Name, requiredElement ? new[] {selectedControl, instanceArg } : new[] { instanceArg });
 
@@ -343,7 +275,8 @@ namespace ScriptDesigner.CútomControl
             this.panelMain.Controls.Add(label);
             return label.Width;
         }
-        private TableLayoutPanel CreateTableIfCondition()
+      
+        private TableLayoutPanel CreateTable()
         {
             TableLayoutPanel tblC = new System.Windows.Forms.TableLayoutPanel();
             tblC.BackColor = Color.FromArgb(40, new Random().Next(100, 240), new Random().Next(100, 240), new Random().Next(100, 240));
@@ -357,20 +290,7 @@ namespace ScriptDesigner.CútomControl
             tblC.RowStyles.Clear();   //now you have zero rowstyles
             return tblC;
         }
-        private TableLayoutPanel CreateTableLoopJsonFile()
-        {
-            TableLayoutPanel tblC = new System.Windows.Forms.TableLayoutPanel();
-            tblC.BackColor = Color.FromArgb(40, new Random().Next(100, 240), new Random().Next(100, 240), new Random().Next(100, 240));
-            tblC.Controls.Clear();
-            tblC.AutoSize = true;
-            tblC.RowCount = 0;
-            tblC.ColumnCount = 1;
-            tblC.Location = new System.Drawing.Point(0, 30);
-            tblC.Height = 0;
-            tblC.Name = "TableLayoutPanel";
-            tblC.RowStyles.Clear();   //now you have zero rowstyles
-            return tblC;
-        }
+
         private void btnAction_Click(object sender, EventArgs e)
         {
             cmtAction.Show(PointToScreen(((Button)sender).Location));
@@ -465,17 +385,17 @@ namespace ScriptDesigner.CútomControl
         private void CreateContextMenuAction(ACTION action)
         {
             this.cmtAction.Items.Clear();
-            if (action == ACTION.CONDITION)
+            if (action == ACTION.Condition)
             {
                 this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertConditionAbove, Text = "Insert Condition Above", ToolTipText = action.ToDescriptionString() });
                 this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertConditionBelow, Text = "Insert Condition Below", ToolTipText = action.ToDescriptionString() });
             }
-            else if (action == ACTION.IF_CONDITION)
+            else if (action == ACTION.IfCondition)
             {
                 this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertCondition, Text = "Insert Condition", ToolTipText = action.ToDescriptionString() });
             }
 
-            if (action != ACTION.CONDITION)
+            if (action != ACTION.Condition)
             {
                 this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertAbove, Text = "Insert Above", ToolTipText = action.ToDescriptionString() });
                 this.cmtAction.Items.Add(new ToolStripMenuItem() { Name = MNU_InsertBelow, Text = "Insert Below", ToolTipText = action.ToDescriptionString() });

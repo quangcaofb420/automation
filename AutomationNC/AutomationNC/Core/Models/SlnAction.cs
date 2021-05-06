@@ -7,16 +7,16 @@ namespace Core.Models
 {
     public class SlnAction
     {
-        public static readonly SlnAction OpenWebsite = new SlnAction() { Name = ACTION.OPEN_WEBSITE, RequiredElement = false, ParamType = typeof(OpenWebsite) };
-        public static readonly SlnAction Input = new SlnAction() { Name = ACTION.INPUT, RequiredElement = true, ParamType = typeof(Input) };
-        public static readonly SlnAction Click = new SlnAction() { Name = ACTION.CLICK, RequiredElement = true, ParamType = typeof(Click) };
-        public static readonly SlnAction GetLabel = new SlnAction() { Name = ACTION.GET_LABEL, RequiredElement = true, ParamType = typeof(GetLabel) };
-        public static readonly SlnAction GetTextValue = new SlnAction() { Name = ACTION.GET_TEXT_VALUE, RequiredElement = true, ParamType = typeof(GetTextValue) };
-        public static readonly SlnAction IfCondition = new SlnAction() { Name = ACTION.IF_CONDITION, RequiredElement = false, ParamType = typeof(IfCondition[]) };
-        public static readonly SlnAction Condition = new SlnAction() { Name = ACTION.CONDITION, RequiredElement = false, ParamType = typeof(Condition) };
-        public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.EXIT, RequiredElement = false };
-        public static readonly SlnAction Sleep = new SlnAction() { Name = ACTION.SLEEP, RequiredElement = false, ParamType = typeof(Sleep) };
-        public static readonly SlnAction LoopJsonFile = new SlnAction() { Name = ACTION.LOOP_JSON_FILE, RequiredElement = false, ParamType = typeof(LoopJsonFile) };
+        public static readonly SlnAction OpenWebsite = new SlnAction() { Name = ACTION.OpenWebsite, RequiredElement = false, ParamType = typeof(OpenWebsite) };
+        public static readonly SlnAction Input = new SlnAction() { Name = ACTION.Input, RequiredElement = true, ParamType = typeof(Input) };
+        public static readonly SlnAction Click = new SlnAction() { Name = ACTION.Click, RequiredElement = true, ParamType = typeof(Click) };
+        public static readonly SlnAction GetLabel = new SlnAction() { Name = ACTION.GetLabel, RequiredElement = true, ParamType = typeof(GetLabel) };
+        public static readonly SlnAction GetTextValue = new SlnAction() { Name = ACTION.GetTextValue, RequiredElement = true, ParamType = typeof(GetTextValue) };
+        public static readonly SlnAction IfCondition = new SlnAction() { Name = ACTION.IfCondition, RequiredElement = false, ParamType = typeof(IfCondition) };
+        public static readonly SlnAction Condition = new SlnAction() { Name = ACTION.Condition, RequiredElement = false, ParamType = typeof(Condition) };
+        public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.Exit, RequiredElement = false };
+        public static readonly SlnAction Sleep = new SlnAction() { Name = ACTION.Sleep, RequiredElement = false, ParamType = typeof(Sleep) };
+        public static readonly SlnAction LoopJsonFile = new SlnAction() { Name = ACTION.LoopJsonFile, RequiredElement = false, ParamType = typeof(LoopJsonFile) };
 
         public ACTION Name { get; set; }
         public bool RequiredElement { get; set; }

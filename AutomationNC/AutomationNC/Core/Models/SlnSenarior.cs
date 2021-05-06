@@ -56,30 +56,30 @@ namespace Core.Models
             ACTION action = ScriptUtils.GetActionByDescription(script.Action);
             switch (action)
             {
-                case ACTION.OPEN_WEBSITE:
+                case ACTION.OpenWebsite:
                     HandleOpenWebsite(script);
                     break;
-                case ACTION.INPUT:
+                case ACTION.Input:
                     HandleInput(script);
                     break;
-                case ACTION.CLICK:
+                case ACTION.Click:
                     HandleClick(script);
                     break;
-                case ACTION.IF_CONDITION:
+                case ACTION.IfCondition:
                     HandleIfCondition(script);
                     break;
-                case ACTION.GET_LABEL:
+                case ACTION.GetLabel:
                     HandleGetLabel(script);
                     break;
-                case ACTION.GET_TEXT_VALUE:
+                case ACTION.GetTextValue:
                     HandleGetTextValue(script);
                     break;
-                case ACTION.SLEEP:
+                case ACTION.Sleep:
                     HandleSleep(script);
                     break;
-                case ACTION.REDIRECT_URL:
+                case ACTION.RedirectUrl:
                     break;
-                case ACTION.EXIT:
+                case ACTION.Exit:
                     HandleExit();
                     break;
                 default:

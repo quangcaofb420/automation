@@ -25,7 +25,7 @@ namespace Core.Utilities
                     return action;
                 }
             }
-            return ACTION.SLEEP;
+            return ACTION.Sleep;
         }
     }
 }
