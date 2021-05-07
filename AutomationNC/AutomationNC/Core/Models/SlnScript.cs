@@ -13,14 +13,11 @@ namespace Core.Models
         public String Control { get; set; }
         public object Param { get; set; }
 
-        public Boolean CanModified { get; private set; }
-
         private string _id;
 
         private SlnScript()
         {
             this._id = CommonUtils.UUID();
-            CanModified = true;
         }
 
         public ACTION GetAction()
@@ -146,7 +143,6 @@ namespace Core.Models
             SlnScript script = new SlnScript();
             script.Action = ACTION.Condition.ToDescriptionString();
             script.Param = condition;
-            script.CanModified = false;
             return script;
         }
         public static SlnScript GetLabel(String control, GetLabel param)
