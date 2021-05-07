@@ -8,7 +8,7 @@ using Core.ActionParam;
 using System.Collections.Generic;
 using Core.Common;
 
-namespace ScriptDesigner.CútomControl
+namespace ScriptDesigner.CustomControl
 {
     public partial class UCScriptItem : UserControl
     {
@@ -156,54 +156,18 @@ namespace ScriptDesigner.CútomControl
             Type paramType = definedAction.ParamType;
             String selectedControl = null ;
             bool requiredElement = definedAction.RequiredElement;
-            List<SlnScript> conditionActions = new List<SlnScript>();
-            if (action == ACTION.IfCondition || action == ACTION.Condition)
+            List<SlnScript> childrenActions = new List<SlnScript>();
+            if (action.HasChildrenActions())
             {
-                if (action == ACTION.IfCondition)
+                TableLayoutPanel tbl = this.panelMain.Controls[this.panelMain.Controls.Count - 1] as TableLayoutPanel;
+                for (int i = 0; i < tbl.Controls.Count; i++)
                 {
-                    List<SlnScript> conditions = new List<SlnScript>();
-                    TableLayoutPanel tbl = this.panelMain.Controls[3] as TableLayoutPanel;
-
-                    for (int i = 0; i < tbl.Controls.Count ; i++)
-                    {
-                        UCScriptItem conditionUI = tbl.Controls[i] as UCScriptItem;
-                        SlnScript condition = conditionUI.GetScript();
-                        conditions.Add(condition);
-                    }
-
-                    IfCondition ifCondition = new IfCondition(conditions);
-                    SlnScript script = SlnScript.IfCondition(ifCondition);
-                    return script;
-                }
-                else
-                {
-                    TableLayoutPanel tblActions = this.panelMain.Controls[5] as TableLayoutPanel;
-                    for (int i = 0; i < tblActions.Controls.Count ; i++)
-                    {
-                        UCScriptItem conditionUI = tblActions.Controls[i] as UCScriptItem;
-                        if (conditionUI != null)
-                        {
-                            SlnScript act = conditionUI.GetScript();
-                            conditionActions.Add(act);
-                        }
-                    }
+                    UCScriptItem childActionUI = tbl.Controls[i] as UCScriptItem;
+                    SlnScript childAction = childActionUI.GetScript();
+                    childrenActions.Add(childAction);
                 }
             }
-            else if (action == ACTION.LoopJsonFile)
-            {
-               
-                TableLayoutPanel tblActions = this.panelMain.Controls[5] as TableLayoutPanel;
-                for (int i = 0; i < tblActions.Controls.Count ; i++)
-                {
-                    UCScriptItem actionUI = tblActions.Controls[i] as UCScriptItem;
-                    if (actionUI != null)
-                    {
-                        SlnScript act = actionUI.GetScript();
-                        conditionActions.Add(act);
-                    }
-                }
-               
-            }
+            
             if (requiredElement && cbbControl.SelectedItem != null)
             {
                 selectedControl = cbbControl.SelectedItem.ToString();
@@ -225,16 +189,14 @@ namespace ScriptDesigner.CútomControl
             }
 
 
-            if (action == ACTION.Condition || action == ACTION.LoopJsonFile)
+            if (action.HasChildrenActions())
             {
                 // add list of script actions
-                args.Add(conditionActions);
+                args.Add(childrenActions);
             }
 
             object instanceArg = ClassUtils.Constructor(paramType, args.ToArray());
-
             object res = ClassUtils.CallStaticFunction(typeof(SlnScript), paramType.Name, requiredElement ? new[] {selectedControl, instanceArg } : new[] { instanceArg });
-
             return res as SlnScript;
            
         }

@@ -4,7 +4,7 @@ using Core.Models;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ScriptDesigner.CútomControl
+namespace ScriptDesigner.CustomControl
 {
     public partial class UCSenarior : UserControl
     {

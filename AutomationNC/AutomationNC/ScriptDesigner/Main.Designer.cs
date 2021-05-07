@@ -32,7 +32,7 @@ namespace ScriptDesigner
             this.dgvMappingControls = new System.Windows.Forms.DataGridView();
             this.btnSaveMappingControl = new System.Windows.Forms.Button();
             this.btnSaveSenarior = new System.Windows.Forms.Button();
-            this.ucSenarior = new ScriptDesigner.CútomControl.UCSenarior();
+            this.ucSenarior = new ScriptDesigner.CustomControl.UCSenarior();
             this.dgvFBActions = new System.Windows.Forms.DataGridView();
             this.btnSaveFBActions = new System.Windows.Forms.Button();
             this.btnLoadDBAction = new System.Windows.Forms.Button();
@@ -218,7 +218,7 @@ namespace ScriptDesigner
         private System.Windows.Forms.DataGridView dgvMappingControls;
         private System.Windows.Forms.Button btnSaveMappingControl;
         private System.Windows.Forms.Button btnSaveSenarior;
-        private CútomControl.UCSenarior ucSenarior;
+        private CustomControl.UCSenarior ucSenarior;
         private System.Windows.Forms.DataGridView dgvFBActions;
         private System.Windows.Forms.Button btnSaveFBActions;
         private System.Windows.Forms.Button btnLoadDBAction;

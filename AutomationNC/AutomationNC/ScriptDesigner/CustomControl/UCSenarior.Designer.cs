@@ -1,5 +1,5 @@
 ﻿
-namespace ScriptDesigner.CútomControl
+namespace ScriptDesigner.CustomControl
 {
     partial class UCSenarior
     {
