@@ -40,9 +40,9 @@ namespace ScriptDesigner.CustomControl
             this.cbbControl.DataSource = _mappingControls.Select(c => c.Name).ToList();
             this.cbbControl.SelectedIndex = -1;
 
-            int indent = 40;
-            this.panelMain.Location = new Point(this.Location.X + (_levelIndex * indent), this.Location.Y);
-            this.panelMain.Width = this.panelMain.Width - (_levelIndex * indent);
+            int indent = 20;
+            this.panelMain.Location = new Point(this.Location.X + indent, this.Location.Y);
+            this.panelMain.Width = this.panelMain.Width - indent;
 
             cbbAction.SelectedIndexChanged -= new EventHandler(cbbAction_SelectedIndexChanged);
             cbbAction.DataSource = Enum.GetValues(typeof(Core.Common.ACTION));
@@ -120,7 +120,6 @@ namespace ScriptDesigner.CustomControl
                 foreach (string pr in prs)
                 {
                     x += GenerateLabelParam(pr, x);
-
                     string defaultValue = (ClassUtils.GetProppertyValue(paramType, _script.Param, pr) ?? "").ToString();
                     x += GenerateTextboxParam(pr, x, defaultValue);
                     x += 10;
@@ -137,10 +136,10 @@ namespace ScriptDesigner.CustomControl
                 for (int i = 0; i < childrenActions.Count; i++)
                 {
                     SlnScript child = childrenActions[i];
-                    UCScriptItem conditionItem = new UCScriptItem(tbl, child, _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
+                    UCScriptItem childUI = new UCScriptItem(tbl, child, _levelIndex + 1, _mappingControls, _getMappingControlsFunc);
                     tbl.RowCount += 1;
                     tbl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    tbl.Controls.Add(conditionItem, 0, tbl.RowCount - 1);
+                    tbl.Controls.Add(childUI, 0, tbl.RowCount - 1);
                 }
                 this.panelMain.Controls.Add(tbl);
             }
