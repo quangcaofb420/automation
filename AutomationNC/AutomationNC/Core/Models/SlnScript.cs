@@ -67,7 +67,7 @@ namespace Core.Models
                     Param = new Sleep(10);
                     break;
                 case ACTION.LoopJsonFile:
-                    Param = new LoopJsonFile("", new List<SlnScript>(){
+                    Param = new LoopJsonFile("","", new List<SlnScript>(){
                                         SlnScript.Sleep(new Sleep(10))
                                     }
                                 );
@@ -77,37 +77,50 @@ namespace Core.Models
         }
         public List<SlnScript> GetChildrenActions()
         {
-
+            ACTION action = Action.ToEnum<ACTION>();
             if (GetAction().HasChildrenActions())
             {
                 if (Param == null)
                 {
                     InitParam();
                 }
-                
-                List<SlnScript> actions = Param as List<SlnScript>;
-                if (actions == null || actions.Count == 0)
+                List<SlnScript> actions = new List<SlnScript>();
+
+                if (action == ACTION.IfCondition)
                 {
-                    ACTION action = Action.ToEnum<ACTION>();
-                    if (action == ACTION.IfCondition)
+                    actions = Param.To<List<SlnScript>>();
+                    //if (actions == null || actions.Count == 0)
+                    //{
+                    //    actions = new List<SlnScript>() {
+                    //            SlnScript.Condition(
+                    //                new Condition("true",
+                    //                new List<SlnScript>(){
+                    //                        SlnScript.Sleep(new Sleep(10))
+                    //                    }
+                    //                )
+                    //            )
+                    //        };
+                    //}
+                }
+                else
+                {
+                    ParentAction parentAction = Param.To<ParentAction>();
+                    if (parentAction == null)
                     {
-                        actions = new List<SlnScript>() {
-                            SlnScript.Condition(
-                                new Condition("true",
-                                new List<SlnScript>(){
-                                        SlnScript.Sleep(new Sleep(10))
-                                    }
-                                )
-                            )
-                        };
+                        actions = new List<SlnScript>(){
+                                SlnScript.Sleep(new Sleep(10))
+                            };
                     }
                     else
                     {
-                        actions = new List<SlnScript>(){
-                            SlnScript.Sleep(new Sleep(10))
-                        };
+                        actions = parentAction.Actions;
                     }
                 }
+
+
+                
+                
+                
                 return actions;
             }
             return new List<SlnScript>();

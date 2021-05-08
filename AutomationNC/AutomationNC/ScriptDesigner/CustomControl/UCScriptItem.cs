@@ -75,7 +75,7 @@ namespace ScriptDesigner.CustomControl
             if (_scriptBk.Action != action.ToDescriptionString())
             {
                 _script.Action = action.ToDescriptionString();
-                _script.InitParam();
+                _script.Param = null;
             }
             else
             {

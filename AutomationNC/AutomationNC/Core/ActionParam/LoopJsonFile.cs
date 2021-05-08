@@ -8,10 +8,12 @@ namespace Core.ActionParam
     public class LoopJsonFile: ParentAction
     {
         public String Path { get; set; }
+        public String ToVariable { get; set; }
 
-       public LoopJsonFile(string path, List<SlnScript> actions): base()
+       public LoopJsonFile(String path,String toVariable,  List<SlnScript> actions): base()
         {
             Path = path;
+            ToVariable = toVariable;
             Actions = actions;
         }
     }

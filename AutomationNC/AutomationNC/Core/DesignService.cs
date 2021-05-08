@@ -46,6 +46,19 @@ namespace Core
             return file;
         }
 
+        public static string GetContentFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                using (FileStream fs = File.Create(path))
+                {
+                    fs.Close();
+                }
+
+            }
+            return File.ReadAllText(path);
+        }
+
         public List<SlnControl> GetMappingControls(string fbAction)
         {
             return GetList<SlnControl>(fbAction, FILE_ACTION.CONTROLS);
@@ -117,6 +130,12 @@ namespace Core
             }
 
             return actions;
+        }
+
+        public T GetObjectFromJsonFile<T>(string path)
+        {
+            string jsonStr = GetContentFile(path);
+            return JsonConvert.DeserializeObject<T>(jsonStr);
         }
     }
 }

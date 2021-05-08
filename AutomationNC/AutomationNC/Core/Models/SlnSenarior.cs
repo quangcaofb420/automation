@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using Core.ActionParam;
 using Core.Common;
 using Core.Utilities;
@@ -35,7 +36,7 @@ namespace Core.Models
                 ProcessScripts(_scripts);
                 HandleExit();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 HandleExit();
             }
@@ -76,6 +77,9 @@ namespace Core.Models
                     break;
                 case ACTION.Sleep:
                     HandleSleep(script);
+                    break;
+                case ACTION.LoopJsonFile:
+                    HandleLoopJsonFile(script);
                     break;
                 case ACTION.RedirectUrl:
                     break;
@@ -156,8 +160,23 @@ namespace Core.Models
         private void HandleSleep(SlnScript script)
         {
             Sleep param = script.Param.To<Sleep>();
-            _webDriver.Sleep(param.Second);
+            string secondText = GetVariableValue(param.Second.ToString());
+            int second = int.Parse(secondText);
+            _webDriver.Sleep(second);
         }
+         private void HandleLoopJsonFile(SlnScript script)
+        {
+            LoopJsonFile param = script.Param.To<LoopJsonFile>();
+            string path = param.Path;
+            string variable = param.ToVariable;
+
+            Dictionary<string, object> obj = _designService.GetObjectFromJsonFile<Dictionary<string, object>>(path);
+            SetVariable(variable, obj);
+
+            List<SlnScript> actions = param.Actions;
+            ProcessScripts(actions);
+        }
+
         private void HandleExit()
         {
             _webDriver.Exit();
@@ -184,34 +203,30 @@ namespace Core.Models
             {
                 Dictionary<string, object> structure = new Dictionary<string, object>(_variables);
                 string[] vs = v.Split(".");
-                for (int i = 0; i < vs.Length - 1; i++)
+                for (int i = 0; i < vs.Length; i++)
                 {
-                    object item = structure["{{" + vs[i] + "}}"];
-                    if (item == null)
-                    {
-                        item = structure[vs[i]];
-                    }
-
+                    string key = vs[i];
                     if (i < vs.Length - 1)
                     {
+                        object item = structure["{{" + key + "}}"];
                         if (item == null)
                         {
                             break;
                         }
-
                         structure = item as Dictionary<string, object>;
                     }
                     else
                     {
-                        value = item;
+                        value = structure[key];
                     }
+
                 }
             }
             else
             {
                 value = _variables["{{" + v + "}}"];
             }
-            return (string)value;
+            return value.ToString();
         }
 
         private string GetExpressionValue(string expr)

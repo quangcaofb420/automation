@@ -6,10 +6,10 @@ namespace Core.ActionParam
 {
     public class Sleep
     {
-        public Int32 Second { get; set; }
-        public Sleep(object second)
+        public Object Second { get; set; }
+        public Sleep(Object second)
         {
-            this.Second = Int32.Parse(second.ToString());
+            this.Second = second;
         } 
       
     }
