@@ -44,13 +44,6 @@ namespace ManagerAppNC
                 case FB_ACTION_HANDLE.SIMPLE:
                     RunScriptInSimpleMode(action);
                     break;
-                case FB_ACTION_HANDLE.LOOP_FB_ACC:
-                    break;
-                case FB_ACTION_HANDLE.MIXED_LOOP_FB_ACC:
-                    break;
-                case FB_ACTION_HANDLE.WATCH_VIDEO_STREAM:
-                    break;
-               
             }
         }
 

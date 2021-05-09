@@ -1,8 +1,7 @@
 ﻿
 namespace Core.Utilities
 {
-    class OSUtils
+    public class OSUtils
     {
-        
     }
 }

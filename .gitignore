@@ -11,3 +11,4 @@ AutomationNC/AutomationNC/.vs/AutomationNC/v16/.suo
 AutomationNC/AutomationNC/ControlUtils/bin/
 AutomationNC/AutomationNC/ControlUtils/obj/Debug/netcoreapp3.1/ControlUtils.AssemblyInfo.cs
 AutomationNC/AutomationNC/ControlUtils/obj/Debug/
+build/*

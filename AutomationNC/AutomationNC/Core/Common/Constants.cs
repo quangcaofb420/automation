@@ -40,7 +40,10 @@ namespace Core.Common
         Sleep,
 
         [Description("LoopJsonFile")]
-        LoopJsonFile
+        LoopJsonFile,
+
+        [Description("OpenNewTab")]
+        OpenNewTab
 
     }
     public enum FILE_ACTION
@@ -51,10 +54,7 @@ namespace Core.Common
     } 
     public enum FB_ACTION_HANDLE
     {
-        SIMPLE,
-        LOOP_FB_ACC,
-        MIXED_LOOP_FB_ACC,
-        WATCH_VIDEO_STREAM
+        SIMPLE
     }
 
     public enum OS

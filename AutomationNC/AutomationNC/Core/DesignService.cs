@@ -32,18 +32,44 @@ namespace Core
             }
             return DesignService._instance;
         }
-        public static string GetFile(string fbAction, FILE_ACTION name)
+
+        private static string GetDataFolder()
         {
-            string file = SeleniumUtils.GetWorkingFolderPath() + @"/" + fbAction  + "_" + name + ".json";
-            if (!File.Exists(file))
+            return FolderUtils.GetDataFolder();
+        }
+
+        private static string GetWorkingFolder()
+        {
+            return FolderUtils.GetWorkingFolder();
+        }
+        
+        private static string GetSettingFolder()
+        {
+            return FolderUtils.GetSettingFolder();
+        }
+
+        private static string GetFBActionFile()
+        {
+            return GetFile(FolderUtils.GetSettingFolder(), "FBAction.json");
+        }
+        public static string GetDataFile(string fbAction, FILE_ACTION name)
+        {
+            string path = GetDataFolder() + @"/" + fbAction ;
+            return GetFile(path, name + ".json");
+        }
+
+        private static string GetFile(string folder, string file) 
+        {
+            Directory.CreateDirectory(folder);
+            string path = folder + "/" + file;
+            if (!File.Exists(path))
             {
-                using (FileStream fs = File.Create(file))
+                using (FileStream fs = File.Create(path))
                 {
                     fs.Close();
                 }
-
             }
-            return file;
+            return path;
         }
 
         public static string GetContentFile(string path)
@@ -61,24 +87,35 @@ namespace Core
 
         public List<SlnControl> GetMappingControls(string fbAction)
         {
-            return GetList<SlnControl>(fbAction, FILE_ACTION.CONTROLS);
+            return GetDataList<SlnControl>(fbAction, FILE_ACTION.CONTROLS);
         }
      
         public SlnSenarior GetSenarior(string fbActionName)
         {
-            SlnSenarior senarior =GetObject<SlnSenarior>(fbActionName, FILE_ACTION.SENARIOR);
+            SlnSenarior senarior = GetDataObject<SlnSenarior>(fbActionName, FILE_ACTION.SENARIOR);
             return senarior;
         }
         
         public List<FBAction> GetFBActions()
         {
-            return GetList<FBAction>(null, FILE_ACTION.FB_ACTIONS);
+            string file = GetFBActionFile();
+            return GetList<FBAction>(file);
         }
 
-        private List<T> GetList<T>(string fbAction, FILE_ACTION name)
+        public void SaveFBActions(List<FBAction> actions)
         {
-            string file = GetFile( fbAction, name);
-            var jsonStr = File.ReadAllText(file);
+            string jsonStr = JsonConvert.SerializeObject(actions);
+            File.WriteAllText(GetFBActionFile(), jsonStr);
+        }
+
+        private List<T> GetDataList<T>(string fbAction, FILE_ACTION name)
+        {
+            string file = GetDataFile( fbAction, name);
+            return GetList<T>(file);
+        }
+        private List<T> GetList<T>(string path)
+        {
+            var jsonStr = File.ReadAllText(path);
             List<T> controls = JsonConvert.DeserializeObject<List<T>>(jsonStr);
             if (controls == null)
             {
@@ -86,30 +123,24 @@ namespace Core
             }
             return controls;
         }
-        private T GetObject<T>(string fbAction, FILE_ACTION name)
+        private T GetDataObject<T>(string fbAction, FILE_ACTION name)
         {
-            string file = GetFile( fbAction, name);
+            string file = GetDataFile( fbAction, name);
             var jsonStr = File.ReadAllText(file);
             T t = JsonConvert.DeserializeObject<T>(jsonStr);
             return t;
         }
 
-        public void SaveFBActions(List<FBAction> actions)
-        {
-            string jsonStr = JsonConvert.SerializeObject(actions);
-            File.WriteAllText(GetFile(null, FILE_ACTION.FB_ACTIONS), jsonStr);
-        }
-
         public void SaveMappingControls(string fBAction, List<SlnControl> mappingControls)
         {
             string jsonStr = JsonConvert.SerializeObject(mappingControls);
-            File.WriteAllText(GetFile(fBAction, FILE_ACTION.CONTROLS), jsonStr);
+            File.WriteAllText(GetDataFile(fBAction, FILE_ACTION.CONTROLS), jsonStr);
         }
 
         public void SaveSenarior(string fBAction, SlnSenarior senarior)
         {
             string jsonStr = JsonConvert.SerializeObject(senarior);
-            File.WriteAllText(GetFile(fBAction, FILE_ACTION.SENARIOR), jsonStr);
+            File.WriteAllText(GetDataFile(fBAction, FILE_ACTION.SENARIOR), jsonStr);
         }
 
         public List<FBAction> RemoveFBAction(string fBAction)
@@ -118,12 +149,12 @@ namespace Core
             actions = actions.Where(act => act.Action != fBAction).ToList();
             SaveFBActions(actions);
 
-            string script = GetFile(fBAction, FILE_ACTION.SENARIOR);
+            string script = GetDataFile(fBAction, FILE_ACTION.SENARIOR);
             if (File.Exists(script))
             {
                 File.Delete(script);
             }
-            string mappingControl = GetFile(fBAction, FILE_ACTION.CONTROLS);
+            string mappingControl = GetDataFile(fBAction, FILE_ACTION.CONTROLS);
             if (File.Exists(mappingControl))
             {
                 File.Delete(mappingControl);
@@ -137,5 +168,6 @@ namespace Core
             string jsonStr = GetContentFile(path);
             return JsonConvert.DeserializeObject<T>(jsonStr);
         }
+
     }
 }

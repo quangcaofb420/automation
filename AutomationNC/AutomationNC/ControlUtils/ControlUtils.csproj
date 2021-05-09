@@ -5,4 +5,8 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>../../../build</OutputPath>
+  </PropertyGroup>
+
 </Project>

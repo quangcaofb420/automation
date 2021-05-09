@@ -5,14 +5,8 @@ namespace Core.Utilities
     {
         public static string GetWebDriverExecutePath()
         {
-            return GetWorkingFolderPath();
+            return FolderUtils.GetWorkingFolder();
         }
-
-        public static string GetWorkingFolderPath()
-        {
-            return @"C:\QuangCaoFB420";
-        }
-
     }
 
 }

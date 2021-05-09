@@ -22,62 +22,21 @@ namespace Core.Models
 
         public ACTION GetAction()
         {
-            return this.Action.ToEnum<ACTION>();
+            return Action.ToEnum<ACTION>();
         }
 
         public void InitParam()
         {
-            ACTION action = Action.ToEnum<ACTION>();
-
-            switch (action)
+            ACTION action = GetAction();
+            SlnAction slnAction = ClassUtils.GetStaticPropperty<SlnAction>(typeof(SlnAction), action.ToDescriptionString());
+            if (slnAction != null)
             {
-                case ACTION.OpenWebsite:
-                    Param = new OpenWebsite("", "");
-                    break;
-                case ACTION.Input:
-                    Param = new Input("");
-                    break;
-                case ACTION.Click:
-                    Param = new Click();
-                    break;
-                case ACTION.IfCondition:
-                    Param = new List<SlnScript>() {
-                            SlnScript.Condition(
-                                new Condition("true",
-                                new List<SlnScript>(){
-                                        SlnScript.Sleep(new Sleep(10))
-                                    }
-                                )
-                            )
-                        };
-                    break;
-                case ACTION.Condition:
-                    break;
-                case ACTION.GetLabel:
-                    Param = new GetLabel("","");
-                    break;
-                case ACTION.GetTextValue:
-                    Param = new GetTextValue("", "");
-                    break;
-                case ACTION.RedirectUrl:
-                    break;
-                case ACTION.Exit:
-                    break;
-                case ACTION.Sleep:
-                    Param = new Sleep(10);
-                    break;
-                case ACTION.LoopJsonFile:
-                    Param = new LoopJsonFile("","", new List<SlnScript>(){
-                                        SlnScript.Sleep(new Sleep(10))
-                                    }
-                                );
-                    break;
+                Param = slnAction.DefaultParam;
             }
-
         }
         public List<SlnScript> GetChildrenActions()
         {
-            ACTION action = Action.ToEnum<ACTION>();
+            ACTION action = GetAction();
             if (GetAction().HasChildrenActions())
             {
                 if (Param == null)
@@ -116,11 +75,6 @@ namespace Core.Models
                         actions = parentAction.Actions;
                     }
                 }
-
-
-                
-                
-                
                 return actions;
             }
             return new List<SlnScript>();
