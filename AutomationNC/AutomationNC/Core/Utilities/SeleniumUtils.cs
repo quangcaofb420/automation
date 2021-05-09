@@ -5,7 +5,7 @@ namespace Core.Utilities
     {
         public static string GetWebDriverExecutePath()
         {
-            return FileUtils.GetWorkingFolder();
+            return FileUtils.GetWorkingFolder() + @"\Setting";
         }
     }
 

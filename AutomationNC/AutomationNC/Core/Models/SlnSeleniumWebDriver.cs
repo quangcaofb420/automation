@@ -1,5 +1,4 @@
 ﻿using Core.Utilities;
-using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
 using System;
 using System.Collections.ObjectModel;
@@ -15,17 +14,16 @@ namespace Core.Models
         public SlnSeleniumWebDriver(string workingFolder)
         {
             string driverFolder = workingFolder == "" ? SeleniumUtils.GetWebDriverExecutePath() : workingFolder;
-            var service = EdgeDriverService.CreateDefaultService(workingFolder);
+            var service = OpenQA.Selenium.Edge.EdgeDriverService.CreateDefaultService(driverFolder, "msedgedriver.exe");
+
             service.HideCommandPromptWindow = true;
-            EdgeOptions options = new EdgeOptions();
-            options.BinaryLocation = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+            OpenQA.Selenium.Edge.EdgeOptions options = new OpenQA.Selenium.Edge.EdgeOptions();
 
-            //  options.UseChromium = true;
-            options.AddArgument("-inprivate");
-            //options.AddArgument("headless");
-            //options.AddArgument("disable-gpu");
-
-            _webDriver = new EdgeDriver(service, options);
+            options.UseChromium = true;
+            options.AddArgument("headless");
+            options.AddArgument("disable-gpu");
+          
+            _webDriver = new OpenQA.Selenium.Edge.EdgeDriver(service, options);
         }
 
         public string OpenWebsite(string url)

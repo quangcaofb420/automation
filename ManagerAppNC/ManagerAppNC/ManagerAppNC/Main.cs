@@ -64,7 +64,9 @@ namespace ManagerAppNC
             
             string batchFile = ProcessorUtil.CreateBatchFile(name + "", path + @"\run.bat", @"AutomationNC.exe", actionName, path);
             FileUtils.CopyFile(workingPath + @"\AutomationNC.exe", path + @"\AutomationNC.exe");
-            FileUtils.CopyFile(workingPath + @"\msedgedriver.exe", path + @"\MicrosoftWebDriver.exe");
+            FileUtils.CopyFile(workingPath + @"\AutomationNC.dll", path + @"\AutomationNC.dll");
+            FileUtils.CopyFile(workingPath + @"\AutomationNC.pdb", path + @"\AutomationNC.pdb");
+            FileUtils.CopyFile(workingPath + @"\Setting\msedgedriver.exe", path + @"\msedgedriver.exe");
             ProcessorUtil.runBatchFile(batchFile);
             return "path";
         }

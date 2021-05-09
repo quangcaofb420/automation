@@ -28,8 +28,8 @@ namespace Core.Utilities
             proc.StartInfo.FileName = batchFilePath;
             proc.StartInfo.WorkingDirectory = workingDirectory;
             proc.StartInfo.UseShellExecute = true;
-            proc.StartInfo.CreateNoWindow = true;
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //proc.StartInfo.CreateNoWindow = true;
+            //proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             proc.Start();
         }
