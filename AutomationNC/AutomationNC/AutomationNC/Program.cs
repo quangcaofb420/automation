@@ -15,7 +15,7 @@ namespace AutomationNC
                 DesignService designService =  DesignService.GetInstance();
 
                 SlnSenarior slnSenarior = designService.GetSenarior(fbAction);
-                slnSenarior.Process();
+                slnSenarior.Process(args[1]);
             }
         }
     }

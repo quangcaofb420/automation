@@ -138,7 +138,7 @@ namespace ScriptDesigner
         {
             List<SlnScript> scripts = ucSenarior.GetScripts();
             SlnSenarior temp = new SlnSenarior(_fbAction.Action, scripts);
-            temp.Process();
+            temp.Process("");
         }
 
         private void btnDeleteFBAction_Click(object sender, EventArgs e)

@@ -33,45 +33,17 @@ namespace Core
             return DesignService._instance;
         }
 
-        private static string GetDataFolder()
-        {
-            return FolderUtils.GetDataFolder();
-        }
-
-        private static string GetWorkingFolder()
-        {
-            return FolderUtils.GetWorkingFolder();
-        }
-        
-        private static string GetSettingFolder()
-        {
-            return FolderUtils.GetSettingFolder();
-        }
-
         private static string GetFBActionFile()
         {
-            return GetFile(FolderUtils.GetSettingFolder(), "FBAction.json");
+            return FileUtils.GetFile(FileUtils.GetSettingFolder(), "FBAction.json");
         }
         public static string GetDataFile(string fbAction, FILE_ACTION name)
         {
-            string path = GetDataFolder() + @"/" + fbAction ;
-            return GetFile(path, name + ".json");
+            string path = FileUtils.GetDataFolder() + @"/" + fbAction ;
+            return FileUtils.GetFile(path, name + ".json");
         }
 
-        private static string GetFile(string folder, string file) 
-        {
-            Directory.CreateDirectory(folder);
-            string path = folder + "/" + file;
-            if (!File.Exists(path))
-            {
-                using (FileStream fs = File.Create(path))
-                {
-                    fs.Close();
-                }
-            }
-            return path;
-        }
-
+       
         public static string GetContentFile(string path)
         {
             if (!File.Exists(path))

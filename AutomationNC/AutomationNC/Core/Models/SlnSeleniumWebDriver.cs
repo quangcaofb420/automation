@@ -12,9 +12,10 @@ namespace Core.Models
     {
         private IWebDriver _webDriver;
 
-        public SlnSeleniumWebDriver()
+        public SlnSeleniumWebDriver(string workingFolder)
         {
-            var service = EdgeDriverService.CreateDefaultService(SeleniumUtils.GetWebDriverExecutePath(), "msedgedriver.exe");
+            string driverFolder = workingFolder == "" ? SeleniumUtils.GetWebDriverExecutePath() : workingFolder;
+            var service = EdgeDriverService.CreateDefaultService(workingFolder);
             service.HideCommandPromptWindow = true;
             EdgeOptions options = new EdgeOptions();
             options.BinaryLocation = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";

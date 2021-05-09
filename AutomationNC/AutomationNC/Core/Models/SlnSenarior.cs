@@ -14,7 +14,6 @@ namespace Core.Models
         private SlnSeleniumWebDriver _webDriver;
         private Dictionary<string, object> _variables;
         private DesignService _designService;
-
         public List<SlnScript> Scripts { get { return _scripts; } set { this._scripts = value; } }
 
         public string FbAction { private set; get; }       
@@ -27,9 +26,9 @@ namespace Core.Models
             _designService = DesignService.GetInstance();
         }
 
-        public void Process()
+        public void Process(string webDriverFilePath)
         {
-            _webDriver = new SlnSeleniumWebDriver();
+            _webDriver = new SlnSeleniumWebDriver(webDriverFilePath);
             
             try
             {

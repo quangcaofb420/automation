@@ -4,6 +4,7 @@ using Core.Common;
 using Core.Models;
 using Core.Utilities;
 using ManagerAppNC.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -49,11 +50,23 @@ namespace ManagerAppNC
 
         private void RunScriptInSimpleMode(FBAction action)
         {
-            SlnSenarior senarior = _designService.GetSenarior(action.Action);
-            if (senarior != null)
-            {
-                senarior.Process();
-            }
+            GenerateFBActionRunning(action);
+        }
+
+        private string GenerateFBActionRunning(FBAction action)
+        {
+            long milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            string name = milliseconds + "_" + new Random().Next();
+            string actionName = action.Action;
+            string path = @"C:\FBAction_" + actionName + "_" + name;
+            string workingPath = FileUtils.GetWorkingFolder();
+            FileUtils.CreateFolder(path, true);
+            
+            string batchFile = ProcessorUtil.CreateBatchFile(name + "", path + @"\run.bat", @"AutomationNC.exe", actionName, path);
+            FileUtils.CopyFile(workingPath + @"\AutomationNC.exe", path + @"\AutomationNC.exe");
+            FileUtils.CopyFile(workingPath + @"\msedgedriver.exe", path + @"\MicrosoftWebDriver.exe");
+            ProcessorUtil.runBatchFile(batchFile);
+            return "path";
         }
 
         private void btnRun_Click(object sender, System.EventArgs e)
