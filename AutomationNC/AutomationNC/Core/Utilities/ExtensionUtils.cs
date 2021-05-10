@@ -10,7 +10,7 @@ namespace Core.Utilities
 {
     public static class ExtensionUtils
     {
-        public static string ToDescriptionString(this ACTION val)
+        public static string ToDescriptionString<T>(this T val)
         {
             DescriptionAttribute[] attributes = (DescriptionAttribute[])val
                .GetType()

@@ -50,25 +50,25 @@ namespace ManagerAppNC
 
         private void RunScriptInSimpleMode(FBAction action)
         {
-            GenerateFBActionRunning(action);
+            GenerateFBActionRunningSimpleMode(action);
         }
 
-        private string GenerateFBActionRunning(FBAction action)
+        private string GenerateFBActionRunningSimpleMode(FBAction action)
         {
             long milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             string name = milliseconds + "_" + new Random().Next();
             string actionName = action.Action;
-            string path = @"C:\xXx\FBAction_" + actionName;
+            string path = @"C:\xXx\FBAction_" + actionName + "_" + milliseconds;
             string workingPath = FileUtils.GetWorkingFolder();
             FileUtils.CreateFolder(path, true);
             
-            string batchFile = ProcessorUtil.CreateBatchFile(name + "", path, @"AutomationNC.exe", actionName, path);
+            string batchFile = ProcessorUtil.CreateBatchFile(path + @"\run.bat", @".\AutomationNC.exe", true, actionName, path);
             FileUtils.CopyFile(workingPath + @"\AutomationNC.exe", path + @"\AutomationNC.exe");
             FileUtils.CopyFile(workingPath + @"\AutomationNC.dll", path + @"\AutomationNC.dll");
             FileUtils.CopyFile(workingPath + @"\AutomationNC.pdb", path + @"\AutomationNC.pdb");
-            FileUtils.CopyFile(workingPath + @"\Setting\msedgedriver.exe", path + @"\msedgedriver.exe");
+            FileUtils.CopyFile(FileUtils.GetMSEdgeDriver(), path + @"\" + FILE.MSEdgeDriverExe.ToDescriptionString());
             ProcessorUtil.runBatchFile(batchFile);
-            return "path";
+            return path;
         }
 
         private void btnRun_Click(object sender, System.EventArgs e)

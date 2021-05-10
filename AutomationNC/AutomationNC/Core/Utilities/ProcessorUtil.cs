@@ -7,9 +7,9 @@ namespace Core.Utilities
     public class ProcessorUtil
     {
 
-        public static string CreateBatchFile(string title, string folder, string exeFileName, params string[] param)
+        public static string CreateBatchFile(string filePath, string exeFilePath, bool deleteWhenDone, params string[] param)
         {
-            string file = folder + @"\run.bat";
+            string folder = FileUtils.GetFolder(filePath);
             string arg = "";
             foreach (string pr in param)
             {
@@ -17,11 +17,14 @@ namespace Core.Utilities
             }
 
             //string command = "START \"" + title + "\"" + " /B " + "\"" + exeFileName + "\"" + arg;
-            string command = @".\" + exeFileName + arg;
-            command += "\ncd ..";
-            command += "\nrmdir " + folder + " /S /Q";
-            FileUtils.WriteTextFile(file, command);
-            return file;
+            string command = exeFilePath + arg;
+            if (deleteWhenDone == true)
+            {
+                command += "\ncd ..";
+                command += "\nrmdir " + folder + " /S /Q";
+            }
+            FileUtils.WriteTextFile(filePath, command);
+            return filePath;
         }
 
         public static void runBatchFile(string batchFilePath)
@@ -32,8 +35,8 @@ namespace Core.Utilities
             proc.StartInfo.FileName = batchFilePath;
             proc.StartInfo.WorkingDirectory = workingDirectory;
             proc.StartInfo.UseShellExecute = true;
-            //proc.StartInfo.CreateNoWindow = true;
-            //proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             proc.Start();
         }

@@ -63,4 +63,10 @@ namespace Core.Common
         Mac,
         Linux
     }
+
+    public enum FILE
+    {
+        [Description("msedgedriver.exe")]
+        MSEdgeDriverExe,
+    }
 }

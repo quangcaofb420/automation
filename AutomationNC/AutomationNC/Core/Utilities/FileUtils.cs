@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -91,6 +92,10 @@ namespace Core.Utilities
         public static string GetSettingFolder()
         {
             return GetWorkingFolder() + @"\Setting" ;
+        }
+        public static string GetMSEdgeDriver()
+        {
+            return GetSettingFolder() + @"\" + FILE.MSEdgeDriverExe.ToDescriptionString();
         }
     }
 }
