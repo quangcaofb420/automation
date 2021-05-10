@@ -58,11 +58,11 @@ namespace ManagerAppNC
             long milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             string name = milliseconds + "_" + new Random().Next();
             string actionName = action.Action;
-            string path = @"C:\FBAction_" + actionName + "_" + name;
+            string path = @"C:\xXx\FBAction_" + actionName;
             string workingPath = FileUtils.GetWorkingFolder();
             FileUtils.CreateFolder(path, true);
             
-            string batchFile = ProcessorUtil.CreateBatchFile(name + "", path + @"\run.bat", @"AutomationNC.exe", actionName, path);
+            string batchFile = ProcessorUtil.CreateBatchFile(name + "", path, @"AutomationNC.exe", actionName, path);
             FileUtils.CopyFile(workingPath + @"\AutomationNC.exe", path + @"\AutomationNC.exe");
             FileUtils.CopyFile(workingPath + @"\AutomationNC.dll", path + @"\AutomationNC.dll");
             FileUtils.CopyFile(workingPath + @"\AutomationNC.pdb", path + @"\AutomationNC.pdb");

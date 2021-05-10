@@ -7,17 +7,21 @@ namespace Core.Utilities
     public class ProcessorUtil
     {
 
-        public static string CreateBatchFile(string title, string filePath, string exeFileName, params string[] param)
+        public static string CreateBatchFile(string title, string folder, string exeFileName, params string[] param)
         {
+            string file = folder + @"\run.bat";
             string arg = "";
             foreach (string pr in param)
             {
                 arg += " \"" + pr + "\"";
             }
-            //string command = exePath + arg;
-            string command = "START \"" + title + "\"" + " /B " + "\"" + exeFileName + "\"" + arg;
-            FileUtils.WriteTextFile(filePath, command);
-            return filePath;
+
+            //string command = "START \"" + title + "\"" + " /B " + "\"" + exeFileName + "\"" + arg;
+            string command = @".\" + exeFileName + arg;
+            command += "\ncd ..";
+            command += "\nrmdir " + folder + " /S /Q";
+            FileUtils.WriteTextFile(file, command);
+            return file;
         }
 
         public static void runBatchFile(string batchFilePath)

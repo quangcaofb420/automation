@@ -1,6 +1,5 @@
 ﻿using Core.Utilities;
 using OpenQA.Selenium;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,13 +19,14 @@ namespace Core.Models
             OpenQA.Selenium.Edge.EdgeOptions options = new OpenQA.Selenium.Edge.EdgeOptions();
 
             options.UseChromium = true;
-            options.AddArgument("headless");
-            options.AddArgument("disable-gpu");
-          
+            //options.AddArgument("headless");
+            //options.AddArgument("disable-gpu");
+            options.AddArgument("-inprivate");
             _webDriver = new OpenQA.Selenium.Edge.EdgeDriver(service, options);
-        }
+        } 
 
         public string OpenWebsite(string url)
+
         {
             _webDriver.Navigate().GoToUrl(url);
             return _webDriver.CurrentWindowHandle;
