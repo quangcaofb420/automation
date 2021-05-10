@@ -1,5 +1,7 @@
 ﻿using Core.Utilities;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +11,7 @@ namespace Core.Models
     public class SlnSeleniumWebDriver
     {
         private IWebDriver _webDriver;
+        private WebDriverWait _wait;
 
         public SlnSeleniumWebDriver(string workingFolder)
         {
@@ -23,7 +26,9 @@ namespace Core.Models
             //options.AddArgument("disable-gpu");
             options.AddArgument("-inprivate");
             _webDriver = new OpenQA.Selenium.Edge.EdgeDriver(service, options);
+            _wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30));
         } 
+
 
         public string OpenWebsite(string url)
 
@@ -71,7 +76,10 @@ namespace Core.Models
 
         public void Exit()
         {
-            _webDriver.Quit();
+            if (_webDriver != null)
+            {
+                _webDriver.Quit(); 
+            }
         }
         public void Sleep(int second)
         {
@@ -90,18 +98,19 @@ namespace Core.Models
         private async Task<IWebElement> GetElement(string xpath, int timeoutInSecond)
         {
             IWebElement element = null;
-            int count = 0;
-            while (count < timeoutInSecond)
-            {
-                count++;
-                ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.XPath(xpath));
-                if (elements.Count > 0)
-                {
-                    element = elements[0];
-                    break;
-                }
-                await CommonUtils.Sleep(1000);
-            }
+            element = _wait.Until(e => e.FindElement(By.XPath(xpath)));
+            //int count = 0;
+            //while (count < timeoutInSecond)
+            //{
+            //    count++;
+            //    ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.XPath(xpath));
+            //    if (elements.Count > 0)
+            //    {
+            //        element = elements[0];
+            //        break;
+            //    }
+            //    await CommonUtils.Sleep(1000);
+            //}
             return element;
         }
 
