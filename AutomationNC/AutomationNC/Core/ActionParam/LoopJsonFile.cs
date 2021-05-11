@@ -1,5 +1,7 @@
 ﻿
+using Core.Common;
 using Core.Models;
+using Core.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -9,11 +11,15 @@ namespace Core.ActionParam
     {
         public String Path { get; set; }
         public String ToVariable { get; set; }
+        public String Mode { get; set; }
 
-       public LoopJsonFile(String path,String toVariable,  List<SlnScript> actions): base()
+        public static readonly String Mode_T = "["+ string.Join(",", ExtensionUtils.ToList<ACTION_PARAM_TYPES>()) +"]";
+
+        public LoopJsonFile(String path, String toVariable, String mode, List<SlnScript> actions) : base()
         {
             Path = path;
             ToVariable = toVariable;
+            Mode = mode;
             Actions = actions;
         }
     }

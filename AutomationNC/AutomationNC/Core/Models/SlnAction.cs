@@ -37,7 +37,7 @@ namespace Core.Models
             Name = ACTION.LoopJsonFile,
             RequiredElement = false,
             ParamType = typeof(LoopJsonFile),
-            DefaultParam = new LoopJsonFile("", "", new List<SlnScript>(){
+            DefaultParam = new LoopJsonFile("", "", ACTION_PARAM_TYPES.None.ToString() , new List<SlnScript>(){
                                         SlnScript.Sleep(new Sleep(10))
                                     }
                                 )

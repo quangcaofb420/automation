@@ -61,6 +61,10 @@ namespace Core.Utilities
         } 
         public static object? GetProppertyValue(object obj, string proppertyName)
         {
+            if (obj == null)
+            {
+                return null;
+            }
             Type type = obj.GetType();
             return GetProppertyValue(type, obj, proppertyName);
         }

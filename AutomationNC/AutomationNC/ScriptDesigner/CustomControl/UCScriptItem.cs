@@ -115,13 +115,26 @@ namespace ScriptDesigner.CustomControl
                     .Where(pr => requiredElement == false || pr != "Control")
                     .Where(pr => !canChange || pr != "Actions")
                     .Where(pr => canChange || pr != "Actions" || action != ACTION.Condition)
+                    .Where(pr => !pr.EndsWith("_T"))
                     .ToArray();
                 int x = this.cbbAction.Location.X + this.cbbAction.Width + (requiredElement ? this.cbbControl.Width : 0) + 10;
-                foreach (string pr in prs)
+                
+                for (int i = 0; i < prs.Length; i++)
                 {
-                    x += GenerateLabelParam(pr, x);
+                    string pr = prs[i];
+                    String pt = _script.GetParamType(pr);
                     string defaultValue = (ClassUtils.GetProppertyValue(paramType, _script.Param, pr) ?? "").ToString();
-                    x += GenerateTextboxParam(pr, x, defaultValue);
+
+                    x += GenerateLabelParam(pr, x);
+                    if (pt == "String")
+                    {
+                        x += GenerateTextboxParam(pr, x, defaultValue);
+                    }
+                    else if (pt.Contains("[") && pt.Contains("]"))
+                    {
+                        string[] list = pt.Replace("[", "").Replace("]", "").Split(",");
+                        x += GenerateComobBoxParam(pr, x, list, defaultValue);
+                    }
                     x += 10;
                 }
             }
@@ -178,11 +191,18 @@ namespace ScriptDesigner.CustomControl
             for (int i = 0; i < prs.Length; i++)
             {
                 string pr = prs[i];
-                Control[] controls = this.panelMain.Controls.Find("txt" + pr, false);
-                if (controls != null && controls.Length > 0)
+                Control[] txts = this.panelMain.Controls.Find("txt" + pr, false);
+                if (txts != null && txts.Length > 0)
                 {
-                    TextBox textBox = (TextBox)controls[0];
+                    TextBox textBox = (TextBox)txts[0];
                     string value = textBox.Text;
+                    args.Add(value);
+                }
+                Control[] cbbs = this.panelMain.Controls.Find("cbb" + pr, false);
+                if (cbbs != null && cbbs.Length > 0)
+                {
+                    ComboBox cbb = (ComboBox)cbbs[0];
+                    string value = cbb.SelectedItem.ToString();
                     args.Add(value);
                 }
             }
@@ -224,6 +244,28 @@ namespace ScriptDesigner.CustomControl
             //textbox.TextAlign = HorizontalAlignment.Center;
             this.panelMain.Controls.Add(textbox);
             return textbox.Width;
+        }
+        private int GenerateComobBoxParam(string paramname, int locationX, string[] list, string defaultValue)
+        {
+            ComboBox control = new ComboBox();
+            control.Location = new System.Drawing.Point(locationX + 12, 1);
+            control.Name = "cbb" + paramname;
+            control.Items.Clear();
+            control.Items.AddRange(list);
+            control.DropDownStyle = ComboBoxStyle.DropDownList;
+            //textbox.Text = "txt" + paramname;
+            //textbox.Width = 300;
+            if (defaultValue != "")
+            {
+                control.Text = defaultValue;
+            }
+            else {
+                control.SelectedIndex = 0;
+            }
+            //control.MouseHover += new EventHandler(txtParam_MouseHover);
+            //textbox.TextAlign = HorizontalAlignment.Center;
+            this.panelMain.Controls.Add(control);
+            return control.Width;
         }
 
         private int GenerateLabelParam(string paramname, int locationX)

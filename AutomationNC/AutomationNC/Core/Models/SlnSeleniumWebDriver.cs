@@ -2,7 +2,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -95,6 +94,7 @@ namespace Core.Models
         {
             return GetElement(xpath, 30);
         }
+
         private async Task<IWebElement> GetElement(string xpath, int timeoutInSecond)
         {
             IWebElement element = null;

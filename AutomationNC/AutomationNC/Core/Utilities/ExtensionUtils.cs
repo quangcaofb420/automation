@@ -10,6 +10,9 @@ namespace Core.Utilities
 {
     public static class ExtensionUtils
     {
+        public static string[] ToList<T>() {
+            return Enum.GetNames(typeof(T));
+        }
         public static string ToDescriptionString<T>(this T val)
         {
             DescriptionAttribute[] attributes = (DescriptionAttribute[])val

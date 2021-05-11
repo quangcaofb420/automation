@@ -69,4 +69,10 @@ namespace Core.Common
         [Description("msedgedriver.exe")]
         MSEdgeDriverExe,
     }
+
+    public enum ACTION_PARAM_TYPES
+    {
+        None,
+        Multi
+    }
 }

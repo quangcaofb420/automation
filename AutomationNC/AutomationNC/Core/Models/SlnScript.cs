@@ -15,9 +15,22 @@ namespace Core.Models
 
         private string _id;
 
+
         private SlnScript()
         {
             this._id = CommonUtils.UUID();
+        }
+
+        public String GetParamType(string paramName)
+        {
+            ACTION action = GetAction();
+            if (action == ACTION.LoopJsonFile)
+            {
+                String pt = ClassUtils.GetStaticPropperty<String>(typeof(LoopJsonFile), paramName + "_T") ?? "String";
+                return pt;
+            }
+            return "String";
+
         }
 
         public ACTION GetAction()
