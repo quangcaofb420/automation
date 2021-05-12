@@ -68,7 +68,7 @@ namespace ScriptDesigner
         }
         private void LoadSenarior()
         {
-            _senarior = _service.GetSenarior(_fbAction.Action);
+            _senarior = _service.GetSenariorByFBAction(_fbAction.Action);
             if (_senarior == null) 
             {
                 _senarior = new SlnSenarior(_fbAction.Action, new List<SlnScript>());

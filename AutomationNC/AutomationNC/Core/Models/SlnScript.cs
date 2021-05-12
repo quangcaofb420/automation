@@ -103,6 +103,13 @@ namespace Core.Models
             script.Action = ACTION.OpenWebsite.ToDescriptionString();
             script.Param = param;
             return script;
+        } 
+        public static SlnScript OpenNewTab(OpenNewTab param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.OpenNewTab.ToDescriptionString();
+            script.Param = param;
+            return script;
         }
         public static SlnScript IfCondition(IfCondition ifCondition)
         {
@@ -158,10 +165,33 @@ namespace Core.Models
             script.Param = param;
             return script;
         }
-        public static SlnScript Exit()
+        public static SlnScript Exit(Exit param)
         {
             SlnScript script = new SlnScript();
             script.Action = ACTION.Exit.ToDescriptionString();
+            script.Param = param;
+            return script;
+        }
+        public static SlnScript Close(Close param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.Close.ToDescriptionString();
+            script.Param = param;
+            return script;
+        } 
+        public static SlnScript CloseTab(CloseTab param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.CloseTab.ToDescriptionString();
+            script.Param = param;
+            return script;
+        }        
+        
+        public static SlnScript CloseTabByTitle(CloseTabByTitle param)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.CloseTabByTitle.ToDescriptionString();
+            script.Param = param;
             return script;
         }
         public static SlnScript Sleep(Sleep param)

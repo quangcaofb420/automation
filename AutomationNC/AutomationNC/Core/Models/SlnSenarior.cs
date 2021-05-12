@@ -58,6 +58,9 @@ namespace Core.Models
                 case ACTION.OpenWebsite:
                     HandleOpenWebsite(script);
                     break;
+                case ACTION.OpenNewTab:
+                    HandleOpenNewTab(script);
+                    break;
                 case ACTION.Input:
                     HandleInput(script);
                     break;
@@ -83,6 +86,15 @@ namespace Core.Models
                     break;
                 case ACTION.Exit:
                     HandleExit();
+                    break; 
+                case ACTION.Close:
+                    HandleClose();
+                    break;
+                case ACTION.CloseTab:
+                    HandleCloseTab();
+                    break; 
+                case ACTION.CloseTabByTitle:
+                    HandleCloseTabByTitle(script);
                     break;
                 default:
                     break;
@@ -93,6 +105,12 @@ namespace Core.Models
             OpenWebsite param = script.Param.To<OpenWebsite>();
             string url = GetExpressionValue(param.Url);
             _webDriver.OpenWebsite(url);
+        }
+        private void HandleOpenNewTab(SlnScript script)
+        {
+            OpenNewTab param = script.Param.To<OpenNewTab>();
+            string url = GetExpressionValue(param.Url);
+            _webDriver.OpenNewTab(url);
         }
         private void HandleInput(SlnScript script)
         {
@@ -162,22 +180,41 @@ namespace Core.Models
             int second = int.Parse(secondText);
             _webDriver.Sleep(second);
         }
+         private void HandleCloseTabByTitle(SlnScript script)
+        {
+            CloseTabByTitle param = script.Param.To<CloseTabByTitle>();
+            string title = GetVariableValue(param.Title.ToString());
+            _webDriver.CloseTabByTitle(title);
+        }
+
          private void HandleLoopJsonFile(SlnScript script)
         {
             LoopJsonFile param = script.Param.To<LoopJsonFile>();
             string path = param.Path;
             string variable = param.ToVariable;
 
-            Dictionary<string, object> obj = _designService.GetObjectFromJsonFile<Dictionary<string, object>>(path);
-            SetVariable(variable, obj);
+            Dictionary<string, object>[] objs = _designService.GetObjectFromJsonFile<Dictionary<string, object>[]>(path);
 
-            List<SlnScript> actions = param.Actions;
-            ProcessScripts(actions);
+            foreach (Dictionary<string, object> obj in objs)
+            {
+                SetVariable(variable, obj);
+                List<SlnScript> actions = param.Actions;
+                ProcessScripts(actions);
+                RemoveVariable(variable);
+            }
         }
 
         private void HandleExit()
         {
             _webDriver.Exit();
+        }
+        private void HandleClose()
+        {
+            _webDriver.Close();
+        }
+         private void HandleCloseTab()
+        {
+            _webDriver.CloseTab();
         }
 
         private void SetVariable(string variable, object value)
@@ -191,6 +228,14 @@ namespace Core.Models
                 _variables.Add(variable, value);
             }
         }
+        private void RemoveVariable(string variable)
+        {
+            if (_variables.ContainsKey(variable))
+            {
+                _variables.Remove(variable);
+            }
+        }
+
 
         private string GetVariableValue(string variable)
         {
@@ -222,7 +267,14 @@ namespace Core.Models
             }
             else
             {
-                value = _variables["{{" + v + "}}"];
+                try
+                {
+                    value = _variables["{{" + v + "}}"];
+                }
+                catch (Exception ex)
+                {
+                    value = variable;
+                }
             }
             return value.ToString();
         }
@@ -233,7 +285,7 @@ namespace Core.Models
             {
                 int openVariable = expr.IndexOf("{{");
                 int closeVariable = expr.IndexOf("}}");
-                string variable = expr.Substring(openVariable, openVariable + 2);
+                string variable = expr.Substring(openVariable + 2, closeVariable - 2);
                 string value = GetVariableValue(variable);
                 string leftStr = "";
                 if (openVariable > 0)
@@ -241,7 +293,7 @@ namespace Core.Models
                     leftStr = expr.Substring(0, openVariable - 1);
                 }
                 string middleStr = value;
-                string rightStr = expr.Substring(closeVariable + 2, expr.Length - (closeVariable + 1));
+                string rightStr = expr.Substring(closeVariable + 2, expr.Length - closeVariable - 2);
                 expr = leftStr + middleStr + rightStr;
             }
             if (!expr.Contains("\""))

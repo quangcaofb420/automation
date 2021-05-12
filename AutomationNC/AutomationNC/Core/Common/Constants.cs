@@ -20,7 +20,7 @@ namespace Core.Common
 
         [Description("IfCondition")]
         IfCondition,
-        
+
         [Description("Condition")]
         Condition,
 
@@ -35,6 +35,15 @@ namespace Core.Common
 
         [Description("Exit")]
         Exit,
+
+        [Description("Close")]
+        Close,
+
+        [Description("CloseTab")]
+        CloseTab,
+
+        [Description("CloseTabByTitle")]
+        CloseTabByTitle,
 
         [Description("Sleep")]
         Sleep,

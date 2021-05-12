@@ -29,6 +29,8 @@ namespace Core.Utilities
             }
             return toFolder;
         }
+
+      
         public static string CopyFile(string fromFile, string toFile)
         {
             File.Copy(fromFile, toFile);
@@ -47,6 +49,14 @@ namespace Core.Utilities
             string folder = fi.Directory.FullName;
             return folder;
         }
+
+        public static string GetFullPath(string filePathRelative)
+        {
+            FileInfo fi = new FileInfo(filePathRelative);
+            string file = fi.FullName;
+            return file;
+        }
+
         public static string GetFile(string filePath)
         {
             string folder = Path.GetDirectoryName(filePath);

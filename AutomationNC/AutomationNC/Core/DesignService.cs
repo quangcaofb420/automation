@@ -62,12 +62,19 @@ namespace Core
             return GetDataList<SlnControl>(fbAction, FILE_ACTION.CONTROLS);
         }
      
-        public SlnSenarior GetSenarior(string fbActionName)
+        public SlnSenarior GetSenariorByFBAction(string fbActionName)
         {
-            SlnSenarior senarior = GetDataObject<SlnSenarior>(fbActionName, FILE_ACTION.SENARIOR);
+            string file = GetDataFile(fbActionName, FILE_ACTION.SENARIOR);
+            SlnSenarior senarior = GetSenariorByFile(file);
             return senarior;
         }
-        
+
+        public SlnSenarior GetSenariorByFile(string file)
+        {
+            SlnSenarior senarior = GetDataObject<SlnSenarior>(file);
+            return senarior;
+        }
+
         public List<FBAction> GetFBActions()
         {
             string file = GetFBActionFile();
@@ -95,9 +102,8 @@ namespace Core
             }
             return controls;
         }
-        private T GetDataObject<T>(string fbAction, FILE_ACTION name)
+        private T GetDataObject<T>(string file)
         {
-            string file = GetDataFile( fbAction, name);
             var jsonStr = File.ReadAllText(file);
             T t = JsonConvert.DeserializeObject<T>(jsonStr);
             return t;

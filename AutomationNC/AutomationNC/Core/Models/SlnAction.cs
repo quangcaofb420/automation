@@ -30,7 +30,10 @@ namespace Core.Models
                         }
         };
         public static readonly SlnAction Condition = new SlnAction() { Name = ACTION.Condition, RequiredElement = false, ParamType = typeof(Condition) };
-        public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.Exit, RequiredElement = false };
+        public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.Exit, RequiredElement = false, ParamType = typeof(Exit), DefaultParam = new Exit() };
+        public static readonly SlnAction Close = new SlnAction() { Name = ACTION.Close, RequiredElement = false, ParamType = typeof(Close), DefaultParam = new Close() };
+        public static readonly SlnAction CloseTab = new SlnAction() { Name = ACTION.CloseTab, RequiredElement = false, ParamType = typeof(CloseTab), DefaultParam = new CloseTab() };
+        public static readonly SlnAction CloseTabByTitle = new SlnAction() { Name = ACTION.CloseTabByTitle, RequiredElement = false, ParamType = typeof(CloseTabByTitle), DefaultParam = new CloseTabByTitle("") };
         public static readonly SlnAction Sleep = new SlnAction() { Name = ACTION.Sleep, RequiredElement = false, ParamType = typeof(Sleep), DefaultParam = new Sleep(10) };
         public static readonly SlnAction LoopJsonFile = new SlnAction()
         {
