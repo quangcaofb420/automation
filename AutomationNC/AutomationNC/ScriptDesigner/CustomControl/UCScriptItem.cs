@@ -22,7 +22,7 @@ namespace ScriptDesigner.CustomControl
         private TableLayoutPanel tbl;
         public UCScriptItem(TableLayoutPanel parent, SlnScript script, int levelIndex, List<SlnControl> mappingControls, Func<List<SlnControl>> getMappingControlsFunc )
         {
-            this.Id = CommonUtils.UUID();
+            this.Id = script.Id;
             this._parent = parent;
             this._script = script;
             this._scriptBk = script;
@@ -216,8 +216,10 @@ namespace ScriptDesigner.CustomControl
 
             object instanceArg = ClassUtils.Constructor(paramType, args.ToArray());
             object res = ClassUtils.CallStaticFunction(typeof(SlnScript), paramType.Name, requiredElement ? new[] {selectedControl, instanceArg } : new[] { instanceArg });
-            return res as SlnScript;
-           
+            SlnScript script = res as SlnScript;
+            script.Id = Id;
+
+            return script;
         }
 
         private void txtParam_MouseHover(object sender, EventArgs e)

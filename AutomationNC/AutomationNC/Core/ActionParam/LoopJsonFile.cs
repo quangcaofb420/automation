@@ -13,7 +13,7 @@ namespace Core.ActionParam
         public String ToVariable { get; set; }
         public String Mode { get; set; }
 
-        public static readonly String Mode_T = "["+ string.Join(",", ExtensionUtils.ToList<ACTION_PARAM_TYPES>()) +"]";
+        public static readonly String Mode_T = "["+ string.Join(",", ExtensionUtils.ToList<THREAD_MODE>()) +"]";
 
         public LoopJsonFile(String path, String toVariable, String mode, List<SlnScript> actions) : base()
         {

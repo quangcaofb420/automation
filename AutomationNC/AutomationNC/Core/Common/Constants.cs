@@ -79,7 +79,7 @@ namespace Core.Common
         MSEdgeDriverExe,
     }
 
-    public enum ACTION_PARAM_TYPES
+    public enum THREAD_MODE
     {
         None,
         Multi

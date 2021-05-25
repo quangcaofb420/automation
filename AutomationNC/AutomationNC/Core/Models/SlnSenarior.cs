@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Core.ActionParam;
 using Core.Common;
 using Core.Utilities;
@@ -13,22 +15,33 @@ namespace Core.Models
         private SlnSeleniumWebDriver _webDriver;
         private Dictionary<string, object> _variables;
         private DesignService _designService;
+        private string _webDriverFilePath = "";
+        private List<String> _ignoredIds;
         public List<SlnScript> Scripts { get { return _scripts; } set { this._scripts = value; } }
 
-        public string FbAction { private set; get; }       
-        public SlnSenarior(string fbAction, List<SlnScript> scripts)
+        public string FbAction { private set; get; }
+
+        public SlnSenarior()
+        { }
+
+        public SlnSenarior(string fbAction, List<SlnScript> scripts): this()
         {
             FbAction = fbAction;
             _scripts = scripts;
             _scripts = scripts;
             _variables = new Dictionary<string, object>();
             _designService = DesignService.GetInstance();
+            _ignoredIds = new List<string>();
+        }
+        public SlnSenarior(string fbAction, List<SlnScript> scripts, List<String> ignoredIds): this(fbAction, scripts)
+        {
+            _ignoredIds = ignoredIds;
         }
 
         public void Process(string webDriverFilePath)
         {
-            _webDriver = new SlnSeleniumWebDriver(webDriverFilePath);
-            
+            _webDriverFilePath = webDriverFilePath;
+            _webDriver = new SlnSeleniumWebDriver(_webDriverFilePath);
             try
             {
                 ProcessScripts(_scripts);
@@ -51,7 +64,6 @@ namespace Core.Models
 
         private void ProcessScript(SlnScript script)
         {
-            
             ACTION action = ScriptUtils.GetActionByDescription(script.Action);
             switch (action)
             {
@@ -180,28 +192,64 @@ namespace Core.Models
             int second = int.Parse(secondText);
             _webDriver.Sleep(second);
         }
-         private void HandleCloseTabByTitle(SlnScript script)
+        private void HandleCloseTabByTitle(SlnScript script)
         {
             CloseTabByTitle param = script.Param.To<CloseTabByTitle>();
             string title = GetVariableValue(param.Title.ToString());
             _webDriver.CloseTabByTitle(title);
         }
 
-         private void HandleLoopJsonFile(SlnScript script)
+        private void HandleLoopJsonFile(SlnScript script)
         {
             LoopJsonFile param = script.Param.To<LoopJsonFile>();
             string path = param.Path;
             string variable = param.ToVariable;
+            THREAD_MODE mode = param.Mode.ToEnum<THREAD_MODE>();
 
             Dictionary<string, object>[] objs = _designService.GetObjectFromJsonFile<Dictionary<string, object>[]>(path);
-
-            foreach (Dictionary<string, object> obj in objs)
+            if (mode == THREAD_MODE.None)
             {
-                SetVariable(variable, obj);
-                List<SlnScript> actions = param.Actions;
-                ProcessScripts(actions);
-                RemoveVariable(variable);
+                foreach (Dictionary<string, object> obj in objs)
+                {
+                    SetVariable(variable, obj);
+                    List<SlnScript> actions = param.Actions;
+                    ProcessScripts(actions);
+                    RemoveVariable(variable);
+                }
             }
+            else if (mode == THREAD_MODE.Multi)
+            {
+                for (int i = 0; i < objs.Length; i++)
+                {
+                    string idForIgnore = buildIgnoreId(script, i + "");
+                    bool canRun = _ignoredIds.Contains(idForIgnore) == false;
+                    if (canRun)
+                    {
+                        Dictionary<string, object> obj = objs[i];
+                        _ignoredIds.Add(idForIgnore);
+                        new Thread(() =>
+                        {
+                            Thread.CurrentThread.IsBackground = true;
+                            /* run your code here */
+                            SlnSenarior senarior = new SlnSenarior(FbAction, Scripts, _ignoredIds);
+                            senarior.Process(_webDriverFilePath);
+
+                        }).Start();
+
+                        SetVariable(variable, obj);
+                        List<SlnScript> actions = param.Actions;
+                        ProcessScripts(actions);
+                        RemoveVariable(variable);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private string buildIgnoreId(SlnScript script, string extra)
+        {
+            return script.Id + extra;
         }
 
         private void HandleExit()
@@ -212,11 +260,10 @@ namespace Core.Models
         {
             _webDriver.Close();
         }
-         private void HandleCloseTab()
+        private void HandleCloseTab()
         {
             _webDriver.CloseTab();
         }
-
         private void SetVariable(string variable, object value)
         {
             if (_variables.ContainsKey(variable))
@@ -235,8 +282,6 @@ namespace Core.Models
                 _variables.Remove(variable);
             }
         }
-
-
         private string GetVariableValue(string variable)
         {
             object value = null;
@@ -312,3 +357,37 @@ namespace Core.Models
         }
     }
 }
+/***
+ * public List<SlnSenarior> ParseSenarior()
+        {
+            List<SlnSenarior> senariors = new List<SlnSenarior>();
+            SlnSenarior senarior = new SlnSenarior(FbAction, new List<SlnScript>());
+            do
+            {
+                senarior = new SlnSenarior(FbAction, new List<SlnScript>());
+                for (int i = 0; i < _scripts.Count; i++)
+                {
+                    SlnScript script = _scripts[i];
+                    List<SlnScript> parseers = script.ParseScript();
+                    senarior.Scripts.AddRange(parseers);
+                }
+                senariors.Add(senarior);
+            } while (senarior.HasMultiThreadAction());
+            
+
+            return senariors.Where(p => !p.HasMultiThreadAction()).ToList();
+        }
+
+        private bool HasMultiThreadAction()
+        {
+            for (int i = 0; i < _scripts.Count; i++)
+            {
+                SlnScript script = _scripts[i];
+                if (script.HasMultiThreadAction())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+ */

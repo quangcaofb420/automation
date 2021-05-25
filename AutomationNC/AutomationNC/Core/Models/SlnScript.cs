@@ -13,12 +13,12 @@ namespace Core.Models
         public String Control { get; set; }
         public object Param { get; set; }
 
-        private string _id;
+        public String Id { get; set; }
 
 
         private SlnScript()
         {
-            this._id = CommonUtils.UUID();
+            Id = CommonUtils.UUID();
         }
 
         public String GetParamType(string paramName)
@@ -32,7 +32,7 @@ namespace Core.Models
             return "String";
 
         }
-
+       
         public ACTION GetAction()
         {
             return Action.ToEnum<ACTION>();
@@ -93,10 +93,6 @@ namespace Core.Models
             return new List<SlnScript>();
         }
         
-        public string GetId()
-        {
-            return this._id;
-        }
         public static SlnScript OpenWebsite(OpenWebsite param)
         {
             SlnScript script = new SlnScript();
@@ -118,13 +114,6 @@ namespace Core.Models
             script.Param = ifCondition.Actions;
             return script;
         }
-        public static SlnScript LoopJsonFile(LoopJsonFile json)
-        {
-            SlnScript script = new SlnScript();
-            script.Action = ACTION.LoopJsonFile.ToDescriptionString();
-            script.Param = json;
-            return script;
-        }
         public static SlnScript Condition(Condition condition)
         {
             SlnScript script = new SlnScript();
@@ -132,6 +121,14 @@ namespace Core.Models
             script.Param = condition;
             return script;
         }
+        public static SlnScript LoopJsonFile(LoopJsonFile json)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.LoopJsonFile.ToDescriptionString();
+            script.Param = json;
+            return script;
+        }
+       
         public static SlnScript GetLabel(String control, GetLabel param)
         {
             SlnScript script = new SlnScript();
