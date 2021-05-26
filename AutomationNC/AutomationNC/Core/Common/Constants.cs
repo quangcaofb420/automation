@@ -50,6 +50,9 @@ namespace Core.Common
 
         [Description("LoopJsonFile")]
         LoopJsonFile,
+        
+        [Description("LoopApiData")]
+        LoopApiData,
 
         [Description("OpenNewTab")]
         OpenNewTab

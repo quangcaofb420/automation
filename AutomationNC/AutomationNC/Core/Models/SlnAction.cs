@@ -46,6 +46,17 @@ namespace Core.Models
                                 )
         };
 
+        public static readonly SlnAction LoopApiData = new SlnAction()
+        {
+            Name = ACTION.LoopApiData,
+            RequiredElement = false,
+            ParamType = typeof(LoopApiData),
+            DefaultParam = new LoopApiData("https://reqres.in/api/users", "data", "{{employee}}", THREAD_MODE.None.ToString() , new List<SlnScript>(){
+                                        SlnScript.Sleep(new Sleep(10))
+                                    }
+                                )
+        };
+
         public ACTION Name { get; set; }
         public bool RequiredElement { get; set; }
 

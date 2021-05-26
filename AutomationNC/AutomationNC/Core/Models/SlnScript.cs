@@ -29,6 +29,11 @@ namespace Core.Models
                 String pt = ClassUtils.GetStaticPropperty<String>(typeof(LoopJsonFile), paramName + "_T") ?? "String";
                 return pt;
             }
+            else if (action == ACTION.LoopApiData)
+            {
+                String pt = ClassUtils.GetStaticPropperty<String>(typeof(LoopApiData), paramName + "_T") ?? "String";
+                return pt;
+            }
             return "String";
 
         }
@@ -50,7 +55,7 @@ namespace Core.Models
         public List<SlnScript> GetChildrenActions()
         {
             ACTION action = GetAction();
-            if (GetAction().HasChildrenActions())
+            if (action.HasChildrenActions())
             {
                 if (Param == null)
                 {
@@ -61,18 +66,6 @@ namespace Core.Models
                 if (action == ACTION.IfCondition)
                 {
                     actions = Param.To<List<SlnScript>>();
-                    //if (actions == null || actions.Count == 0)
-                    //{
-                    //    actions = new List<SlnScript>() {
-                    //            SlnScript.Condition(
-                    //                new Condition("true",
-                    //                new List<SlnScript>(){
-                    //                        SlnScript.Sleep(new Sleep(10))
-                    //                    }
-                    //                )
-                    //            )
-                    //        };
-                    //}
                 }
                 else
                 {
@@ -126,6 +119,13 @@ namespace Core.Models
             SlnScript script = new SlnScript();
             script.Action = ACTION.LoopJsonFile.ToDescriptionString();
             script.Param = json;
+            return script;
+        }
+       public static SlnScript LoopApiData(LoopApiData api)
+        {
+            SlnScript script = new SlnScript();
+            script.Action = ACTION.LoopApiData.ToDescriptionString();
+            script.Param = api;
             return script;
         }
        

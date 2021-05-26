@@ -29,33 +29,20 @@ namespace Core.Utilities
         {
             return val == ACTION.IfCondition
                 || val == ACTION.Condition
-                || val == ACTION.LoopJsonFile;
+                || val == ACTION.LoopJsonFile
+                || val == ACTION.LoopApiData
+                ;
         }
         public static List<T> ToList<T>(this object param)
         {
-            try
-            {
-                string str = JsonConvert.SerializeObject(param);
-                return JsonConvert.DeserializeObject<List<T>>(str);
-            }
-            catch (Exception ex)
-            { }
-            return null;
+            return JSONUtils.ToList<T>(param);
         }
+
         public static T To<T>(this object param)
         {
-            //try
-            //{
-            //    T t = (T)param;
-            //    if (t != null)
-            //    {
-            //        return t;
-            //    }
-            //}
-            //catch (Exception ex) { }
-            string str = JsonConvert.SerializeObject(param);
-            return JsonConvert.DeserializeObject<T>(str);
+            return JSONUtils.To<T>(param);
         }
+
         public static T ToEnum<T>(this string param)
         {
             T t = (T)Enum.Parse(typeof(T), param);

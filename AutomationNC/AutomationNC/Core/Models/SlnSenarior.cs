@@ -1,8 +1,11 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Core.ActionParam;
 using Core.Common;
 using Core.Utilities;
@@ -42,15 +45,21 @@ namespace Core.Models
         {
             _webDriverFilePath = webDriverFilePath;
             _webDriver = new SlnSeleniumWebDriver(_webDriverFilePath);
-            try
+            new Thread(() =>
             {
-                ProcessScripts(_scripts);
-                HandleExit();
-            }
-            catch (Exception ex)
-            {
-                HandleExit();
-            }
+                try
+                {
+                    ProcessScripts(_scripts);
+                    HandleExit();
+                }
+                catch (Exception ex)
+                {
+                    HandleExit();
+                }
+
+            }).Start();
+            
+           
            
         }
 
@@ -93,6 +102,9 @@ namespace Core.Models
                     break;
                 case ACTION.LoopJsonFile:
                     HandleLoopJsonFile(script);
+                    break;
+                case ACTION.LoopApiData:
+                    HandleLoopApiData(script);
                     break;
                 case ACTION.RedirectUrl:
                     break;
@@ -199,20 +211,34 @@ namespace Core.Models
             _webDriver.CloseTabByTitle(title);
         }
 
+        private void HandleLoopApiData(SlnScript script)
+        {
+            LoopApiData param = script.Param.To<LoopApiData>();
+            string api = GetExpressionValue(param.Api);
+            string variable = param.ToVariable;
+            string pathToPropperty = param.PathToPropperty;
+            THREAD_MODE mode = param.Mode.ToEnum<THREAD_MODE>();
+            Dictionary<string, object>[] objs = HttpApiUtils.GetArray<Dictionary<string, object>>(api, pathToPropperty);
+            HandlLoopData(script, objs, mode, variable, param.Actions);
+        }
+
         private void HandleLoopJsonFile(SlnScript script)
         {
             LoopJsonFile param = script.Param.To<LoopJsonFile>();
-            string path = param.Path;
+            string path = GetExpressionValue(param.Path);
             string variable = param.ToVariable;
             THREAD_MODE mode = param.Mode.ToEnum<THREAD_MODE>();
-
             Dictionary<string, object>[] objs = _designService.GetObjectFromJsonFile<Dictionary<string, object>[]>(path);
+            HandlLoopData(script, objs, mode, variable, param.Actions);
+        }
+
+        private void HandlLoopData(SlnScript self, Dictionary<string, object>[] objs, THREAD_MODE mode, string variable, List<SlnScript> actions)
+        {
             if (mode == THREAD_MODE.None)
             {
                 foreach (Dictionary<string, object> obj in objs)
                 {
                     SetVariable(variable, obj);
-                    List<SlnScript> actions = param.Actions;
                     ProcessScripts(actions);
                     RemoveVariable(variable);
                 }
@@ -221,7 +247,7 @@ namespace Core.Models
             {
                 for (int i = 0; i < objs.Length; i++)
                 {
-                    string idForIgnore = buildIgnoreId(script, i + "");
+                    string idForIgnore = buildIgnoreId(self, i + "");
                     bool canRun = _ignoredIds.Contains(idForIgnore) == false;
                     if (canRun)
                     {
@@ -237,7 +263,6 @@ namespace Core.Models
                         }).Start();
 
                         SetVariable(variable, obj);
-                        List<SlnScript> actions = param.Actions;
                         ProcessScripts(actions);
                         RemoveVariable(variable);
 
