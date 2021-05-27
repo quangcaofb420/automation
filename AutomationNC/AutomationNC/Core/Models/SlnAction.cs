@@ -8,7 +8,7 @@ namespace Core.Models
 {
     public class SlnAction
     {
-        public static readonly SlnAction OpenWebsite = new SlnAction() { Name = ACTION.OpenWebsite, RequiredElement = false, ParamType = typeof(OpenWebsite), DefaultParam = new OpenWebsite("", "") };
+        public static readonly SlnAction OpenWebsite = new SlnAction() { Name = ACTION.OpenWebsite, RequiredElement = false, ParamType = typeof(OpenWebsite), DefaultParam = new OpenWebsite("", "https://www.facebook.com/") };
         public static readonly SlnAction OpenNewTab = new SlnAction() { Name = ACTION.OpenNewTab, RequiredElement = false, ParamType = typeof(OpenNewTab), DefaultParam = new OpenNewTab("") };
         public static readonly SlnAction Input = new SlnAction() { Name = ACTION.Input, RequiredElement = true, ParamType = typeof(Input), DefaultParam = new Input("") };
         public static readonly SlnAction Click = new SlnAction() { Name = ACTION.Click, RequiredElement = true, ParamType = typeof(Click), DefaultParam = new Click() };

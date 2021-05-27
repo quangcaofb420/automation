@@ -25,7 +25,7 @@ namespace ScriptDesigner.CustomControl
             this.Id = script.Id;
             this._parent = parent;
             this._script = script;
-            this._scriptBk = script;
+            this._scriptBk =  script.To<SlnScript>();
             this._levelIndex = levelIndex;
             this._mappingControls = mappingControls;
             this._getMappingControlsFunc = getMappingControlsFunc;
@@ -79,7 +79,7 @@ namespace ScriptDesigner.CustomControl
             }
             else
             {
-                _script = _scriptBk;
+                _script = _scriptBk.To<SlnScript>();
             }
             
             SlnAction definedAction = ScriptUtils.GetDefinedAction(action);
