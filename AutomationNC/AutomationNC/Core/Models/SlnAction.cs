@@ -14,6 +14,17 @@ namespace Core.Models
         public static readonly SlnAction Click = new SlnAction() { Name = ACTION.Click, RequiredElement = true, ParamType = typeof(Click), DefaultParam = new Click() };
         public static readonly SlnAction GetLabel = new SlnAction() { Name = ACTION.GetLabel, RequiredElement = true, ParamType = typeof(GetLabel), DefaultParam = new GetLabel("", "") };
         public static readonly SlnAction GetTextValue = new SlnAction() { Name = ACTION.GetTextValue, RequiredElement = true, ParamType = typeof(GetTextValue), DefaultParam = new GetTextValue("", "") };
+        public static readonly SlnAction Condition = new SlnAction()
+        {
+            Name = ACTION.Condition,
+            RequiredElement = false,
+            ParamType = typeof(Condition),
+            DefaultParam = new Condition("true == true",
+                                new List<SlnScript>(){
+                                        SlnScript.Sleep(new Sleep(10))
+                                    }
+                                )
+        };
         public static readonly SlnAction IfCondition = new SlnAction()
         {
             Name = ACTION.IfCondition,
@@ -21,15 +32,11 @@ namespace Core.Models
             ParamType = typeof(IfCondition),
             DefaultParam = new List<SlnScript>() {
                             SlnScript.Condition(
-                                new Condition("true",
-                                new List<SlnScript>(){
-                                        SlnScript.Sleep(new Sleep(10))
-                                    }
-                                )
+                                (Condition)Condition.DefaultParam
                             )
                         }
         };
-        public static readonly SlnAction Condition = new SlnAction() { Name = ACTION.Condition, RequiredElement = false, ParamType = typeof(Condition) };
+        
         public static readonly SlnAction Exit = new SlnAction() { Name = ACTION.Exit, RequiredElement = false, ParamType = typeof(Exit), DefaultParam = new Exit() };
         public static readonly SlnAction Close = new SlnAction() { Name = ACTION.Close, RequiredElement = false, ParamType = typeof(Close), DefaultParam = new Close() };
         public static readonly SlnAction CloseTab = new SlnAction() { Name = ACTION.CloseTab, RequiredElement = false, ParamType = typeof(CloseTab), DefaultParam = new CloseTab() };

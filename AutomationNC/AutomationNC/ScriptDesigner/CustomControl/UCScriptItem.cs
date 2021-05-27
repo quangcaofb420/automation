@@ -341,11 +341,7 @@ namespace ScriptDesigner.CustomControl
                 }
                 
                 UCScriptItem script = new UCScriptItem(_parent, SlnScript.Condition(
-                        new Condition("true",
-                        new List<SlnScript>(){
-                                SlnScript.Sleep(new Sleep(10))
-                            }
-                        )
+                        (Condition)SlnAction.Condition.DefaultParam
                     ), _levelIndex, _mappingControls, _getMappingControlsFunc);
                
                 controls.Insert(rowIndex, script);
